@@ -5,7 +5,7 @@ import { fetchGlobalData } from "@utils/data/global/index.js";
 const { nav } = await fetchGlobalData(Astro);
 ---
 
-<footer style={updated ? undefined : "margin-top: var(--spacing-3xl)"}>
+<footer>
   <nav aria-label="Social icons" class="social">
     {
       nav.footer_icons.map((link) => (

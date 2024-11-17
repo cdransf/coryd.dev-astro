@@ -440,7 +440,7 @@ main {
 main,
 footer {
   width: 80%;
-  margin: 0 auto;
+  margin: var(--sizing-3xl) auto 0;
 
   @media screen and (min-width: 768px) {
     max-width: 768px;
@@ -448,12 +448,6 @@ footer {
 }
 
 footer {
-  & .updated {
-    text-align: center;
-    font-size: var(--font-size-sm);
-    margin: var(--spacing-3xl) 0 var(--spacing-lg);
-  }
-
   & nav {
     &.social,
     &.sub-pages {
