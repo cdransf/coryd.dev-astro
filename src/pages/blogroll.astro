@@ -8,14 +8,19 @@ import {
 } from "@tabler/icons-react";
 import { fetchBlogroll } from "@utils/data/blogroll.js";
 
+export const prerender = true;
+
 const blogroll = await fetchBlogroll();
-const currentUrl = Astro.url.pathname;
 const title = "Blogroll";
 const description =
   "These are awesome blogs that I enjoy and you may enjoy too.";
 ---
 
-<Layout pageTitle={title} description={description} currentUrl={currentUrl}>
+<Layout
+  pageTitle={title}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
   <h2 class="page-title">{title}</h2>
   <p>
     You can <a

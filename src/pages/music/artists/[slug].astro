@@ -2,7 +2,13 @@
 import Layout from "@layouts/Layout.astro";
 import ToggleContent from "@components/utils/ToggleContent.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
-import { IconArrowLeft, IconHeart, IconNeedle, IconMapPin, IconDeviceSpeaker } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconHeart,
+  IconNeedle,
+  IconMapPin,
+  IconDeviceSpeaker,
+} from "@tabler/icons-react";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 import { fetchArtistByUrl } from "@utils/data/dynamic/artistByUrl.js";
 
@@ -17,7 +23,12 @@ const alt = `${artist.name} / ${artist.country}`;
 const playLabel = artist.total_plays === 1 ? "play" : "plays";
 ---
 
-<Layout pageTitle={pageTitle} description={description} schema="artist">
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  {artist.image}
+>
   <a href="/music" class="back-link">
     <IconArrowLeft size={18} /> Back to music
   </a>
@@ -42,25 +53,37 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
       <div class="media-meta">
         <span class="title"><strong>{artist.name}</strong></span>
         <span class="sub-meta country">
-          <IconMapPin size={18} /> {artist.country}
+          <IconMapPin size={18} />
+          {artist.country}
         </span>
-        {artist.favorite && (
-          <span class="sub-meta favorite">
-            <IconHeart size={18} /> This is one of my favorite artists!
-          </span>
-        )}
-        {artist.tattoo && (
-          <span class="sub-meta tattoo">
-            <IconNeedle size={18} /> I have a tattoo inspired by this artist!
-          </span>
-        )}
-        {artist.total_plays > 0 && (
-          <span class="sub-meta">
-            <strong class="highlight-text">{artist.total_plays} {playLabel}</strong>
-          </span>
-        )}
+        {
+          artist.favorite && (
+            <span class="sub-meta favorite">
+              <IconHeart size={18} /> This is one of my favorite artists!
+            </span>
+          )
+        }
+        {
+          artist.tattoo && (
+            <span class="sub-meta tattoo">
+              <IconNeedle size={18} /> I have a tattoo inspired by this artist!
+            </span>
+          )
+        }
+        {
+          artist.total_plays > 0 && (
+            <span class="sub-meta">
+              <strong class="highlight-text">
+                {artist.total_plays} {playLabel}
+              </strong>
+            </span>
+          )
+        }
         <span class="sub-meta">
-          <a href={artist.genre.url} title={`Learn more about ${artist.genre.name}`}>
+          <a
+            href={artist.genre.url}
+            title={`Learn more about ${artist.genre.name}`}
+          >
             {artist.genre.name}
           </a>
         </span>
@@ -76,58 +99,69 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
       shows={artist.shows}
     />
 
-    {artist.description && (
-      <>
-        <h2>Overview</h2>
-        <ToggleContent content={artist.description} />
-      </>
-    )}
+    {
+      artist.description && (
+        <>
+          <h2>Overview</h2>
+          <ToggleContent content={artist.description} />
+        </>
+      )
+    }
 
-    {artist.concerts && (
-      <>
-        <p id="concerts" class="concerts">
-          <IconDeviceSpeaker size={18} /> I've seen this artist live!
-        </p>
-        <ul>
-          {artist.concerts.map((concert) => {
-            const venue = concert.venue_latitude && concert.venue_longitude
-              ? `<a href="https://www.openstreetmap.org/?mlat=${concert.venue_latitude}&mlon=${concert.venue_longitude}#map=18/${concert.venue_latitude}/${concert.venue_longitude}">${concert.venue_name_short}</a>`
-              : concert.venue_name_short;
+    {
+      artist.concerts && (
+        <>
+          <p id="concerts" class="concerts">
+            <IconDeviceSpeaker size={18} /> I've seen this artist live!
+          </p>
+          <ul>
+            {artist.concerts.map((concert) => {
+              const venue =
+                concert.venue_latitude && concert.venue_longitude
+                  ? `<a href="https://www.openstreetmap.org/?mlat=${concert.venue_latitude}&mlon=${concert.venue_longitude}#map=18/${concert.venue_latitude}/${concert.venue_longitude}">${concert.venue_name_short}</a>`
+                  : concert.venue_name_short;
 
-            return (
-              <li>
-                On <strong class="highlight-text">{concert.date.toLocaleString(DateTime.DATE_MED)}</strong>
-                {venue && <> at {venue}</>}
-                {concert.notes && (
-                  <span> — {concert.notes}</span>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </>
-    )}
+              return (
+                <li>
+                  On{" "}
+                  <strong class="highlight-text">
+                    {concert.date.toLocaleString(DateTime.DATE_MED)}
+                  </strong>
+                  {venue && <> at {venue}</>}
+                  {concert.notes && <span> — {concert.notes}</span>}
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )
+    }
 
-    {artist.albums && (
-      <>
-        <table>
-          <tr>
-            <th>Album</th>
-            <th>Plays</th>
-            <th>Year</th>
-          </tr>
-          {artist.albums.map((album) => (
+    {
+      artist.albums && (
+        <>
+          <table>
             <tr>
-              <td>{album.name}</td>
-              <td>{album.total_plays}</td>
-              <td>{album.release_year}</td>
+              <th>Album</th>
+              <th>Plays</th>
+              <th>Year</th>
             </tr>
-          ))}
-        </table>
-        <p>
-          <em>These are the albums by this artist that are in my collection, not necessarily a comprehensive discography.</em>
-        </p>
-      </>
-    )}
+            {artist.albums.map((album) => (
+              <tr>
+                <td>{album.name}</td>
+                <td>{album.total_plays}</td>
+                <td>{album.release_year}</td>
+              </tr>
+            ))}
+          </table>
+          <p>
+            <em>
+              These are the albums by this artist that are in my collection, not
+              necessarily a comprehensive discography.
+            </em>
+          </p>
+        </>
+      )
+    }
   </article>
 </Layout>

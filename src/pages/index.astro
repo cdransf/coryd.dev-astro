@@ -5,23 +5,12 @@ import RecentActivity from "@components/home/RecentActivity.astro";
 import RecentPosts from "@components/home/RecentPosts.astro";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 
+export const prerender = true;
+
 const { globals } = await fetchGlobalData(Astro);
-const schema = "blog";
-const pageTitle = globals.site_name;
-const description = "This is a blog post description";
-const ogImage = globals.cdn_url + globals.avatar;
-const fullUrl = globals.url + "/blog/my-post";
-const themeColor = globals.theme_color;
 ---
 
-<Layout
-  pageTitle={pageTitle}
-  description={description}
-  ogImage={ogImage}
-  fullUrl={fullUrl}
-  themeColor={themeColor}
-  schema={schema}
->
+<Layout>
   <Intro intro={globals.intro} />
   <RecentActivity />
   <RecentPosts />

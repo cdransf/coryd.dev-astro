@@ -8,6 +8,8 @@ import Paginator from "@components/nav/Paginator.astro";
 import { md } from "@utils/helpers/general.js";
 import { DateTime } from "luxon";
 
+export const prerender = true;
+
 const posts = await fetchAllPosts();
 const { page } = Astro.props;
 const { globals } = await fetchGlobalData(Astro);

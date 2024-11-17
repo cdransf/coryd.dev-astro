@@ -13,12 +13,18 @@ const book = await fetchBookByUrl(Astro.url.pathname);
 if (!book) return Astro.redirect("/404", 404);
 
 const alt = `${book.title}${book.author ? ` by ${book.author}` : ""}`;
-const pageTitle = `Books / ${book.title}`;
-const description = book.description || `Details about the book ${book.title}`;
+const pageTitle = `${book.title} by ${book.author} / Books`;
+const description =
+  book.description || `Details about ${book.title} by ${book.author}.`;
 const { globals } = await fetchGlobalData(Astro);
 ---
 
-<Layout pageTitle={pageTitle} description={description} schema="book">
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={book.image}
+>
   <a class="back-link" href="/books" title="Go back to the books index page">
     <IconArrowLeft size={18} /> Back to books
   </a>

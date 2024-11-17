@@ -6,12 +6,13 @@ import { fetchBooks } from "@utils/data/books.js";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 import { md, htmlTruncate } from "@utils/helpers/general.js";
 
+export const prerender = true;
+
 const books = await fetchBooks();
 const { globals } = await fetchGlobalData(Astro);
 const title = "Currently reading";
 const description = "Here's what I'm reading at the moment.";
 const updated = new Date().toISOString();
-const schema = "books";
 const currentYear = new Date().getFullYear();
 const bookData = books.all
   .filter((book) => book.status === "started")
@@ -32,9 +33,8 @@ const bookYearLinks = (years) =>
 <Layout
   pageTitle={title}
   description={description}
-  updated={updated}
   currentUrl={Astro.url.pathname}
-  schema={schema}
+  ogImage={bookData[0].image}
 >
   <h2 class="page-title">{title}</h2>
   <p>

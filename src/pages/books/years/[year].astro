@@ -11,6 +11,8 @@ import { fetchGlobalData } from "@utils/data/global/index.js";
 import { fetchBooks } from "@utils/data/books.js";
 import { DateTime } from "luxon";
 
+export const prerender = true;
+
 const { globals } = await fetchGlobalData(Astro);
 const books = await fetchBooks();
 const { year } = Astro.params;
@@ -42,7 +44,8 @@ const intro = isCurrentYear
 <Layout
   pageTitle={pageTitle}
   description={description}
-  schema="books-year"
+  fullUrl={Astro.url.pathname}
+  ogImage={bookData[0].image}
 >
   <a href="/books" class="back-link">
     <IconArrowLeft size={18} /> Back to books

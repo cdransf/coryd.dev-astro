@@ -2,21 +2,20 @@
 import "@styles/index.css";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Metadata from "@components/Metadata.astro";
 import { fetchGlobalData } from "@utils/data/global/index.js";
+import { escapeHtml } from "@utils/helpers/general.js";
 
-const {
-  schema = "page",
-  pageTitle,
-  description,
-  ogImage,
-  fullUrl,
-  updated,
-  ...otherProps
-} = Astro.props;
 const { globals } = await fetchGlobalData(Astro);
 const currentUrl = Astro.url.pathname;
 const isProduction = import.meta.env.MODE === "production";
+const {
+  schema = "page",
+  pageTitle = globals.site_name,
+  description = globals.site_description,
+  ogImage = globals.avatar,
+  fullUrl = currentUrl,
+  updated,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -40,13 +39,43 @@ const isProduction = import.meta.env.MODE === "production";
       type="font/woff2"
       crossorigin="anonymous"
     />
-    <Metadata
-      schema={schema}
-      pageTitle={pageTitle}
-      description={description}
-      ogImage={ogImage}
-      fullUrl={fullUrl}
-      {...otherProps}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{pageTitle}</title>
+    <link rel="canonical" href={fullUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta name="description" content={escapeHtml(description)} />
+    <meta property="og:description" content={escapeHtml(description)} />
+    <meta
+      property="og:type"
+      content={schema || "page"}
+    />
+    <meta property="og:url" content={fullUrl} />
+    <meta property="og:image" content={`${globals.cdn_url}${ogImage}?class=w800`} />
+    <meta name="theme-color" content={globals.theme_color} />
+    <meta name="fediverse:creator" content={globals.mastodon} />
+    <meta name="generator" content="Astro" />
+    <meta name="robots" content="noai, noimageai" />
+    <link
+      href={`${globals.cdn_url}${globals.avatar_transparent}?class=w50`}
+      rel="icon"
+      sizes="any"
+    />
+    <link
+      href={`${globals.cdn_url}${globals.avatar_transparent}?class=w50&type=svg`}
+      rel="icon"
+      type="image/svg+xml"
+    />
+    <link
+      href={`${globals.cdn_url}${globals.avatar}?class=w800`}
+      rel="apple-touch-icon"
+    />
+    <link
+      type="application/atom+xml"
+      rel="alternate"
+      title={`Posts / ${globals.site_name}`}
+      href={`${globals.url}/feeds/posts`}
     />
     <script defer src="/scripts/index.js" is:inline></script>
     {
@@ -76,8 +105,7 @@ const isProduction = import.meta.env.MODE === "production";
           <slot />
         </div>
       </main>
-      <Footer updated={updated} />
+      <Footer />
     </div>
-
   </body>
 </html>

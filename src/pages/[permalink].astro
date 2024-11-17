@@ -23,7 +23,6 @@ const currentUrl = Astro.url.pathname;
   pageTitle={page.title}
   description={page.description}
   ogImage={page.open_graph_image}
-  updated={page.updated}
   currentUrl={currentUrl}
 >
   {page.blocks.map((block) => <BlockRenderer block={block} />)}
