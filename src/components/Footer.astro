@@ -1,8 +1,9 @@
 ---
 import NavLink from '@components/nav/NavLink.astro';
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
 const { updated } = Astro.props;
-const { nav } = Astro.locals;
+const { nav } = await fetchGlobalData(Astro);
 ---
 
 <footer style={updated ? undefined : 'margin-top: var(--spacing-3xl)'}>

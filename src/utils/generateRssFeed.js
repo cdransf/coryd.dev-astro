@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { dateToRFC822, encodeAmp, md } from '@utils/helpers/general.js';
 
 export function generateRssFeed({ permalink, title, globals, data }) {
   const rssItems = data.slice(0, 20).map((entry) => {
@@ -11,27 +12,28 @@ export function generateRssFeed({ permalink, title, globals, data }) {
     return `
       <item>
         <title><![CDATA[${entryTitle}]]></title>
-        <link>${entryFeed.url}</link>
-        <pubDate>${DateTime.fromISO(entryFeed.date).toRFC2822()}</pubDate>
+        <link>${encodeAmp(entryFeed.url)}</link>
+        <pubDate>${dateToRFC822(entryFeed.date)}</pubDate>
         <guid isPermaLink="false">${entryFeed.url}</guid>
         ${
           entryFeed.image
             ? `<enclosure url="${globals.cdn_url}${entryFeed.image}?class=w800&type=jpg" type="image/jpeg" />`
             : ""
         }
-        <description><![CDATA[${entryFeed.description}]]></description>
+        <description><![CDATA[${md(entryFeed.description)}]]></description>
       </item>`;
   });
 
   return `
 <?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet href="/feeds/feed.xsl" type="text/xsl" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <atom:link href="${globals.url}${permalink}" rel="self" type="application/rss+xml" />
     <title><![CDATA[${title}]]></title>
     <description><![CDATA[${globals.site_description}]]></description>
     <link>${globals.url}${permalink}</link>
-    <lastBuildDate>${DateTime.now().toUTC().toRFC2822()}</lastBuildDate>
+    <lastBuildDate>${dateToRFC822(DateTime.now())}</lastBuildDate>
     <image>
       <title><![CDATA[${title}]]></title>
       <link>${globals.url}${permalink}</link>

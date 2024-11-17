@@ -3,10 +3,7 @@ import "@styles/index.css";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Metadata from "@components/Metadata.astro";
-import { fetchNavigation } from "@utils/data/nav.js";
-
-const currentUrl = Astro.url.pathname;
-const nav = await fetchNavigation();
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
 const {
   schema = "page",
@@ -17,7 +14,8 @@ const {
   updated,
   ...otherProps
 } = Astro.props;
-const { globals} = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
+const currentUrl = Astro.url.pathname;
 const isProduction = import.meta.env.MODE === "production";
 ---
 

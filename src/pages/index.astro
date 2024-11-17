@@ -3,8 +3,9 @@ import Layout from '@layouts/Layout.astro';
 import Intro from '@components/home/Intro.astro';
 import RecentActivity from '@components/home/RecentActivity.astro';
 import RecentPosts from '@components/home/RecentPosts.astro';
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 const schema = 'blog';
 const pageTitle = globals.site_name;
 const description = 'This is a blog post description';
@@ -13,14 +14,12 @@ const fullUrl = globals.url + '/blog/my-post';
 const themeColor = globals.theme_color;
 ---
 <Layout
-  globals={globals}
   pageTitle={pageTitle}
   description={description}
   ogImage={ogImage}
   fullUrl={fullUrl}
   themeColor={themeColor}
   schema={schema}
-  globals={globals}
 >
   <Intro intro={globals.intro} />
   <RecentActivity />

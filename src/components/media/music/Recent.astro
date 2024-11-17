@@ -1,6 +1,8 @@
 ---
+import { fetchGlobalData } from '@utils/data/global/index.js';
+
 const { data } = Astro.props;
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 ---
 
 <div class="music-chart">

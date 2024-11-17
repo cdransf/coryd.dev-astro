@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { parseCountryField } from "@utils/helpers.js";
+import { parseCountryField } from "@utils/helpers/general.js";
 
 const SUPABASE_URL = import.meta.env.SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.SUPABASE_KEY;

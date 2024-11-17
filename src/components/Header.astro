@@ -1,8 +1,9 @@
 ---
 import Menu from '@components/nav/Menu.astro';
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
 const { siteName, url } = Astro.props;
-const { nav } = Astro.locals;
+const { nav } = await fetchGlobalData(Astro);
 const isHomePage = url === '/';
 ---
 

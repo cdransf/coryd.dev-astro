@@ -1,5 +1,6 @@
 ---
-import { escapeHtml } from "@utils/helpers.js";
+import { escapeHtml } from "@utils/helpers/general.js";
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
 const {
   schema = "page",
@@ -18,7 +19,7 @@ const {
   genre,
   year,
 } = Astro.props;
-const { globals} = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 
 let pageTitle = globals.site_name;
 let pageDescription = globals.site_description;

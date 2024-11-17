@@ -4,7 +4,8 @@ import Warning from "@components/blocks/banners/Warning.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
 import ProgressBar from "@components/media/ProgressBar.astro";
 import { IconArrowLeft, IconHeart, IconNeedle } from "@tabler/icons-react";
-import { fetchBookByUrl } from "@utils/data/bookByUrl.js";
+import { fetchBookByUrl } from "@utils/data/dynamic/bookByUrl.js";
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
 const { isbn } = Astro.params;
 
@@ -14,7 +15,7 @@ if (!book) return Astro.redirect("/404", 404);
 const alt = `${book.title}${book.author ? ` by ${book.author}` : ""}`;
 const pageTitle = `Books / ${book.title}`;
 const description = book.description || `Details about the book ${book.title}`;
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 ---
 
 <Layout pageTitle={pageTitle} description={description} schema="book">

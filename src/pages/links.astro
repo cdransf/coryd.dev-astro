@@ -3,14 +3,12 @@ import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import RssBanner from "@components/blocks/banners/Rss.astro";
 import { fetchLinks } from "@utils/data/links.js";
+import { fetchGlobalData } from '@utils/data/global/index.js';
 
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 const links = await fetchLinks();
-
 const title = "Links";
 const description = "These are links I've liked or otherwise found interesting. They're all added manually, after having been read and, I suppose, properly considered.";
-
-// Pagination Settings
 const pageSize = 30;
 const currentPage = parseInt(Astro.url.searchParams.get("page") || "1", 10);
 const totalPages = Math.ceil(links.length / pageSize);

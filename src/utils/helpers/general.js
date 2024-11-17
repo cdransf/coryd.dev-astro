@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
@@ -14,6 +15,7 @@ markdown.use(markdownItAnchor, {
 markdown.use(markdownItFootnote);
 markdown.use(markdownItPrism);
 
+// arrays
 export const shuffleArray = (array) => {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -25,6 +27,7 @@ export const shuffleArray = (array) => {
   return shuffled;
 };
 
+// countries
 export const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 export const getCountryName = (countryCode) =>
@@ -43,8 +46,10 @@ export const parseCountryField = (countryField) => {
   return countries.map(getCountryName).join(", ");
 };
 
+// markdown
 export const md = (string) => markdown.render(string);
 
+// html
 export const htmlTruncate = (content, limit = 50) =>
   truncateHtml(content, limit, {
     byWords: true,
@@ -62,4 +67,13 @@ export const escapeHtml = (str) =>
         "<": "&lt;",
         ">": "&gt;",
       }[char] || char)
+  );
+
+// urls
+export const encodeAmp = (url) => url.replace(/&/g, "&amp;");
+
+// dates
+export const dateToRFC822 = (date) =>
+  DateTime.fromJSDate(date, { zone: "America/Los_Angeles" }).toFormat(
+    "ccc, dd LLL yyyy HH:mm:ss ZZZ"
   );

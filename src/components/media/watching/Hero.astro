@@ -1,8 +1,8 @@
 ---
+import { fetchGlobalData } from '@utils/data/global/index.js';
 import Hero from "@components/blocks/Hero.astro";
 
 const { movie } = Astro.props;
-const { globals } = Astro.locals;
 ---
 
 <a href={movie.url}>
@@ -14,6 +14,6 @@ const { globals } = Astro.locals;
         ({movie.year})
       </div>
     </div>
-    <Hero globals={globals} image={movie.backdrop} alt={movie.title} />
+    <Hero image={movie.backdrop} alt={movie.title} />
   </div>
 </a>

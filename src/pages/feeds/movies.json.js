@@ -1,8 +1,10 @@
 import { generateJsonFeed } from '@utils/generateJsonFeed';
 import { fetchGlobals } from '@utils/data/globals';
 import { fetchMovies } from '@utils/data/movies';
+import fs from 'fs/promises';
+import path from 'path';
 
-export async function GET() {
+export async function getStaticPaths() {
   const globals = await fetchGlobals();
   const movies = await fetchMovies();
 
@@ -13,10 +15,9 @@ export async function GET() {
     data: movies.feed,
   });
 
-  return new Response(feed, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const filePath = path.resolve("public/feeds/movies.json");
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.writeFile(filePath, feed);
+
+  return [];
 }

@@ -3,7 +3,8 @@ import { IconStar } from "@tabler/icons-react";
 import { fetchAllPosts } from "@data/posts.js";
 import { fetchAnalyticsData } from "@data/analytics.js";
 import { fetchLinks } from "@data/links.js";
-import { md } from '@utils/helpers.js';
+import { fetchGlobalData } from '@utils/data/global/index.js';
+import { md } from '@utils/helpers/general.js';
 import { getPopularPosts } from '@utils/getPopularPosts.js';
 
 const analytics = await fetchAnalyticsData();
@@ -38,7 +39,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 const { year, title } = Astro.params;
 const currentUrl = Astro.url.pathname;
 const htmlContent = md(post.content);

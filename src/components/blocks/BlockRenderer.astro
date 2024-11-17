@@ -12,14 +12,13 @@ import Npm from '@components/blocks/banners/Npm.astro';
 import Rss from '@components/blocks/banners/Rss.astro';
 import YouTubePlayer from '@components/blocks//YouTubePlayer.astro';
 
-import { md } from '@utils/helpers.js';
+import { md } from '@utils/helpers/general.js';
 import { getPopularPosts } from '@utils/getPopularPosts.js';
 
 const analytics = await fetchAnalyticsData();
 const links = await fetchLinks();
 const posts = await fetchAllPosts();
 const popularPosts = getPopularPosts(posts, analytics);
-
 const { block } = Astro.props;
 ---
 

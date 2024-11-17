@@ -3,10 +3,11 @@ import Layout from "@layouts/Layout.astro";
 import Rss from "@components/blocks/banners/Rss.astro";
 import ProgressBar from "@components/media/ProgressBar.astro";
 import { fetchBooks } from "@utils/data/books.js";
-import { md, htmlTruncate } from "@utils/helpers.js";
+import { fetchGlobalData } from '@utils/data/global/index.js';
+import { md, htmlTruncate } from "@utils/helpers/general.js";
 
 const books = await fetchBooks();
-const { globals } = Astro.locals;
+const { globals } = await fetchGlobalData(Astro);
 const title = "Currently reading";
 const description = "Here's what I'm reading at the moment.";
 const updated = new Date().toISOString();

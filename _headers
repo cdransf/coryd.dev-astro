@@ -1,46 +1,39 @@
-/feeds/album-releases
-  Content-Type: application/xml; charset=utf-8
-  x-content-type-options: nosniff
-
-/feeds/album-releases.json
-  Content-Type: application/json
-
-/feeds/all
+/feeds/all.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
 /feeds/all.json
   Content-Type: application/json
 
-/feeds/books
+/feeds/books.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
 /feeds/books.json
   Content-Type: application/json
 
-/feeds/links
+/feeds/links.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
 /feeds/links.json
   Content-Type: application/json
 
-/feeds/posts
+/feeds/posts.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
 /feeds/posts.json
   Content-Type: application/json
 
-/feeds/movies
+/feeds/movies.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
 /feeds/movies.json
   Content-Type: application/json
 
-/feeds/syndication
+/feeds/syndication.xml
   Content-Type: application/xml; charset=utf-8
   x-content-type-options: nosniff
 
