@@ -7,6 +7,12 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [react()],
   vite: {
+    build: {
+      sourcemap: false,
+    },
+    optimizeDeps: {
+      include: ["@tabler/icons-react"],
+    },
     resolve: {
       alias: {
         "@cdransf": "node_modules/@cdransf",

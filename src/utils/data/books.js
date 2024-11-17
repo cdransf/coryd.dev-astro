@@ -1,25 +1,26 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = import.meta.env.SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-const PAGE_SIZE = 1000;
+
+let cachedBooks = null;
 
 export async function fetchBooks() {
+  if (import.meta.env.MODE === "development" && cachedBooks) return cachedBooks;
+
+  const PAGE_SIZE = 1000;
   let books = [];
   let rangeStart = 0;
 
   while (true) {
     const { data, error } = await supabase
-      .from('optimized_books')
-      .select('*')
-      .order('date_finished', { ascending: false })
+      .from("optimized_books")
+      .select("*")
+      .order("date_finished", { ascending: false })
       .range(rangeStart, rangeStart + PAGE_SIZE - 1);
 
-    if (error) {
-      console.error('Error fetching books:', error);
-      break;
-    }
+    if (error) break;
 
     books = books.concat(data);
     if (data.length < PAGE_SIZE) break;
@@ -39,12 +40,17 @@ export async function fetchBooks() {
   const sortedByYear = Object.values(years).filter((year) => year.value > 2017);
   const currentYear = new Date().getFullYear();
   const booksForCurrentYear =
-    sortedByYear.find((yearGroup) => yearGroup.value === currentYear)?.data || [];
+    sortedByYear.find((yearGroup) => yearGroup.value === currentYear)?.data ||
+    [];
 
-  return {
+  const result = {
     all: books,
     years: sortedByYear,
     currentYear: booksForCurrentYear,
     feed: books.filter((book) => book.feed),
   };
+
+  if (import.meta.env.MODE === "development") cachedBooks = result;
+
+  return result;
 };
