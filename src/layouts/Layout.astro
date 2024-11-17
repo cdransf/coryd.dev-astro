@@ -1,8 +1,8 @@
 ---
 import "@styles/index.css";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { fetchNavigation } from "../utils/data/nav.js";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { fetchNavigation } from "@utils/data/nav.js";
 
 const currentUrl = Astro.url.pathname;
 const nav = await fetchNavigation();

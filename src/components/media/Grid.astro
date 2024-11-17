@@ -1,0 +1,70 @@
+---
+import Paginator from '@components/nav/Paginator.astro';
+
+const { data, globals, count, shape, pagination, loading = "lazy" } = Astro.props;
+const pageCount = pagination?.pages?.length || 0;
+const hidePagination = pageCount <= 1;
+
+function getImageAttributes(item, shape) {
+  let imageUrl = item.grid.image;
+  let imageClass = '';
+  let width = 0;
+  let height = 0;
+
+  switch (shape) {
+    case 'poster':
+      imageUrl = item.grid.backdrop;
+      imageClass = 'banner';
+      width = 256;
+      height = 170;
+      break;
+    case 'square':
+      imageClass = 'square';
+      width = 200;
+      height = 200;
+      break;
+    case 'vertical':
+      imageClass = 'vertical';
+      width = 200;
+      height = 307;
+      break;
+  }
+
+  return { imageUrl, imageClass, width, height };
+}
+---
+
+<div class={`media-grid ${shape}`}>
+  {data.slice(0, count).map((item) => {
+    const alt = item.grid.alt?.replace(/['"]/g, '');
+    const { imageUrl, imageClass, width, height } = getImageAttributes(item, shape);
+
+    return (
+      <a href={item.grid.url} title={alt}>
+        <div class="item media-overlay">
+          <div class="meta-text">
+            <div class="header">{item.grid.title}</div>
+            <div class="subheader">{item.grid.subtext}</div>
+          </div>
+          <img
+            srcSet={`
+              ${globals.cdn_url}${imageUrl}?class=${imageClass}sm&type=webp ${width}w,
+              ${globals.cdn_url}${imageUrl}?class=${imageClass}md&type=webp ${width * 2}w
+            `}
+            sizes={`(max-width: 450px) ${width}px, ${width * 2}px`}
+            src={`${globals.cdn_url}${imageUrl}?class=${imageClass}sm&type=webp`}
+            alt={alt}
+            loading={loading}
+            decoding="async"
+            width={width}
+            height={height}
+          />
+        </div>
+      </a>
+    );
+  })}
+</div>
+
+{!hidePagination && (
+  <Paginator pagination={pagination} />
+)}

@@ -1,10 +1,7 @@
 ---
+import YoutubeVideo from '@npm/youtube-video-element/dist/react.js';
+
 const { url } = Astro.props;
 ---
 
-<iframe
-  width="560"
-  height="315"
-  src={url}
-  allowfullscreen>
-</iframe>
+<YoutubeVideo src={url} controls />

@@ -24,6 +24,7 @@
   &.coffee,
   &.error,
   &.github,
+  &.mastodon,
   &.npm,
   &.old-post,
   &.rss,
@@ -36,6 +37,9 @@
     }
     &.github {
       --banner-accent-color: var(--brand-github);
+    }
+    &.mastodon {
+      --banner-accent-color: var(--brand-mastodon);
     }
     &.npm {
       --banner-accent-color: var(--brand-npm);

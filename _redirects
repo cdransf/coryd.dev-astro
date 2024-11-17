@@ -5,11 +5,11 @@
 # feeds
 /feed.xml /feeds/posts 301
 /follow.xml /feeds/all 301
-/feeds/posts.xml /feeds/posts 301
-/feeds/links.xml /feeds/links 301
-/feeds/books.xml /feeds/books 301
-/feeds/movies.xml /feeds/movies 301
-/feeds/all.xml /feeds/all 301
+/feeds/posts /feeds/posts.xml 301
+/feeds/links /feeds/links.xml 301
+/feeds/books /feeds/books.xml 301
+/feeds/movies /feeds/movies.xml 301
+/feeds/all /feeds/all.xml 301
 /feeds/posts/ /feeds/posts 301
 /feeds/links/ /feeds/links 301
 /feeds/books/ /feeds/books 301

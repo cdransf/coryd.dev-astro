@@ -1,5 +1,5 @@
-import fetchSyndication from '../../utils/data/syndication.js';
-import { fetchGlobals } from '../../utils/data/globals.js';
+import fetchSyndication from '@utils/data/syndication.js';
+import { fetchGlobals } from '@utils/data/globals.js';
 
 export async function GET() {
   const globals = await fetchGlobals();

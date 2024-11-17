@@ -15,10 +15,10 @@ export default defineConfig({
     },
     resolve: {
       alias: {
-        "@cdransf": "node_modules/@cdransf",
         "@components": "/src/components",
         "@data": "/src/utils/data",
         "@layouts": "/src/layouts",
+        "@npm": "/node_modules",
         "@scripts": "/src/scripts",
         "@styles": "/src/styles",
         "@utils": "/src/utils",

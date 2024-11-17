@@ -16,10 +16,12 @@
     "@astrojs/react": "^3.6.2",
     "@tabler/icons-react": "^3.19.0",
     "astro": "^4.16.13",
-    "luxon": "^3.5.0"
+    "luxon": "^3.5.0",
+    "youtube-video-element": "^1.1.6"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.45.4",
+    "ics": "^3.8.1",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-footnote": "^4.0.0",

@@ -1,14 +1,26 @@
 ---
 import { IconStar } from "@tabler/icons-react";
+
 import { fetchAllPosts } from "@data/posts.js";
+import { fetchAnalyticsData } from "@data/analytics.js";
 import { fetchGlobals } from "@data/globals.js";
+import { fetchLinks } from "@data/links.js";
+
 import { md } from '@utils/helpers.js';
-import OldPost from "@components/blocks/banners/OldPost.astro";
-import BlockRenderer from "@components/BlockRenderer.astro";
+import { getPopularPosts } from '@utils/getPopularPosts.js';
+
+const analytics = await fetchAnalyticsData();
+const links = await fetchLinks();
+const posts = await fetchAllPosts();
+const popularPosts = getPopularPosts(posts, analytics);
+
+import AddonLinks from '@components/blocks/links/AddonLinks.astro';
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
-import MastodonPost from "@components/blocks/MastodonPost.astro";
-import Layout from "@layouts/Layout.astro";
+import BlockRenderer from "@components/blocks/BlockRenderer.astro";
 import Coffee from "@components/blocks/banners/Coffee.astro";
+import Layout from "@layouts/Layout.astro";
+import Mastodon from "@components/blocks/banners/Mastodon.astro";
+import OldPost from "@components/blocks/banners/OldPost.astro";
 
 export const prerender = true;
 
@@ -87,7 +99,7 @@ const htmlContent = md(post.content);
         post.blocks &&
           post.blocks.map((block) => <BlockRenderer block={block} />)
       }
-      <!-- {post.mastodon_url && <MastodonPost url={post.mastodon_url} />} -->
+      {post.mastodon_url && <Mastodon url={post.mastodon_url} />}
       <AssociatedMedia
         artists={post.artists}
         books={post.books}
@@ -97,6 +109,7 @@ const htmlContent = md(post.content);
         shows={post.shows}
       />
       <Coffee />
+      <AddonLinks popularPosts={popularPosts} links={links} />
     </div>
   </article>
 </Layout>

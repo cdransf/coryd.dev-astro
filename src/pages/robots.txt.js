@@ -1,4 +1,4 @@
-import { fetchAllRobots } from '../utils//data/robots.js';
+import { fetchAllRobots } from '@utils//data/robots.js';
 
 export async function GET() {
   try {

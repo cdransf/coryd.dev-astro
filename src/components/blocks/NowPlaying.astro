@@ -1,5 +1,5 @@
 ---
-import { fetchNowPlaying } from '../../utils/data/nowPlaying.js';
+import { fetchNowPlaying } from '@utils/data/nowPlaying.js';
 
 const isProduction = import.meta.env.MODE === 'production';
 const nowPlayingData = await fetchNowPlaying();

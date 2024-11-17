@@ -1,0 +1,15 @@
+---
+import { IconBrandMastodon } from "@tabler/icons-react";
+
+const { url } = Astro.props;
+---
+<div class="banner mastodon">
+  <p>
+    <a
+      class="mastodon plausible-event-name=Discuss+on+Mastodon+post+footer"
+      href={url}
+    >
+      <IconBrandMastodon size={24} /> Discuss this post on Mastodon.
+    </a>
+  </p>
+</div>

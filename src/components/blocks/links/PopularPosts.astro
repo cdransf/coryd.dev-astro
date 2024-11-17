@@ -1,0 +1,21 @@
+---
+const { popularPosts } = Astro.props;
+import { IconChartBarPopular } from '@tabler/icons-react';
+---
+{popularPosts && popularPosts.length > 0 && (
+  <article>
+    <h3>
+      <a class="article" href="/posts">
+        <IconChartBarPopular size={24} />
+        Popular posts
+      </a>
+    </h3>
+    <ol type="1">
+      {popularPosts.slice(0, 5).map((post) => (
+        <li>
+          <a href={post.url}>{post.title}</a>
+        </li>
+      ))}
+    </ol>
+  </article>
+)}
