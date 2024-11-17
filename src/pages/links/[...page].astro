@@ -1,0 +1,76 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Paginator from "@components/nav/Paginator.astro";
+import Rss from "@components/blocks/banners/Rss.astro";
+import { fetchLinks } from "@utils/data/links.js";
+
+export const prerender = true;
+
+export const getStaticPaths = async ({ paginate }) => {
+  const links = await fetchLinks();
+  return paginate(links, {
+    pageSize: 30,
+  });
+};
+
+const { page } = Astro.props;
+
+const paginatedLinks = page.data;
+const pagination = {
+  currentPage: page.currentPage,
+  totalPages: page.lastPage,
+  hasPrevious: page.currentPage > 1,
+  hasNext: page.currentPage < page.lastPage,
+  previousPage: page.url.prev || null,
+  nextPage: page.url.next || null,
+  pages: Array.from({ length: page.lastPage }, (_, i) => ({
+    number: i + 1,
+    href: i === 0 ? `/links` : `/links/${i + 1}`,
+  })),
+};
+
+const pageTitle =
+  pagination.currentPage === 1
+    ? "Links"
+    : `Links / page ${pagination.currentPage}`;
+const description =
+  "These are links I've liked or otherwise found interesting. They're all added manually, after having been read and, I suppose, properly considered.";
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
+  {
+    pagination.currentPage === 1 && (
+      <>
+        <h2 class="page-title">{pageTitle}</h2>
+        <p>{description}</p>
+        <Rss
+          url="/feeds/links.xml"
+          text="Subscribe to my links feed or follow along on this page"
+        />
+        <hr />
+      </>
+    )
+  }
+  <div class="link-grid">
+    {
+      paginatedLinks.map((link) => (
+        <div class="link-box">
+          <a href={link.link} title={link.title}>
+            <strong>{link.title}</strong>
+          </a>
+          {link.author && (
+            <>
+              {" via "}
+              <a href={link.author.url}>{link.author.name}</a>
+            </>
+          )}
+        </div>
+      ))
+    }
+  </div>
+  <Paginator pagination={pagination} />
+</Layout>

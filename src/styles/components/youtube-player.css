@@ -1,0 +1,15 @@
+lite-youtube {
+  aspect-ratio: 16/9;
+  width: 100%;
+  overflow: hidden;
+  border: var(--border-default) !important;
+  border-radius: var(--border-radius-slight);
+  margin: var(--margin-vertical-base-horizontal-zero);
+  max-width: unset !important;
+
+  &:hover {
+    border: var(--border-default-hover);
+    transition: border var(--transition-duration-default)
+      var(--transition-ease-in-out);
+  }
+}

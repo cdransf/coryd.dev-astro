@@ -1,0 +1,48 @@
+{
+  "name": "coryd.dev",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler pages dev ./dist",
+    "astro": "astro",
+    "clean": "rimraf dist",
+    "update:deps": "npm upgrade && ncu && npx @astrojs/upgrade && npm i",
+    "build:worker": "node scripts/worker-build.mjs $WORKER_NAME",
+    "deploy:worker": "wrangler deploy --env production --config workers/$npm_config_worker/wrangler.toml"
+  },
+  "dependencies": {
+    "@astrojs/check": "0.9.4",
+    "@astrojs/cloudflare": "^11.2.0",
+    "@astrojs/preact": "3.5.4",
+    "@astrojs/rss": "4.0.9",
+    "@astrojs/sitemap": "3.2.1",
+    "@supabase/supabase-js": "^2.46.1",
+    "@tabler/icons-preact": "3.22.0",
+    "astro": "4.16.14",
+    "astro-embed": "0.9.0",
+    "date-fns": "4.1.0",
+    "date-fns-tz": "3.2.0",
+    "highlight.js": "11.10.0",
+    "markdown-it": "14.1.0",
+    "markdown-it-anchor": "9.2.0",
+    "markdown-it-footnote": "4.0.0",
+    "minisearch": "7.1.0",
+    "preact": "10.24.3",
+    "truncate-html": "1.1.2",
+    "typescript": "5.6.3",
+    "youtube-video-element": "^1.1.6"
+  },
+  "devDependencies": {
+    "dotenv-flow": "4.1.0",
+    "fast-xml-parser": "4.5.0",
+    "html-to-text": "9.0.5",
+    "i18n-iso-countries": "7.13.0",
+    "ics": "^3.8.1",
+    "rimraf": "6.0.1",
+    "slugify": "1.6.6",
+    "terser": "5.36.0"
+  }
+}

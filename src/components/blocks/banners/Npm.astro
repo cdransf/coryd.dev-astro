@@ -1,0 +1,13 @@
+---
+import { IconBrandNpm } from "@tabler/icons-preact";
+
+const { url, command } = Astro.props;
+---
+
+<div class="banner npm">
+  <p>
+    <IconBrandNpm size={24} />
+    <a href={url}>You can take a look at this package on NPM</a> or install it by
+    running <code>{command}</code>.
+  </p>
+</div>

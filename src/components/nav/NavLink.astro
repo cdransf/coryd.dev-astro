@@ -1,0 +1,26 @@
+---
+import IconMapper from "@components/IconMapper.astro";
+
+const { url, title, icon } = Astro.props;
+const isHttp = url?.startsWith("http");
+const isActive = Astro.url.pathname === url;
+---
+
+{
+  isActive ? (
+    <span class={`active icon ${icon?.toLowerCase()}`} aria-current="page">
+      <IconMapper icon={icon} />
+      <span>{title}</span>
+    </span>
+  ) : (
+    <a
+      class={`icon ${icon}`}
+      href={url}
+      rel={isHttp ? "me" : undefined}
+      aria-label={title}
+    >
+      <IconMapper icon={icon} />
+      <span>{title}</span>
+    </a>
+  )
+}

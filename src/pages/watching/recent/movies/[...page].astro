@@ -1,0 +1,66 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Grid from "@components/media/Grid.astro";
+import { IconArrowLeft } from "@tabler/icons-preact";
+import { fetchMovies } from "@utils/data/movies.js";
+import { shuffleArray } from "@utils/helpers/general.js";
+
+export const prerender = true;
+
+export const getStaticPaths = async ({ paginate }) => {
+  const movies = await fetchMovies();
+  const recentlyWatchedMovies = movies.recentlyWatched;
+  return paginate(recentlyWatchedMovies, {
+    pageSize: 15,
+  });
+};
+
+const { page } = Astro.props;
+
+const paginatedMovies = page.data;
+const pagination = {
+  currentPage: page.currentPage,
+  totalPages: page.lastPage,
+  hasPrevious: page.currentPage > 1,
+  hasNext: page.currentPage < page.lastPage,
+  previousPage: page.url.prev || null,
+  nextPage: page.url.next || null,
+  pages: Array.from({ length: page.lastPage }, (_, i) => ({
+    number: i + 1,
+    href: i === 0 ? `/watching/recent/movies` : `/watching/recent/movies/${i + 1}`,
+  })),
+};
+const pageTitle =
+  pagination.currentPage === 1
+    ? "Recently watched movies"
+    : `Recently watched movies / page ${pagination.currentPage}`;
+const description =
+  "All of the movies I've watched recently. Some are good, some are terrible. A few are great.";
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={shuffleArray(page.data)[0].backdrop}
+>
+  <a href="/watching" class="back-link">
+    <IconArrowLeft size={18} /> Back to watching
+  </a>
+  {
+    pagination.currentPage === 1 && (
+      <>
+        <h2 class="page-title">{pageTitle}</h2>
+        <p>{description} Listed in descending order from most recent to least. <a href="/watching/recent/shows">You can check out my recently watched shows here.</a></p>
+        <hr />
+      </>
+    )
+  }
+  <Grid
+    data={paginatedMovies}
+    pagination={pagination}
+    shape="poster"
+    count={15}
+    loading="eager"
+  />
+</Layout>

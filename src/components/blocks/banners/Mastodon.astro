@@ -1,0 +1,15 @@
+---
+import { IconBrandMastodon } from "@tabler/icons-preact";
+
+const { url } = Astro.props;
+---
+<div class="banner mastodon">
+  <p>
+    <a
+      class="mastodon"
+      href={url}
+    >
+      <IconBrandMastodon size={24} /> Discuss this post on Mastodon.
+    </a>
+  </p>
+</div>

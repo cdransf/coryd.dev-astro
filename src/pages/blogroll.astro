@@ -1,0 +1,96 @@
+---
+import Layout from "@layouts/Layout.astro";
+import {
+  IconRss,
+  IconJson,
+  IconMailPlus,
+  IconBrandMastodon,
+} from "@tabler/icons-preact";
+import { fetchBlogroll } from "@utils/data/blogroll.js";
+
+export const prerender = true;
+
+const blogroll = await fetchBlogroll();
+const title = "Blogroll";
+const description =
+  "These are awesome blogs that I enjoy and you may enjoy too.";
+---
+
+<Layout
+  pageTitle={title}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
+  <h2 class="page-title">{title}</h2>
+  <p>
+    You can <a
+      href="/blogroll.opml"
+      >download an OPML file</a
+    > containing all of these feeds and import them into your RSS reader.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Link</th>
+        <th>Subscribe</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        blogroll.map((blog) => (
+          <tr>
+            <td>{blog.name}</td>
+            <td>
+              <a href={blog.url}>{blog.url.replace("https://", "")}</a>
+            </td>
+            <td class="blog-roll-icons">
+              {blog.rss_feed && (
+                <a
+                  class="rss"
+                  href={blog.rss_feed}
+                  aria-label={`RSS feed for ${blog.name}`}
+                >
+                  <IconRss size={16} />
+                </a>
+              )}
+              {blog.json_feed && (
+                <a
+                  class="json"
+                  href={blog.json_feed}
+                  aria-label={`JSON feed for ${blog.name}`}
+                >
+                  <IconJson size={16} />
+                </a>
+              )}
+              {blog.newsletter && (
+                <a
+                  class="mail-plus"
+                  href={blog.newsletter}
+                  aria-label={`Subscribe to ${blog.name}'s newsletter`}
+                >
+                  <IconMailPlus size={16} />
+                </a>
+              )}
+              {blog.mastodon && (
+                <a
+                  class="brand-mastodon"
+                  href={blog.mastodon}
+                  aria-label={`Follow ${blog.name} on Mastodon`}
+                >
+                  <IconBrandMastodon size={16} />
+                </a>
+              )}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p>
+    Head on over to <a href="https://blogroll.org">blogroll.org</a> to find more
+    blogs to follow or search for feeds using <a href="https://feedle.world"
+      >feedle</a
+    >.
+  </p>
+</Layout>

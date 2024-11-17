@@ -1,0 +1,13 @@
+---
+import { IconBrandGithub } from "@tabler/icons-preact";
+
+const { url } = Astro.props;
+---
+
+<div class="banner github">
+  <p>
+    <IconBrandGithub size={24} /> Take a look at <a href={url}
+      >the GitHub repository for this project</a
+    >. (Give it a star if you feel like it.)
+  </p>
+</div>

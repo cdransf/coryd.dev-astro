@@ -1,0 +1,119 @@
+---
+import { parseISO, format } from "date-fns";;
+import Layout from "@layouts/Layout.astro";
+import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
+import Warning from "@components/blocks/banners/Warning.astro";
+import {
+  IconArrowLeft,
+  IconHeart,
+  IconNeedle,
+  IconCircleCheck,
+} from "@tabler/icons-preact";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { md } from "@utils/helpers/general.js";
+
+const { globals, movie } = await fetchGlobalData(Astro, Astro.url.pathname);
+
+if (!movie) return Astro.redirect("/404", 404);
+
+const pageTitle = `${movie.title} / Movies`;
+const description = movie.description || `Details about ${movie.title}.`;
+const alt = `${movie.title} / ${movie.year}${movie.rating ? ` (${movie.rating})` : ""}`;
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={movie.backdrop}
+>
+  <a class="back-link" href="/watching" title="Go back to the watching index page">
+    <IconArrowLeft size={18} /> Back to watching
+  </a>
+  <article class="watching focus">
+    <img
+      srcset={`
+        ${globals.cdn_url}${movie.backdrop}?class=bannersm&type=webp 256w,
+        ${globals.cdn_url}${movie.backdrop}?class=bannermd&type=webp 512w,
+        ${globals.cdn_url}${movie.backdrop}?class=bannerbase&type=webp 1024w
+      `}
+      sizes="(max-width: 450px) 256px,
+        (max-width: 850px) 512px,
+        1024px"
+      src={`${globals.cdn_url}${movie.backdrop}?class=bannersm&type=webp`}
+      alt={alt}
+      class="image-banner"
+      loading="eager"
+      decoding="async"
+      width="256"
+      height="180"
+    />
+    <div class="media-meta">
+      <span class="title">
+        <strong>{movie.title}</strong>
+        {movie.year && !movie.rating && ` (${movie.year})`}
+      </span>
+      {
+        movie.rating && (
+          <span>
+            {movie.rating}
+            {movie.year && ` (${movie.year})`}
+          </span>
+        )
+      }
+      {
+        movie.favorite && (
+          <span class="sub-meta favorite">
+            <IconHeart size={18} /> This is one of my favorite movies!
+          </span>
+        )
+      }
+      {
+        movie.tattoo && (
+          <span class="sub-meta tattoo">
+            <IconNeedle size={18} /> I have a tattoo inspired by this movie!
+          </span>
+        )
+      }
+      {
+        movie.collected && (
+          <span class="sub-meta collected">
+            <IconCircleCheck size={18} /> This movie is in my collection!
+          </span>
+        )
+      }
+      {
+        movie.lastWatched && (
+          <span class="sub-meta">
+            Last watched on{" "}
+            {format(parseISO(movie.lastWatched), "PPPP")}
+          </span>
+        )
+      }
+    </div>
+
+    {movie.review && (
+      <>
+        <h2>My thoughts</h2>
+        <Warning text="There are probably spoilers after this banner — this is a warning about them." />
+        <div set:html={md(movie.review)}></div>
+      </>
+    )}
+
+    <AssociatedMedia
+      artists={movie.artists}
+      books={movie.books}
+      genres={movie.genres}
+      movies={movie.related_movies}
+      posts={movie.posts}
+      shows={movie.shows}
+    />
+
+    {movie.description && (
+      <>
+        <h2>Overview</h2>
+        <div set:html={md(movie.description)}></div>
+      </>
+    )}
+  </article>
+</Layout>

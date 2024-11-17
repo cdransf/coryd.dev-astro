@@ -1,0 +1,12 @@
+---
+import { IconAlertTriangle } from "@tabler/icons-preact";
+
+const { text } = Astro.props;
+---
+
+<div class="banner warning">
+  <p>
+    <IconAlertTriangle size={24} />
+    {text}
+  </p>
+</div>

@@ -1,0 +1,120 @@
+---
+import "@styles/index.css";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { md, htmlToText, htmlTruncate } from "@utils/helpers/general.js";
+
+const { globals, nav } = await fetchGlobalData(Astro);
+const currentUrl = Astro.url.pathname;
+const isProduction = import.meta.env.MODE === "production";
+const {
+  schema = "page",
+  pageTitle = globals.site_name,
+  description = globals.site_description,
+  ogImage = globals.avatar,
+  fullUrl = currentUrl,
+} = Astro.props;
+
+const pageDescription = md(description);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>
+      {
+        pageTitle !== globals.site_name
+          ? `${pageTitle} / ${globals.site_name}`
+          : pageTitle
+      }
+    </title>
+    <link
+      rel="preload"
+      href="/fonts/ml.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/mlb.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link rel="canonical" href={`${globals.url}${fullUrl}`} />
+    <meta
+      property="og:title"
+      content={pageTitle !== globals.site_name
+        ? `${pageTitle} / ${globals.site_name}`
+        : pageTitle}
+    />
+    <meta
+      name="description"
+      content={htmlToText(htmlTruncate(pageDescription))}
+    />
+    <meta
+      property="og:description"
+      content={htmlToText(htmlTruncate(pageDescription))}
+    />
+    <meta property="og:type" content={schema || "page"} />
+    <meta property="og:url" content={fullUrl} />
+    <meta
+      property="og:image"
+      content={`${globals.cdn_url}${ogImage}?class=w800`}
+    />
+    <meta name="theme-color" content={globals.theme_color} />
+    <meta name="fediverse:creator" content={globals.mastodon} />
+    <meta name="generator" content="Astro" />
+    <meta name="robots" content="noai, noimageai" />
+    <link
+      href={`${globals.cdn_url}${globals.avatar_transparent}?class=w50`}
+      rel="icon"
+      sizes="any"
+    />
+    <link
+      href={`${globals.cdn_url}${globals.avatar_transparent}?class=w50&type=svg`}
+      rel="icon"
+      type="image/svg+xml"
+    />
+    <link
+      href={`${globals.cdn_url}${globals.avatar}?class=w800`}
+      rel="apple-touch-icon"
+    />
+    <link
+      type="application/atom+xml"
+      rel="alternate"
+      title={`Posts / ${globals.site_name}`}
+      href={`${globals.url}/feeds/posts.xml`}
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script defer src="/scripts/index.js" is:inline></script>
+    {
+      isProduction && (
+        <script defer data-domain="coryd.dev" src="/js/script.js" />
+      )
+    }
+    <noscript>
+      <style>
+        .client-side {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <main>
+        <Header siteName={globals.site_name} url={currentUrl} nav={nav} />
+        <div class="default-wrapper">
+          <slot />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

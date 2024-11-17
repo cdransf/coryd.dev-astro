@@ -1,0 +1,33 @@
+---
+import ProgressBar from "@components/media/ProgressBar.astro";
+
+const { data, count } = Astro.props;
+---
+
+<div class="music-chart">
+  <ol type="1">
+    {
+      data.slice(0, count).map((item) => {
+        const percentage = `${item.chart.percentage}%`;
+        const playsLabel = item.chart.plays === 1 ? "play" : "plays";
+
+        return (
+          <li value={item.chart.rank}>
+            <div class="item">
+              <div class="info">
+                <a class="title" href={item.chart.url}>
+                  {item.chart.title}
+                </a>
+                <span class="subtext">{item.chart.artist}</span>
+                <span class="subtext">
+                  {item.chart.plays} {playsLabel}
+                </span>
+              </div>
+              <ProgressBar percentage={percentage} />
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</div>

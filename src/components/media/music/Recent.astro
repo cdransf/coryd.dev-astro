@@ -1,0 +1,48 @@
+---
+import { fetchGlobalData } from "@utils/data/global/index.js";
+
+const { data } = Astro.props;
+const { globals } = await fetchGlobalData(Astro);
+---
+
+<div class="music-chart">
+  {
+    data.slice(0, 10).map((item) => (
+      <div class="item">
+        <div class="meta">
+          <a href={item.chart.url}>
+            <img
+              srcset={`
+              ${globals.cdn_url}${item.chart.image}?class=w50&type=webp 50w,
+              ${globals.cdn_url}${item.chart.image}?class=w100&type=webp 100w
+            `}
+              sizes="(max-width: 450px) 50px, 100px"
+              src={`${globals.cdn_url}${item.chart.image}?class=w50&type=webp`}
+              alt={item.chart.alt.replace(/['"]/g, "")}
+              loading="lazy"
+              decoding="async"
+              width="64"
+              height="64"
+            />
+          </a>
+          <div class="meta-text">
+            <a class="title" href={item.chart.url}>
+              {item.chart.title}
+            </a>
+            <span class="subtext">{item.chart.subtext}</span>
+          </div>
+        </div>
+        <time datetime={item.chart.played_at}>
+          {new Date(item.chart.played_at).toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })}
+        </time>
+      </div>
+    ))
+  }
+</div>
