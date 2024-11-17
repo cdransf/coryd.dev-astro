@@ -8,13 +8,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "update:deps": "npm upgrade && ncu && npx @astrojs/upgrade",
     "build:worker": "node scripts/worker-build.mjs $WORKER_NAME",
     "deploy:worker": "wrangler deploy --env production --config workers/$npm_config_worker/wrangler.toml"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",
     "@astrojs/react": "^3.6.2",
-    "@tabler/icons-react": "^3.19.0",
+    "@tabler/icons-react": "^3.22.0",
     "astro": "^4.16.13",
     "luxon": "^3.5.0",
     "markdown-it": "^14.1.0",
@@ -25,7 +26,7 @@
     "youtube-video-element": "^1.1.6"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.45.4",
+    "@supabase/supabase-js": "^2.46.1",
     "ics": "^3.8.1"
   }
 }
