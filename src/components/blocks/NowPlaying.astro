@@ -1,7 +1,7 @@
 ---
-import { fetchNowPlaying } from '@utils/data/nowPlaying.js';
+import { fetchNowPlaying } from "@utils/data/nowPlaying.js";
 
-const isProduction = import.meta.env.MODE === 'production';
+const isProduction = import.meta.env.MODE === "production";
 const nowPlayingData = await fetchNowPlaying();
 ---
 
@@ -10,12 +10,12 @@ const nowPlayingData = await fetchNowPlaying();
   <p>{nowPlayingData.content}</p>
 </noscript>
 
-{isProduction && (<script type="module">
+{isProduction && (<script type="module" is:inline>
   async function updateNowPlaying() {
-    const response = await fetch('/api/now-playing');
+    const response = await fetch("/api/now-playing");
     if (response.ok) {
       const data = await response.json();
-      document.getElementById('now-playing-content').innerHTML = data.content;
+      document.getElementById("now-playing-content").innerHTML = data.content;
     }
   }
 

@@ -1,6 +1,6 @@
 ---
-import { IconMenu2, IconX } from '@tabler/icons-react';
-import NavLink from './NavLink.astro';
+import { IconMenu2, IconX } from "@tabler/icons-react";
+import NavLink from "./NavLink.astro";
 
 const { nav } = Astro.props;
 ---
@@ -16,15 +16,17 @@ const { nav } = Astro.props;
     </div>
   </label>
 
-  <ul class="menu-primary" aria-label="Primary site navigation" id="primary-navigation">
-    {nav.primary.map((link) => (
-      <li>
-        <NavLink
-          url={link.permalink}
-          title={link.title}
-          icon={link.icon}
-        />
-      </li>
-    ))}
+  <ul
+    class="menu-primary"
+    aria-label="Primary site navigation"
+    id="primary-navigation"
+  >
+    {
+      nav.primary.map((link) => (
+        <li>
+          <NavLink url={link.permalink} title={link.title} icon={link.icon} />
+        </li>
+      ))
+    }
   </ul>
 </menu>

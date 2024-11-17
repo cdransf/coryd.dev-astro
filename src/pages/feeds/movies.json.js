@@ -1,5 +1,5 @@
-import { generateJsonFeed } from '@utils/generateJsonFeed';
-import { fetchGlobals } from '@utils/data/globals';
+import { generateJsonFeed } from '@utils/generateJsonFeed.js';
+import { fetchGlobals } from '@utils/data/globals.js';
 import { fetchMovies } from '@utils/data/movies';
 import fs from 'fs/promises';
 import path from 'path';

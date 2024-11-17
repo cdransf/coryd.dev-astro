@@ -1,8 +1,8 @@
 ---
-import { fetchGlobals } from "@utils/data/globals.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 const { image, alt } = Astro.props;
-const globals = await fetchGlobals(Astro);
+const { globals } = await fetchGlobalData(Astro);
 ---
 
 <div class="hero">

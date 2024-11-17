@@ -1,0 +1,10 @@
+---
+import { md } from "@utils/helpers/general.js";
+
+const { content } = Astro.props;
+---
+
+<div data-toggle-content class="text-toggle-hidden">
+  <div set:html={md(content)} />
+</div>
+<button data-toggle-button>Show more</button>

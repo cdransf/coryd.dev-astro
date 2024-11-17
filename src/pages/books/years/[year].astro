@@ -2,8 +2,12 @@
 import Layout from "@layouts/Layout.astro";
 import Grid from "@components/media/Grid.astro";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { filterBooksByStatus, findFavoriteBooks, mediaLinks } from "@utils/helpers/media.js";
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import {
+  filterBooksByStatus,
+  findFavoriteBooks,
+  mediaLinks,
+} from "@utils/helpers/media.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
 import { fetchBooks } from "@utils/data/books.js";
 import { DateTime } from "luxon";
 
@@ -26,21 +30,30 @@ const description = isCurrentYear
 const intro = isCurrentYear
   ? `
     I've finished <strong class="highlight-text">${bookData.length} books</strong> this year.
-    ${favoriteBooks ? ` Among my favorites are ${favoriteBooks}.` : ''}
+    ${favoriteBooks ? ` Among my favorites are ${favoriteBooks}.` : ""}
   `
   : `
     I finished <strong class="highlight-text">${bookData.length} books</strong> in 
     <strong class="highlight-text">${year}</strong>.
-    ${favoriteBooks ? ` Among my favorites were ${favoriteBooks}.` : ''}
+    ${favoriteBooks ? ` Among my favorites were ${favoriteBooks}.` : ""}
   `;
 ---
 
-<Layout globals={globals} pageTitle={pageTitle} description={description} schema="books-year">
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  schema="books-year"
+>
   <a href="/books" class="back-link">
     <IconArrowLeft size={18} /> Back to books
   </a>
   <h2 class="page-title">{year} / Books</h2>
-  <div set:html={intro}></div>
+  <div set:html={intro} />
   <hr />
-  <Grid globals={globals} data={bookData} shape="vertical" count={200} loading="eager" />
+  <Grid
+    data={bookData}
+    shape="vertical"
+    count={200}
+    loading="eager"
+  />
 </Layout>

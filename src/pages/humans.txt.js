@@ -1,4 +1,4 @@
-import { fetchGlobals } from '@utils/data/globals';
+import { fetchGlobals } from '@utils/data/globals.js';
 
 export async function GET() {
   try {

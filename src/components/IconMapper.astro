@@ -15,26 +15,26 @@ import {
   IconCoffee,
   IconDeviceWatch,
   IconHeartHandshake,
-} from '@tabler/icons-react';
+} from "@tabler/icons-react";
 
 const { icon } = Astro.props;
 
 const iconComponents = {
   article: IconArticle,
   headphones: IconHeadphones,
-  'device-tv-old': IconDeviceTvOld,
+  "device-tv-old": IconDeviceTvOld,
   books: IconBooks,
   link: IconLink,
-  'info-circle': IconInfoCircle,
+  "info-circle": IconInfoCircle,
   search: IconSearch,
   rss: IconRss,
-  'brand-mastodon': IconBrandMastodon,
+  "brand-mastodon": IconBrandMastodon,
   mail: IconMail,
-  'brand-github': IconBrandGithub,
-  'brand-npm': IconBrandNpm,
+  "brand-github": IconBrandGithub,
+  "brand-npm": IconBrandNpm,
   coffee: IconCoffee,
-  'device-watch': IconDeviceWatch,
-  'heart-handshake': IconHeartHandshake,
+  "device-watch": IconDeviceWatch,
+  "heart-handshake": IconHeartHandshake,
 };
 
 const SelectedIcon = iconComponents[icon?.toLowerCase()] || null;

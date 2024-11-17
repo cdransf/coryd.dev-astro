@@ -3,7 +3,7 @@ import "@styles/index.css";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Metadata from "@components/Metadata.astro";
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 const {
   schema = "page",
@@ -61,7 +61,11 @@ const isProduction = import.meta.env.MODE === "production";
       )
     }
     <noscript>
-      <style>.client-side {display:none}</style>
+      <style>
+        .client-side {
+          display: none;
+        }
+      </style>
     </noscript>
   </head>
   <body>
@@ -74,5 +78,6 @@ const isProduction = import.meta.env.MODE === "production";
       </main>
       <Footer updated={updated} />
     </div>
+
   </body>
 </html>

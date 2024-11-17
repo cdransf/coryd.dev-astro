@@ -1,6 +1,6 @@
 ---
 import { escapeHtml } from "@utils/helpers/general.js";
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 const {
   schema = "page",
@@ -107,7 +107,8 @@ if (titleOverride) pageTitle = titleOverride;
 if (descriptionOverride) pageDescription = descriptionOverride;
 if (ogImageOverride) ogImage = ogImageOverride;
 
-if (pageTitle !== globals.site_name && schema !== "blog") pageTitle = `${pageTitle} / ${globals.site_name}`;
+if (pageTitle !== globals.site_name && schema !== "blog")
+  pageTitle = `${pageTitle} / ${globals.site_name}`;
 
 const escapedPageDescription = escapeHtml(pageDescription);
 ---

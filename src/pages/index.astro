@@ -1,18 +1,19 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import Intro from '@components/home/Intro.astro';
-import RecentActivity from '@components/home/RecentActivity.astro';
-import RecentPosts from '@components/home/RecentPosts.astro';
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import Layout from "@layouts/Layout.astro";
+import Intro from "@components/home/Intro.astro";
+import RecentActivity from "@components/home/RecentActivity.astro";
+import RecentPosts from "@components/home/RecentPosts.astro";
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 const { globals } = await fetchGlobalData(Astro);
-const schema = 'blog';
+const schema = "blog";
 const pageTitle = globals.site_name;
-const description = 'This is a blog post description';
+const description = "This is a blog post description";
 const ogImage = globals.cdn_url + globals.avatar;
-const fullUrl = globals.url + '/blog/my-post';
+const fullUrl = globals.url + "/blog/my-post";
 const themeColor = globals.theme_color;
 ---
+
 <Layout
   pageTitle={pageTitle}
   description={description}

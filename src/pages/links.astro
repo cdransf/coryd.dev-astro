@@ -3,16 +3,20 @@ import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import RssBanner from "@components/blocks/banners/Rss.astro";
 import { fetchLinks } from "@utils/data/links.js";
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 const { globals } = await fetchGlobalData(Astro);
 const links = await fetchLinks();
 const title = "Links";
-const description = "These are links I've liked or otherwise found interesting. They're all added manually, after having been read and, I suppose, properly considered.";
+const description =
+  "These are links I've liked or otherwise found interesting. They're all added manually, after having been read and, I suppose, properly considered.";
 const pageSize = 30;
 const currentPage = parseInt(Astro.url.searchParams.get("page") || "1", 10);
 const totalPages = Math.ceil(links.length / pageSize);
-const paginatedLinks = links.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+const paginatedLinks = links.slice(
+  (currentPage - 1) * pageSize,
+  currentPage * pageSize
+);
 
 const pagination = {
   currentPage,
@@ -29,37 +33,40 @@ const pagination = {
 ---
 
 <Layout
-  globals={globals}
   pageTitle={title}
   description={description}
   currentUrl={Astro.url.pathname}
 >
-  {currentPage === 1 && (
-    <>
-      <h2 class="page-title">{title}</h2>
-      <p>{description}</p>
-      <RssBanner
-        url="/feeds/links"
-        text="Subscribe to my links feed or follow along on this page"
-      />
-      <hr />
-    </>
-  )}
+  {
+    currentPage === 1 && (
+      <>
+        <h2 class="page-title">{title}</h2>
+        <p>{description}</p>
+        <RssBanner
+          url="/feeds/links"
+          text="Subscribe to my links feed or follow along on this page"
+        />
+        <hr />
+      </>
+    )
+  }
 
   <div class="link-grid">
-    {paginatedLinks.map((link) => (
-      <div class="link-box">
-        <a href={link.link} title={link.title}>
-          <strong>{link.title}</strong>
-        </a>
-        {link.author && (
-          <>
-            {" via "}
-            <a href={link.author.url}>{link.author.name}</a>
-          </>
-        )}
-      </div>
-    ))}
+    {
+      paginatedLinks.map((link) => (
+        <div class="link-box">
+          <a href={link.link} title={link.title}>
+            <strong>{link.title}</strong>
+          </a>
+          {link.author && (
+            <>
+              {" via "}
+              <a href={link.author.url}>{link.author.name}</a>
+            </>
+          )}
+        </div>
+      ))
+    }
   </div>
 
   <Paginator pagination={pagination} />

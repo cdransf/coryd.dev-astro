@@ -1,8 +1,8 @@
-import { generateJsonFeed } from '@utils/generateJsonFeed';
-import { fetchGlobals } from '@utils/data/globals';
-import { fetchActivity } from '@utils/data/activity';
-import fs from 'fs/promises';
-import path from 'path';
+import { generateJsonFeed } from "@utils/generateJsonFeed.js";
+import { fetchGlobals } from "@utils/data/globals.js";
+import { fetchActivity } from "@utils/data/activity.js";
+import fs from "fs/promises";
+import path from "path";
 
 export async function getStaticPaths() {
   const globals = await fetchGlobals();
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     data: activity,
   });
 
-  const filePath = path.resolve('public/feeds/all.json');
+  const filePath = path.resolve("public/feeds/all.json");
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, feed);
 

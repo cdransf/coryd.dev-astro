@@ -1,6 +1,6 @@
-import { generateJsonFeed } from "@utils/generateJsonFeed";
-import { fetchGlobals } from "@utils/data/globals";
-import { fetchAllPosts } from "@utils/data/posts";
+import { generateJsonFeed } from "@utils/generateJsonFeed.js";
+import { fetchGlobals } from "@utils/data/globals.js";
+import { fetchAllPosts } from "@utils/data/posts.js";
 import fs from "fs/promises";
 import path from "path";
 

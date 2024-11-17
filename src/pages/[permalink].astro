@@ -1,8 +1,8 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import BlockRenderer from '@components/blocks/BlockRenderer.astro';
-import { fetchPages } from '@utils/data/pages';
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import Layout from "@layouts/Layout.astro";
+import BlockRenderer from "@components/blocks/BlockRenderer.astro";
+import { fetchPages } from "@utils/data/pages.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
 
 export const prerender = true;
 
@@ -26,7 +26,5 @@ const currentUrl = Astro.url.pathname;
   updated={page.updated}
   currentUrl={currentUrl}
 >
-  {page.blocks.map((block) => (
-    <BlockRenderer block={block} />
-  ))}
+  {page.blocks.map((block) => <BlockRenderer block={block} />)}
 </Layout>

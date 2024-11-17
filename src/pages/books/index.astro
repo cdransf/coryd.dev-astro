@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Rss from "@components/blocks/banners/Rss.astro";
 import ProgressBar from "@components/media/ProgressBar.astro";
 import { fetchBooks } from "@utils/data/books.js";
-import { fetchGlobalData } from '@utils/data/global/index.js';
+import { fetchGlobalData } from "@utils/data/global/index.js";
 import { md, htmlTruncate } from "@utils/helpers/general.js";
 
 const books = await fetchBooks();
@@ -30,7 +30,6 @@ const bookYearLinks = (years) =>
 ---
 
 <Layout
-  globals={globals}
   pageTitle={title}
   description={description}
   updated={updated}
@@ -43,7 +42,7 @@ const bookYearLinks = (years) =>
       >{currentBookCount} books</strong
     > this year.
   </p>
-  <p set:html={bookYearLinks(books.years)}></p>
+  <p set:html={bookYearLinks(books.years)} />
   <Rss
     url="/feeds/books"
     text="Subscribe to my books feed or follow along on this page"

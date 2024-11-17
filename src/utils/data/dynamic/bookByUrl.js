@@ -3,11 +3,10 @@ import { createClient } from "@supabase/supabase-js";
 const SUPABASE_URL = import.meta.env.SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 const bookCache = {};
 
 export async function fetchBookByUrl(url) {
-  if (bookCache[url]) return bookCache[url];
+  if (import.meta.env.MODE === "development" && bookCache[url]) return bookCache[url];
 
   const { data: book, error } = await supabase
     .from("optimized_books")
@@ -15,12 +14,11 @@ export async function fetchBookByUrl(url) {
     .eq("url", url)
     .limit(1);
 
-  if (error || !book) {
+  if (error || !book || book.length === 0) {
     console.error(`Error fetching book with URL ${url}:`, error);
     return null;
   }
-
-  bookCache[url] = book[0];
+  if (import.meta.env.MODE === "development") bookCache[url] = book[0];
 
   return book[0];
 }

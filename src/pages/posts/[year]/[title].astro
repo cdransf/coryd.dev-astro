@@ -3,16 +3,16 @@ import { IconStar } from "@tabler/icons-react";
 import { fetchAllPosts } from "@data/posts.js";
 import { fetchAnalyticsData } from "@data/analytics.js";
 import { fetchLinks } from "@data/links.js";
-import { fetchGlobalData } from '@utils/data/global/index.js';
-import { md } from '@utils/helpers/general.js';
-import { getPopularPosts } from '@utils/getPopularPosts.js';
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { md } from "@utils/helpers/general.js";
+import { getPopularPosts } from "@utils/getPopularPosts.js";
 
 const analytics = await fetchAnalyticsData();
 const links = await fetchLinks();
 const posts = await fetchAllPosts();
 const popularPosts = getPopularPosts(posts, analytics);
 
-import AddonLinks from '@components/blocks/links/AddonLinks.astro';
+import AddonLinks from "@components/blocks/links/AddonLinks.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
 import BlockRenderer from "@components/blocks/BlockRenderer.astro";
 import Coffee from "@components/blocks/banners/Coffee.astro";
