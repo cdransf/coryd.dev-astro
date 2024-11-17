@@ -1,0 +1,14 @@
+---
+import { IconClockX } from '@tabler/icons-react';
+
+const { isOldPost } = Astro.props;
+---
+
+{isOldPost && (
+  <div class="banner old-post">
+    <p>
+      <IconClockX size={24} />
+      This post is over 3 years old. I've probably changed my mind since it was written and it <em>could</em> be out of date.
+    </p>
+  </div>
+)}

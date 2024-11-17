@@ -1,0 +1,96 @@
+---
+import "@styles/index.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { fetchNavigation } from "../utils/data/nav.js";
+
+const currentUrl = Astro.url.pathname;
+const nav = await fetchNavigation();
+const { globals, pageTitle, description, ogImage, fullUrl, schema } =
+  Astro.props;
+const isProduction = import.meta.env.MODE === "production";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{globals.site_name}</title>
+    <link
+      rel="preload"
+      href="/fonts/ml.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/mlb.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <meta
+      name="description"
+      content={description || globals?.site_description}
+    />
+    <meta property="og:title" content={pageTitle || globals?.site_name} />
+    <meta
+      property="og:description"
+      content={description || globals?.site_description}
+    />
+    <meta property="og:type" content={schema || "website"} />
+    <meta property="og:url" content={fullUrl} />
+    <meta property="og:image" content={`${ogImage}?class=w800`} />
+    <meta name="theme-color" content={globals?.theme_color} />
+    <meta name="fediverse:creator" content={globals?.mastodon} />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href={`${globals?.cdn_url}${globals?.avatar_transparent}?class=w200`}
+    />
+    <script defer src="/scripts/index.js"></script>
+    {
+      isProduction && (
+        <>
+          <script defer data-domain="coryd.dev" src="/js/script.js" />
+          <script>
+            window.plausible = window.plausible || function(){" "}
+            {(window.plausible.q = window.plausible.q || []).push(arguments)}
+          </script>
+        </>
+      )
+    }
+    <noscript>
+      <style>.client-side {display:none}</style>
+    </noscript>
+  </head>
+  <body>
+    <script>
+      (() => {
+        const currentTheme = sessionStorage.getItem("theme");
+        const metaColorScheme = document.querySelector(
+          'meta[name="color-scheme"]'
+        );
+        const prefersDarkScheme = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        const themeToSet =
+          currentTheme || (prefersDarkScheme ? "dark" : "light");
+        if (!currentTheme) sessionStorage.setItem("theme", themeToSet);
+        metaColorScheme?.setAttribute("content", themeToSet);
+      })();
+    </script>
+    <div class="main-wrapper">
+      <main>
+        <Header nav={nav} siteName={globals?.site_name} url={currentUrl} />
+        <div class="default-wrapper">
+          <slot />
+        </div>
+      </main>
+      <Footer nav={nav} />
+    </div>
+  </body>
+</html>

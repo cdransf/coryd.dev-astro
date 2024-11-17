@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Intro from '../components/Intro.astro';
+import { fetchGlobals } from '../utils/data/globals';
+import RecentActivity from '../components/RecentActivity.astro';
+import RecentPosts from '../components/RecentPosts.astro';
+
+const globals = await fetchGlobals();
+const schema = 'blog';
+const pageTitle = globals.site_name;
+const description = 'This is a blog post description';
+const ogImage = globals.cdn_url + globals.avatar;
+const fullUrl = globals.url + '/blog/my-post';
+const themeColor = globals.theme_color;
+---
+<Layout
+  globals={globals}
+  pageTitle={pageTitle}
+  description={description}
+  ogImage={ogImage}
+  fullUrl={fullUrl}
+  themeColor={themeColor}
+  schema={schema}
+  globals={globals}
+>
+  <Intro intro={globals.intro} />
+  <RecentActivity />
+  <RecentPosts />
+</Layout>

@@ -1,0 +1,43 @@
+---
+import {
+  IconArticle,
+  IconHeadphones,
+  IconDeviceTvOld,
+  IconBooks,
+  IconLink,
+  IconInfoCircle,
+  IconSearch,
+  IconRss,
+  IconBrandMastodon,
+  IconMail,
+  IconBrandGithub,
+  IconBrandNpm,
+  IconCoffee,
+  IconDeviceWatch,
+  IconHeartHandshake,
+} from '@tabler/icons-react';
+
+const { icon } = Astro.props;
+
+const iconComponents = {
+  article: IconArticle,
+  headphones: IconHeadphones,
+  'device-tv-old': IconDeviceTvOld,
+  books: IconBooks,
+  link: IconLink,
+  'info-circle': IconInfoCircle,
+  search: IconSearch,
+  rss: IconRss,
+  'brand-mastodon': IconBrandMastodon,
+  mail: IconMail,
+  'brand-github': IconBrandGithub,
+  'brand-npm': IconBrandNpm,
+  coffee: IconCoffee,
+  'device-watch': IconDeviceWatch,
+  'heart-handshake': IconHeartHandshake,
+};
+
+const SelectedIcon = iconComponents[icon?.toLowerCase()] || null;
+---
+
+{SelectedIcon ? <SelectedIcon size={24} /> : null}

@@ -1,0 +1,67 @@
+/feeds/album-releases
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/album-releases.json
+  Content-Type: application/json
+
+/feeds/all
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/all.json
+  Content-Type: application/json
+
+/feeds/books
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/books.json
+  Content-Type: application/json
+
+/feeds/links
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/links.json
+  Content-Type: application/json
+
+/feeds/posts
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/posts.json
+  Content-Type: application/json
+
+/feeds/movies
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/feeds/movies.json
+  Content-Type: application/json
+
+/feeds/syndication
+  Content-Type: application/xml; charset=utf-8
+  x-content-type-options: nosniff
+
+/api/search
+  Content-Type: application/json
+
+/.well-known/webfinger
+  Content-Type: application/jrd+json; charset=utf-8
+
+/blogroll.opml
+  Content-Disposition: attachment; filename=cory-dransfeldt-blogroll.opml
+
+/music/releases.ics
+  Content-Type: text/calendar
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+  Content-Disposition: inline; filename="releases.ics"
+
+/*
+  Content-Security-Policy: upgrade-insecure-requests; block-all-mixed-content;
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin, no-referrer-when-downgrade
+  Permissions-Policy: autoplay=(), camera=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=()

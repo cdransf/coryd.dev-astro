@@ -1,0 +1,63 @@
+.banner {
+  padding: var(--spacing-md);
+  margin: var(--margin-vertical-base-horizontal-zero);
+  border: 1px solid;
+  border-radius: var(--border-radius-slight);
+
+  & p {
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
+    margin: 0;
+
+    a {
+      color: var(--text-color);
+    }
+
+    & svg {
+      display: inline;
+      vertical-align: middle;
+      height: var(--sizing-lg);
+      width: var(--sizing-lg);
+    }
+  }
+
+  &.coffee,
+  &.error,
+  &.github,
+  &.npm,
+  &.old-post,
+  &.rss,
+  &.warning {
+    &.coffee {
+      --banner-accent-color: var(--brand-buy-me-a-coffee);
+    }
+    &.error {
+      --banner-accent-color: var(--error);
+    }
+    &.github {
+      --banner-accent-color: var(--brand-github);
+    }
+    &.npm {
+      --banner-accent-color: var(--brand-npm);
+    }
+    &.old-post {
+      --banner-accent-color: var(--gray-dark);
+    }
+    &.rss {
+      --banner-accent-color: var(--brand-rss);
+    }
+    &.warning {
+      --banner-accent-color: var(--warning);
+    }
+
+    border-color: var(--banner-accent-color);
+
+    & p a:is(:hover, :active, :focus) {
+      color: var(--banner-accent-color);
+    }
+
+    & svg {
+      stroke: var(--banner-accent-color);
+    }
+  }
+}

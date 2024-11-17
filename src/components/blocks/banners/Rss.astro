@@ -1,0 +1,12 @@
+---
+import { IconRss } from '@tabler/icons-react';
+
+const { url, text } = Astro.props;
+---
+
+<div class="banner rss">
+  <p>
+    <IconRss size={24} />
+    <a href={url}>{text}</a>.
+  </p>
+</div>

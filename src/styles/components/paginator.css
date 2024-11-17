@@ -1,0 +1,25 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-base);
+
+  & button {
+    background: none;
+    padding: 0;
+  }
+
+  & a {
+    display: flex;
+
+    &.disabled svg[data-tablericon-name^="arrow-"] {
+      cursor: not-allowed;
+      stroke: var(--gray-medium);
+      stroke-width: var(--stroke-width-default);
+    }
+  }
+
+  & p {
+    text-align: center;
+  }
+}

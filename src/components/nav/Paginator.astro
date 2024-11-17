@@ -1,0 +1,49 @@
+---
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+
+const { pagination } = Astro.props;
+const {
+  currentPage,
+  totalPages,
+  hasPrevious,
+  hasNext,
+  previousPage,
+  nextPage,
+  pages,
+} = pagination;
+---
+
+<nav aria-label="Pagination" class="pagination">
+  <a
+    href={hasPrevious ? previousPage : "#"}
+    aria-label="Previous page"
+    class={hasPrevious ? "" : "disabled"}
+  >
+    <IconArrowLeft size={24} />
+  </a>
+
+  <select class="client-side" aria-label="Page selection">
+    {pages.map((page, index) => (
+      <option
+        value={index}
+        data-href={page.href}
+        selected={page.number === currentPage}
+      >
+        {page.number} of {totalPages}
+      </option>
+    ))}
+  </select>
+  <noscript>
+    <p>
+      <span aria-current="page">{currentPage}</span> of {totalPages}
+    </p>
+  </noscript>
+
+  <a
+    href={hasNext ? nextPage : "#"}
+    aria-label="Next page"
+    class={hasNext ? "" : "disabled"}
+  >
+    <IconArrowRight size={24} />
+  </a>
+</nav>

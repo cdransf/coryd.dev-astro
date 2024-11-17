@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import { IconStar } from '@tabler/icons-react';
+import { fetchGlobals } from "@data/globals.js";
+import { fetchAllPosts } from "@data/posts.js";
+import Layout from "@layouts/Layout.astro";
+import Paginator from '@components/nav/Paginator.astro';
+import { md } from '@utils/helpers.js';
+import { DateTime } from 'luxon';
+
+const globals = await fetchGlobals();
+const posts = await fetchAllPosts();
+const { page } = Astro.props;
+const currentUrl = Astro.url.pathname;
+
+const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;
+const pageSize = 15;
+const totalPosts = posts.length;
+const totalPages = Math.ceil(totalPosts / pageSize);
+const start = (currentPage - 1) * pageSize;
+const end = start + pageSize;
+const paginatedPosts = posts.slice(start, end);
+
+const pagination = {
+  currentPage,
+  totalPages,
+  hasPrevious: currentPage > 1,
+  hasNext: currentPage < totalPages,
+  previousPage: currentPage > 1 ? `/posts/${currentPage - 1}` : null,
+  nextPage: currentPage < totalPages ? `/posts/${currentPage + 1}` : null,
+  pages: Array.from({ length: totalPages }, (_, i) => ({
+    number: i + 1,
+    href: `/posts/${i + 1}`,
+  })),
+};
+---
+
+<Layout
+  globals={globals}
+  pageTitle="All posts"
+  currentUrl={currentUrl}
+>
+      {paginatedPosts.map((post) => (
+        <article>
+          <div class="post-meta">
+            {post.featured && <IconStar size={16} />}
+            <time datetime={post.date}>
+              {DateTime.fromISO(post.date).toLocaleString(DateTime.DATE_FULL)}
+            </time>
+          </div>
+          <h3>
+            <a href={post.slug}>{post.title}</a>
+          </h3>
+          <p set:html={md(post.description)}></p>
+        </article>
+      ))}
+
+      <Paginator pagination={pagination} appVersion="1.0.0" />
+    </Layout>

@@ -1,0 +1,17 @@
+---
+import Menu from './nav/Menu.astro';
+
+const { nav, siteName, url } = Astro.props;
+const isHomePage = url === '/';
+---
+
+<section class="main-title">
+  <h1>
+    {isHomePage ? (
+      siteName
+    ) : (
+      <a href="/" tabindex="0">{siteName}</a>
+    )}
+  </h1>
+  <Menu nav={nav} />
+</section>

@@ -1,0 +1,33 @@
+---
+import Layout from '@layouts/Layout.astro';
+import BlockRenderer from '@components/BlockRenderer.astro';
+import { fetchGlobals } from '@utils/data/globals.js';
+import { fetchPages } from '@utils/data/pages';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const pages = await fetchPages();
+  return pages.map((page) => ({
+    params: { permalink: page.permalink },
+    props: { page },
+  }));
+}
+
+const globals = await fetchGlobals();
+const { page } = Astro.props;
+const currentUrl = Astro.url.pathname;
+---
+
+<Layout
+  globals={globals}
+  pageTitle={page.title}
+  description={page.description}
+  ogImage={page.open_graph_image}
+  updated={page.updated}
+  currentUrl={currentUrl}
+>
+  {page.blocks.map((block) => (
+    <BlockRenderer block={block} />
+  ))}
+</Layout>

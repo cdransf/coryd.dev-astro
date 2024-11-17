@@ -1,0 +1,10 @@
+---
+import NowPlaying from "@components/blocks/NowPlaying.astro";
+
+const { intro } = Astro.props;
+---
+
+<article class="intro">
+  <div set:html={intro} />
+  <p class="music"><NowPlaying /></p>
+</article>
