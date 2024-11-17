@@ -1,7 +1,8 @@
 ---
 import Paginator from '@components/nav/Paginator.astro';
 
-const { data, globals, count, shape, pagination, loading = "lazy" } = Astro.props;
+const { data, count, shape, pagination, loading = "lazy" } = Astro.props;
+const { globals } = Astro.locals;
 const pageCount = pagination?.pages?.length || 0;
 const hidePagination = pageCount <= 1;
 

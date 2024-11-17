@@ -2,10 +2,9 @@
 import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import RssBanner from "@components/blocks/banners/Rss.astro";
-import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchLinks } from "@utils/data/links.js";
 
-const globals = await fetchGlobals();
+const { globals } = Astro.locals;
 const links = await fetchLinks();
 
 const title = "Links";

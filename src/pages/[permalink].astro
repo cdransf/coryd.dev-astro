@@ -1,7 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import BlockRenderer from '@components/blocks/BlockRenderer.astro';
-import { fetchGlobals } from '@utils/data/globals.js';
 import { fetchPages } from '@utils/data/pages';
 
 export const prerender = true;
@@ -14,8 +13,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const globals = await fetchGlobals();
 const { page } = Astro.props;
+const { globals } = Astro.locals;
 const currentUrl = Astro.url.pathname;
 ---
 

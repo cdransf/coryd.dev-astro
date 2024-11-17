@@ -1,19 +1,14 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import { IconRss, IconJson, IconMailPlus, IconBrandMastodon } from "@tabler/icons-react";
-import { fetchGlobals } from '@utils/data/globals.js';
 import { fetchBlogroll } from '@utils/data/blogroll.js';
 
 const blogroll = await fetchBlogroll();
-const globals = await fetchGlobals();
-
 const currentUrl = Astro.url.pathname;
-
 const title = "Blogroll";
 const description = "These are awesome blogs that I enjoy and you may enjoy too.";
 ---
 <Layout
-  globals={globals}
   pageTitle={title}
   description={description}
   currentUrl={currentUrl}

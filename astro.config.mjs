@@ -6,6 +6,11 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare(),
   integrations: [react()],
+  server: {
+    middleware: {
+      onRequest: "./src/middleware.js",
+    },
+  },
   vite: {
     build: {
       sourcemap: false,

@@ -1,16 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import { IconStar } from '@tabler/icons-react';
-import { fetchGlobals } from "@data/globals.js";
 import { fetchAllPosts } from "@data/posts.js";
 import Layout from "@layouts/Layout.astro";
 import Paginator from '@components/nav/Paginator.astro';
 import { md } from '@utils/helpers.js';
 import { DateTime } from 'luxon';
 
-const globals = await fetchGlobals();
 const posts = await fetchAllPosts();
 const { page } = Astro.props;
+const { globals } = Astro.locals;
 const currentUrl = Astro.url.pathname;
 
 const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;

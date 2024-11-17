@@ -1,0 +1,108 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Warning from "@components/blocks/banners/Warning.astro";
+import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
+import ProgressBar from "@components/media/ProgressBar.astro";
+import { IconArrowLeft, IconHeart, IconNeedle } from "@tabler/icons-react";
+import { fetchBookByUrl } from "@utils/data/bookByUrl.js";
+
+const { isbn } = Astro.params;
+
+const book = await fetchBookByUrl(Astro.url.pathname);
+if (!book) return Astro.redirect("/404", 404);
+
+const alt = `${book.title}${book.author ? ` by ${book.author}` : ""}`;
+const pageTitle = `Books / ${book.title}`;
+const description = book.description || `Details about the book ${book.title}`;
+const { globals } = Astro.locals;
+---
+
+<Layout pageTitle={pageTitle} description={description} schema="book">
+  <a class="back-link" href="/books" title="Go back to the books index page">
+    <IconArrowLeft size={18} /> Back to books
+  </a>
+  <article class="book-focus">
+    <div class="book-display">
+      <img
+        srcset={`
+          ${globals.cdn_url}${book.image}?class=verticalsm&type=webp 200w,
+          ${globals.cdn_url}${book.image}?class=verticalmd&type=webp 400w,
+          ${globals.cdn_url}${book.image}?class=verticalbase&type=webp 800w
+        `}
+        sizes="(max-width: 450px) 203px,
+          (max-width: 850px) 406px,
+          (max-width: 1000px) 812px,
+          812px"
+        src={`${globals.cdn_url}${book.image}?class=verticalsm&type=webp`}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        width="200"
+        height="307"
+      />
+      <div class="media-meta">
+        <span class="title"><strong>{book.title}</strong></span>
+        {book.rating && <span>{book.rating}</span>}
+        {book.author && <span class="sub-meta">By {book.author}</span>}
+        {
+          book.favorite && (
+            <span class="sub-meta favorite">
+              <IconHeart size={18} /> This is one of my favorite books!
+            </span>
+          )
+        }
+        {
+          book.tattoo && (
+            <span class="sub-meta tattoo">
+              <IconNeedle size={18} /> I have a tattoo inspired by this book!
+            </span>
+          )
+        }
+        {
+          book.status === "finished" && (
+            <span class="sub-meta">
+              Finished on:{" "}
+              <strong class="highlight-text">
+                {new Date(book.date_finished).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </strong>
+            </span>
+          )
+        }
+        {
+          book.status === "started" && (
+            <ProgressBar percentage={`${book.progress}%`} />
+          )
+        }
+      </div>
+    </div>
+    {
+      book.review && (
+        <>
+          <Warning text="There are probably spoilers after this banner — this is a warning about them." />
+          <h2>My thoughts</h2>
+          <div set:html={book.review} />
+        </>
+      )
+    }
+    <AssociatedMedia
+      artists={book.artists}
+      books={book.related_books}
+      genres={book.genres}
+      movies={book.movies}
+      posts={book.posts}
+      shows={book.shows}
+    />
+    {
+      book.description && (
+        <>
+          <h2>Overview</h2>
+          <div set:html={book.description} />
+        </>
+      )
+    }
+  </article>
+</Layout>

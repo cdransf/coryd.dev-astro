@@ -1,11 +1,8 @@
 ---
 import { IconStar } from "@tabler/icons-react";
-
 import { fetchAllPosts } from "@data/posts.js";
 import { fetchAnalyticsData } from "@data/analytics.js";
-import { fetchGlobals } from "@data/globals.js";
 import { fetchLinks } from "@data/links.js";
-
 import { md } from '@utils/helpers.js';
 import { getPopularPosts } from '@utils/getPopularPosts.js';
 
@@ -41,14 +38,13 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const { globals } = Astro.locals;
 const { year, title } = Astro.params;
-const globals = await fetchGlobals();
 const currentUrl = Astro.url.pathname;
 const htmlContent = md(post.content);
 ---
 
 <Layout
-  globals={globals}
   pageTitle={post.title}
   description={post.description}
   ogImage={post.open_graph_image}

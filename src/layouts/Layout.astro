@@ -9,15 +9,15 @@ const currentUrl = Astro.url.pathname;
 const nav = await fetchNavigation();
 
 const {
-  globals,
   schema = "page",
   pageTitle,
   description,
   ogImage,
   fullUrl,
+  updated,
   ...otherProps
 } = Astro.props;
-
+const { globals} = Astro.locals;
 const isProduction = import.meta.env.MODE === "production";
 ---
 
@@ -42,18 +42,15 @@ const isProduction = import.meta.env.MODE === "production";
       type="font/woff2"
       crossorigin="anonymous"
     />
-
     <Metadata
       schema={schema}
-      globals={globals}
       pageTitle={pageTitle}
       description={description}
       ogImage={ogImage}
       fullUrl={fullUrl}
       {...otherProps}
     />
-
-    <script defer src="/scripts/index.js"></script>
+    <script defer src="/scripts/index.js" is:inline></script>
     {
       isProduction && (
         <>
@@ -72,12 +69,12 @@ const isProduction = import.meta.env.MODE === "production";
   <body>
     <div class="main-wrapper">
       <main>
-        <Header nav={nav} siteName={globals?.site_name} url={currentUrl} />
+        <Header siteName={globals?.site_name} url={currentUrl} />
         <div class="default-wrapper">
           <slot />
         </div>
       </main>
-      <Footer nav={nav} />
+      <Footer updated={updated} />
     </div>
   </body>
 </html>

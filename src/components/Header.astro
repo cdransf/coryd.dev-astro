@@ -1,7 +1,8 @@
 ---
 import Menu from '@components/nav/Menu.astro';
 
-const { nav, siteName, url } = Astro.props;
+const { siteName, url } = Astro.props;
+const { nav } = Astro.locals;
 const isHomePage = url === '/';
 ---
 

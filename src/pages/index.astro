@@ -1,11 +1,10 @@
 ---
-import { fetchGlobals } from '@utils/data/globals';
 import Layout from '@layouts/Layout.astro';
 import Intro from '@components/home/Intro.astro';
 import RecentActivity from '@components/home/RecentActivity.astro';
 import RecentPosts from '@components/home/RecentPosts.astro';
 
-const globals = await fetchGlobals();
+const { globals } = Astro.locals;
 const schema = 'blog';
 const pageTitle = globals.site_name;
 const description = 'This is a blog post description';

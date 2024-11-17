@@ -1,7 +1,8 @@
 ---
 import NavLink from '@components/nav/NavLink.astro';
 
-const { nav, updated } = Astro.props;
+const { updated } = Astro.props;
+const { nav } = Astro.locals;
 ---
 
 <footer style={updated ? undefined : 'margin-top: var(--spacing-3xl)'}>

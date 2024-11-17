@@ -3,7 +3,6 @@ import { escapeHtml } from "@utils/helpers.js";
 
 const {
   schema = "page",
-  globals,
   pageTitle: titleOverride,
   description: descriptionOverride,
   ogImage: ogImageOverride,
@@ -19,6 +18,7 @@ const {
   genre,
   year,
 } = Astro.props;
+const { globals} = Astro.locals;
 
 let pageTitle = globals.site_name;
 let pageDescription = globals.site_description;

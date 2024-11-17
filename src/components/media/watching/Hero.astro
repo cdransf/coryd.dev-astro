@@ -1,7 +1,8 @@
 ---
 import Hero from "@components/blocks/Hero.astro";
 
-const { movie, globals } = Astro.props;
+const { movie } = Astro.props;
+const { globals } = Astro.locals;
 ---
 
 <a href={movie.url}>
