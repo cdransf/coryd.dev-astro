@@ -1,0 +1,60 @@
+---
+import Layout from "@layouts/Layout.astro";
+import AddonLinks from "@components/blocks/links/AddonLinks.astro";
+import { getPopularPosts } from "@utils/getPopularPosts.js";
+import { fetchAllPosts } from "@data/posts.js";
+import { fetchAnalyticsData } from "@data/analytics.js";
+import { fetchLinks } from "@data/links.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+
+export const prerender = true;
+
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
+const popularPosts = getPopularPosts(posts, analytics);
+const { globals } = await fetchGlobalData(Astro);
+
+const pageTitle = "404";
+const description = "What kind of idiots do you have working here?";
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
+  <div class="hero">
+    <img
+      srcset="
+  https://cdn.coryd.dev/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannersm&type=webp 256w,
+  https://cdn.coryd.dev/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannermd&type=webp 512w,
+  https://cdn.coryd.dev/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannerbase&type=webp 1024w
+"
+      srcset={`
+      ${globals.cdn_url}/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannersm&type=webp 256w,
+      ${globals.cdn_url}/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannermd&type=webp 512w,
+      ${globals.cdn_url}/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannerbase&type=webp 1024w,
+    `}
+      sizes="(max-width: 450px) 256px,
+        (max-width: 850px) 512px,
+        1024px"
+      src={`${globals.cdn_url}/daac2a48-455f-4b7b-a727-b33868cbb2fc.jpg?class=bannersm&type=webp`}
+      alt={description}
+      class="image-banner"
+      loading="lazy"
+      decoding="async"
+      width="720"
+      height="480"
+    />
+  </div>
+  <div style="text-align:center">
+    <h2>{pageTitle}</h2>
+    <p>{description}</p>
+    <p><a href="/">Hurry up and skip out on the room service bill!</a></p>
+  </div>
+  <hr />
+  <AddonLinks popularPosts={popularPosts} links={links} />
+</Layout>

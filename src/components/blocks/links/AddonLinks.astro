@@ -1,0 +1,10 @@
+---
+import PopularPosts from './PopularPosts.astro';
+import RecentLinks from './RecentLinks.astro';
+
+const { popularPosts, links } = Astro.props;
+---
+<div class="addon-links">
+  <PopularPosts popularPosts={popularPosts} />
+  <RecentLinks links={links} />
+</div>

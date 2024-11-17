@@ -1,0 +1,26 @@
+---
+import { md } from "@utils/helpers/general.js";
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconCircleX, IconInfoCircle } = icons;
+const { content, id } = Astro.props;
+---
+<>
+  <input
+    class="modal-input"
+    id={id}
+    type="checkbox"
+    tabindex="0"
+  />
+  <label class="modal-toggle" for={id}>
+    <div set:html={IconInfoCircle({ size: 24 })}/>
+  </label>
+  <div class="modal-wrapper">
+    <div class="modal-body">
+      <label class="modal-close" for={id}>
+        <div set:html={IconCircleX({ size: 24 })}/>
+      </label>
+      <div set:html={md(content)}/>
+    </div>
+  </div>
+</>

@@ -1,0 +1,63 @@
+---
+import { fetchAllPosts } from "@data/posts.js";
+import { fetchAnalyticsData } from "@data/analytics.js";
+import { fetchLinks } from "@data/links.js";
+
+import AddonLinks from "@components/blocks/links/AddonLinks.astro";
+import AssociatedMedia from "@components/blocks//AssociatedMedia.astro";
+import GitHub from "@components/blocks/banners/GitHub.astro";
+import Hero from "@components/blocks//Hero.astro";
+import Modal from "@components/blocks//Modal.astro";
+import Npm from "@components/blocks/banners/Npm.astro";
+import Rss from "@components/blocks/banners/Rss.astro";
+import YouTubePlayer from "@components/blocks//YouTubePlayer.astro";
+
+import { md } from "@utils/helpers/general.js";
+import { getPopularPosts } from "@utils/getPopularPosts.js";
+
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
+const popularPosts = getPopularPosts(posts, analytics);
+const { blocks } = Astro.props;
+---
+
+<div>
+  {
+    blocks.map((block) => (
+      <>
+        {block.type === "addon_links" && (
+          <AddonLinks popularPosts={popularPosts} links={links} />
+        )}
+
+        {block.type === "associated_media" && (
+          <AssociatedMedia media={block.media} />
+        )}
+
+        {block.type === "divider" && <div set:html={md(block.markup)} />}
+
+        {block.type === "github_banner" && <GitHub url={block.url} />}
+
+        {block.type === "hero" && <Hero image={block.image} alt={block.alt} />}
+
+        {block.type === "markdown" && (
+          <div set:html={md(block.text)} />
+        )}
+
+        {block.type === "npm_banner" && (
+          <Npm url={block.url} command={block.command} />
+        )}
+
+        {block.type === "modal" && <Modal content={block.content} />}
+
+        {block.type === "rss_banner" && (
+          <Rss url={block.url} text={block.text} />
+        )}
+
+        {block.type === "youtube_player" && <YouTubePlayer url={block.url} />}
+      </>
+    ))
+  }
+</div>

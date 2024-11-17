@@ -1,0 +1,33 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+import NavLink from "@components/nav/NavLink.astro";
+
+const { IconMenu2, IconX } = icons
+const { nav } = Astro.props;
+---
+
+<menu>
+  <input id="menu-toggle" type="checkbox" aria-hidden="true" />
+  <label class="menu-button-container" for="menu-toggle" tabindex="0">
+    <div class="menu-closed" aria-hidden="true">
+      <div set:html={IconMenu2({ size: 24 })}/>
+    </div>
+    <div class="menu-open" aria-hidden="true">
+      <div set:html={IconX({ size: 24 })}/>
+    </div>
+  </label>
+
+  <ul
+    class="menu-primary"
+    aria-label="Primary site navigation"
+    id="primary-navigation"
+  >
+    {
+      nav.primary.map((link) => (
+        <li>
+          <NavLink url={link.permalink} title={link.title} icon={link.icon} />
+        </li>
+      ))
+    }
+  </ul>
+</menu>

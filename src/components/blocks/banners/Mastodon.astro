@@ -1,0 +1,13 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconBrandMastodon } = icons;
+const { url } = Astro.props;
+---
+
+<div class="banner mastodon">
+  <p>
+    <span set:html={IconBrandMastodon({ size: 24 })} />
+    <a class="mastodon" href={url}> Discuss this post on Mastodon. </a>
+  </p>
+</div>

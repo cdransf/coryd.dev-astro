@@ -1,0 +1,18 @@
+---
+import Hero from "@components/blocks/Hero.astro";
+
+const { movie } = Astro.props;
+---
+
+<a href={movie.url}>
+  <div class="watching media-overlay hero">
+    <div class="meta-text">
+      <div class="header">{movie.title}</div>
+      <div class="subheader">
+        {movie.rating && <span class="rating">{movie.rating} </span>}
+        ({movie.year})
+      </div>
+    </div>
+    <Hero image={movie.backdrop} alt={movie.title} />
+  </div>
+</a>

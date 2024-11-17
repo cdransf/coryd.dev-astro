@@ -1,0 +1,63 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Grid from "@components/media/Grid.astro";
+import icons from "@cdransf/astro-tabler-icons";
+import {
+  filterBooksByStatus,
+  findFavoriteBooks,
+  mediaLinks,
+} from "@utils/helpers/media.js";
+import { fetchBooks } from "@utils/data/books.js";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const books = await fetchBooks();
+
+  return books.years.map((yearData) => ({
+    params: { year: String(yearData.value) },
+  }));
+}
+
+const { IconArrowLeft } = icons;
+const books = await fetchBooks();
+const { year } = Astro.params;
+const yearData = books.years.find((y) => y.value === parseInt(year, 10));
+
+if (!yearData) return Astro.redirect("/404", 404);
+
+const bookData = filterBooksByStatus(yearData.data, "finished");
+const bookDataFavorites = findFavoriteBooks(bookData);
+const favoriteBooks = mediaLinks(bookDataFavorites, "book", 5);
+const currentYear = new Date().getFullYear();
+const isCurrentYear = parseInt(year, 10) === currentYear;
+const pageTitle = `${year} / Books`;
+const description = isCurrentYear
+  ? `I've finished ${bookData.length} books this year.`
+  : `I finished ${bookData.length} books in ${year}.`;
+const intro = isCurrentYear
+  ? `
+    I've finished <strong class="highlight-text">${bookData.length} books</strong> this year.
+    ${favoriteBooks ? ` Among my favorites are ${favoriteBooks}.` : ""}
+  `
+  : `
+    I finished <strong class="highlight-text">${bookData.length} books</strong> in 
+    <strong class="highlight-text">${year}</strong>.
+    ${favoriteBooks ? ` Among my favorites were ${favoriteBooks}.` : ""}
+  `;
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={bookData[0]?.image || ""}
+>
+  <a href="/books" class="back-link">
+    <div set:html={IconArrowLeft({ size: 18 })}/> Back to books
+  </a>
+  <h2 class="page-title">{year} / Books</h2>
+  <div set:html={intro} />
+  <hr />
+  <Grid data={bookData} shape="vertical" count={200} loading="eager" />
+</Layout>

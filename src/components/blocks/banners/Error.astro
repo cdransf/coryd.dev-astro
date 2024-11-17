@@ -1,0 +1,10 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconAlertCircle } = icons;
+const { text } = Astro.props;
+---
+
+<div class="banner error">
+  <p><span set:html={IconAlertCircle({ size: 24 })}/> {text}</p>
+</div>

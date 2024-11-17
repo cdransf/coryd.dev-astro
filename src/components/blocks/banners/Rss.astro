@@ -1,0 +1,13 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconRss } = icons;
+const { url, text } = Astro.props;
+---
+
+<div class="banner rss">
+  <p>
+    <span set:html={IconRss({ size: 24 })}/>
+    <a href={url}>{text}</a>.
+  </p>
+</div>

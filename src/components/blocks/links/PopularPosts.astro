@@ -1,0 +1,26 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconChartBarPopular } = icons;
+const { popularPosts } = Astro.props;
+---
+
+{
+  popularPosts && popularPosts.length > 0 && (
+    <article>
+      <h3>
+        <a class="article" href="/posts">
+          <div set:html={IconChartBarPopular({ size: 24 })}/>
+          Popular posts
+        </a>
+      </h3>
+      <ol type="1">
+        {popularPosts.slice(0, 5).map((post) => (
+          <li>
+            <a href={post.url}>{post.title}</a>
+          </li>
+        ))}
+      </ol>
+    </article>
+  )
+}

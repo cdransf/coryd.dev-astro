@@ -1,0 +1,14 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconBrandNpm } = icons;
+const { url, command } = Astro.props;
+---
+
+<div class="banner npm">
+  <p>
+    <span set:html={IconBrandNpm({ size: 24 })}/>
+    <a href={url}>You can take a look at this package on NPM</a> or install it by
+    running <code>{command}</code>.
+  </p>
+</div>

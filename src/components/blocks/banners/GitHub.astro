@@ -1,0 +1,14 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconBrandGithub } = icons;
+const { url } = Astro.props;
+---
+
+<div class="banner github">
+  <p>
+    <span set:html={IconBrandGithub({ size: 24 })}/> Take a look at <a href={url}
+      >the GitHub repository for this project</a
+    >. (Give it a star if you feel like it.)
+  </p>
+</div>

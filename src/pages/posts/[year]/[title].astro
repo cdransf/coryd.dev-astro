@@ -1,0 +1,110 @@
+---
+import { fetchAllPosts } from "@data/posts.js";
+import { fetchAnalyticsData } from "@data/analytics.js";
+import { fetchLinks } from "@data/links.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { md } from "@utils/helpers/general.js";
+import { getPopularPosts } from "@utils/getPopularPosts.js";
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconStar } = icons;
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
+const popularPosts = getPopularPosts(posts, analytics);
+
+import AddonLinks from "@components/blocks/links/AddonLinks.astro";
+import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
+import BlockRenderer from "@components/blocks/BlockRenderer.astro";
+import Coffee from "@components/blocks/banners/Coffee.astro";
+import Layout from "@layouts/Layout.astro";
+import Mastodon from "@components/blocks/banners/Mastodon.astro";
+import OldPost from "@components/blocks/banners/OldPost.astro";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await fetchAllPosts();
+
+  return posts.map((post) => {
+    const match = post.url.match(/^\/posts\/(\d{4})\/(.+)$/);
+    if (!match) throw new Error(`Invalid post URL: ${post.url}`);
+
+    const [, year, title] = match;
+
+    return {
+      params: { year, title },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { globals } = await fetchGlobalData(Astro);
+const currentUrl = Astro.url.pathname;
+const htmlContent = md(post.content);
+---
+
+<Layout
+  pageTitle={post.title}
+  description={post.description}
+  ogImage={post.open_graph_image}
+  currentUrl={currentUrl}
+>
+  <article class="standalone">
+    <div class="post-meta">
+      {post.featured && <div set:html={IconStar({ size: 16 })}/>}
+      <time datetime={post.date}>
+        {
+          new Date(post.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
+      </time>
+    </div>
+    <h3>{post.title}</h3>
+    <div>
+      {post.old_post && <OldPost />}
+      {
+        post.image && (
+          <img
+            srcset={`
+          ${globals.cdn_url}${post.image}?class=w200&type=webp 200w,
+          ${globals.cdn_url}${post.image}?class=w400&type=webp 400w,
+          ${globals.cdn_url}${post.image}?class=w800&type=webp 800w,
+          ${globals.cdn_url}${post.image}?class=w1600&type=webp 1600w
+        `}
+            sizes="(max-width: 450px) 200px,
+                (max-width: 850px) 400px,
+                (max-width: 1000px) 800px,
+                1200px"
+            src={`${globals.cdn_url}${post.image}?class=w200`}
+            alt={post.image_alt?.replace(/['"]/g, "")}
+            class="image-banner"
+            loading="eager"
+            decoding="async"
+            width="200"
+            height="auto"
+          />
+        )
+      }
+      <div set:html={htmlContent} />
+      {post.blocks && <BlockRenderer blocks={post.blocks} />}
+      {post.mastodon_url && <Mastodon url={post.mastodon_url} />}
+      <AssociatedMedia
+        artists={post.artists}
+        books={post.books}
+        genres={post.genres}
+        movies={post.movies}
+        posts={post.posts}
+        shows={post.shows}
+      />
+      <Coffee />
+      <AddonLinks popularPosts={popularPosts} links={links} />
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,105 @@
+---
+import { parseISO, format } from "date-fns";
+import IconMapper from "@components/IconMapper.astro";
+
+const {
+  artists = [],
+  books = [],
+  genres = [],
+  movies = [],
+  posts = [],
+  shows = [],
+} = Astro.props;
+
+const media = [
+  ...(artists || []),
+  ...(books || []),
+  ...(genres || []),
+  ...(movies || []),
+  ...(posts || []),
+  ...(shows || []),
+];
+
+if (media.length === 0) return null;
+
+const sections = [
+  {
+    key: "artists",
+    icon: "headphones",
+    cssClass: "music",
+    label: "Related artist(s)",
+    items: artists || [],
+  },
+  {
+    key: "books",
+    icon: "books",
+    cssClass: "books",
+    label: "Related book(s)",
+    items: books || [],
+  },
+  {
+    key: "genres",
+    icon: "headphones",
+    cssClass: "music",
+    label: "Related genre(s)",
+    items: genres || [],
+  },
+  {
+    key: "movies",
+    icon: "movie",
+    cssClass: "movies",
+    label: "Related movie(s)",
+    items: movies || [],
+  },
+  {
+    key: "posts",
+    icon: "article",
+    cssClass: "article",
+    label: "Related post(s)",
+    items: posts || [],
+  },
+  {
+    key: "shows",
+    icon: "device-tv-old",
+    cssClass: "tv",
+    label: "Related show(s)",
+    items: shows || [],
+  },
+];
+---
+
+<div class="associated-media">
+  {
+    sections.map(({ key, icon, cssClass, label, items }) => {
+      if (!items.length) return null;
+
+      return (
+        <section id={key} class={cssClass}>
+          <div class="media-title">
+            <IconMapper icon={icon} /> {label}
+          </div>
+          <ul>
+            {items.map((item) => (
+              <li>
+                <a href={item.url}>{item.title || item.name}</a>
+                {key === "artists" && item.total_plays > 0 && (
+                  <strong class="highlight-text">
+                    {item.total_plays}{" "}
+                    {item.total_plays === 1 ? "play" : "plays"}
+                  </strong>
+                )}
+                {key === "books" && <span>by {item.author}</span>}
+                {(key === "movies" || key === "shows") && (
+                  <span>({item.year})</span>
+                )}
+                {key === "posts" && (
+                  <span>({format(parseISO(item.date), "PPPP")})</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })
+  }
+</div>

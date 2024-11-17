@@ -1,0 +1,34 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconLink } = icons;
+const { links } = Astro.props;
+---
+
+{
+  links && links.length > 0 && (
+    <article>
+      <h3>
+        <a class="link" href="/links">
+          <div set:html={IconLink({ size: 24 })}/>
+          Recent links
+        </a>
+      </h3>
+      <ul>
+        {links.slice(0, 5).map((link) => (
+          <li>
+            <a href={link.link} title={link.title}>
+              {link.title}
+            </a>
+            {link.author && (
+              <>
+                {" "}
+                via <a href={link.author.url}>{link.author.name}</a>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </article>
+  )
+}

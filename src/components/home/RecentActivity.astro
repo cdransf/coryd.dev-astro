@@ -1,0 +1,76 @@
+---
+import { fetchBooks } from "@utils/data/books.js";
+import { fetchLinks } from "@utils/data/links.js";
+import { fetchMovies } from "@utils/data/movies.js";
+import { fetchMusicWeek } from "@utils/data/music/week.js";
+import { fetchShows } from "@utils/data/tv.js";
+import icons from "@cdransf/astro-tabler-icons";
+import Rss from "@components/blocks/banners/Rss.astro";
+
+const { IconActivity } = icons;
+const [music, tv, movies, books, links] = await Promise.all([
+  fetchMusicWeek(),
+  fetchShows(),
+  fetchMovies(),
+  fetchBooks(),
+  fetchLinks(),
+]);
+
+const artist = music.week?.artists[0];
+const track = music.week?.tracks[0];
+const show = tv.recentlyWatched[0];
+const movie = movies.recentlyWatched[0];
+const book = books.currentYear[0];
+const link = links[0];
+---
+
+<article>
+  <h2>
+    <div set:html={IconActivity({ size: 24 })}/>
+    Recent activity
+  </h2>
+  <ul>
+    <li>
+      <span class="music">Top artist this week:</span>
+      <a href={artist.artist_url}>{artist.artist_name}</a>
+    </li>
+    <li>
+      <span class="music">Top track this week:</span>
+      <a href={track.artist_url}>{track.track_name} by {track.artist_name}</a>
+    </li>
+    <li>
+      <span class="tv">Last episode watched:</span>
+      <strong class="highlight-text">{show.formatted_episode}</strong> of <a
+        href={show.url}>{show.title}</a
+      >
+    </li>
+    <li>
+      <span class="movies">Last movie watched:</span>
+      <a href={movie.url}>{movie.title}</a>{
+        movie.rating ? ` (${movie.rating})` : ""
+      }
+    </li>
+    <li>
+      <span class="books">Last book finished:</span>
+      <a href={book.url}>{book.title}</a> by {book.author}{
+        book.rating ? ` (${book.rating})` : ""
+      }
+    </li>
+    <li>
+      <span class="link">Last link shared:</span>
+      <a href={link.link}>{link.title}</a>
+      {
+        link.author && (
+          <span>
+            {" "}
+            via <a href={link.author.url}>{link.author.name}</a>
+          </span>
+        )
+      }
+    </li>
+  </ul>
+  <Rss
+    url="/feeds"
+    text="Subscribe to my movies, books, links or activity feed(s)"
+  />
+</article>

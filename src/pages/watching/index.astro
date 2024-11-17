@@ -1,0 +1,71 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Hero from "@components/media/watching/Hero.astro";
+import Grid from "@components/media/Grid.astro";
+import Rss from "@components/blocks/banners/Rss.astro";
+import { fetchMovies } from "@utils/data/movies.js";
+import { fetchShows } from "@utils/data/tv.js";
+import { shuffleArray } from "@utils/helpers/general.js";
+import icons from "@cdransf/astro-tabler-icons";
+
+export const prerender = true;
+
+const { IconMovie, IconDeviceTvOld, IconStar } = icons;
+const movies = await fetchMovies();
+const tv = await fetchShows();
+const featuredMovie = shuffleArray(movies.recentlyWatched)[0];
+const favoriteMovies = shuffleArray(movies.favorites);
+const favoriteShows = shuffleArray(tv.favorites);
+
+const title = "Currently watching";
+const description =
+  "Here's all of the TV and movies I've been watching presented in what is (hopefully) an organized fashion.";
+---
+
+<Layout
+  pageTitle={title}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={movies.recentlyWatched[0].backdrop}
+>
+  <h2 class="page-title">{title}</h2>
+  <Hero movie={featuredMovie} />
+  <p>{description}</p>
+  <Rss
+    url="/feeds/movies.xml"
+    text="Subscribe to my movies feed or follow along on this page"
+  />
+  <hr />
+  <h3 id="movies">
+    <a href="/watching/recent/movies">
+      <div set:html={IconMovie({ size: 18 })}/> Recent movies
+    </a>
+  </h3>
+  <Grid
+    data={movies.recentlyWatched}
+    shape="vertical"
+    count={6}
+  />
+  <h3 id="tv">
+    <a href="/watching/recent/shows">
+      <div set:html={IconDeviceTvOld({ size: 18 })}/> Recent shows
+    </a>
+  </h3>
+  <Grid
+    data={tv.recentlyWatched}
+    shape="vertical"
+    count={6}
+  />
+  <h3 id="favorite-movies">
+    <a href="/watching/favorites/movies">
+      <div set:html={IconStar({ size: 18 })}/> Favorite movies
+    </a>
+  </h3>
+  <Grid data={favoriteMovies} shape="vertical" count={6} />
+  <h3 id="favorite-shows">
+    <a href="/watching/favorites/shows">
+      <div set:html={IconStar({ size: 18 })}/> Favorite shows
+    </a>
+  </h3>
+  <Grid data={favoriteShows} shape="vertical" count={6} />
+</Layout>

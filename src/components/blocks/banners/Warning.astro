@@ -1,0 +1,13 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconAlertTriangle } = icons;
+const { text } = Astro.props;
+---
+
+<div class="banner warning">
+  <p>
+    <span set:html={IconAlertTriangle({ size: 24 })}/>
+    {text}
+  </p>
+</div>

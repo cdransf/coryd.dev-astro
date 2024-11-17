@@ -1,0 +1,69 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Grid from "@components/media/Grid.astro";
+import { fetchMusicWeek } from "@utils/data/music/week.js";
+import { shuffleArray } from "@utils/helpers/general.js";
+import icons from "@cdransf/astro-tabler-icons";
+
+export const prerender = true;
+
+export const getStaticPaths = async ({ paginate }) => {
+  const music = await fetchMusicWeek();
+  const weeklyArtists = music.week.artists;
+
+  return paginate(weeklyArtists, {
+    pageSize: 16,
+  });
+};
+
+const { IconArrowLeft } = icons;
+const { page } = Astro.props;
+const paginatedArtists = page.data;
+const pagination = {
+  currentPage: page.currentPage,
+  totalPages: page.lastPage,
+  hasPrevious: page.currentPage > 1,
+  hasNext: page.currentPage < page.lastPage,
+  previousPage: page.url.prev || null,
+  nextPage: page.url.next || null,
+  pages: Array.from({ length: page.lastPage }, (_, i) => ({
+    number: i + 1,
+    href:
+      i === 0
+        ? `/music/this-week/artists`
+        : `/music/this-week/artists/${i + 1}`,
+  })),
+};
+const pageTitle =
+  pagination.currentPage === 1
+    ? "Artists I've listened to this week"
+    : `Artists I've listened to this week / page ${pagination.currentPage}`;
+const description = "These are the artists I've been listening to this week. All of them are awesome.";
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={shuffleArray(page.data)[0]?.artist_art}
+>
+  <a href="/music" class="back-link">
+    <div set:html={IconArrowLeft({ size: 18 })}/> Back to Music
+  </a>
+  {pagination.currentPage === 1 && (
+    <>
+      <h2 class="page-title">{pageTitle}</h2>
+      <p>{description} Listed in descending order from most plays to least.</p>
+      <p><strong class="highlight-text">You can also take a look at</strong> the <a href="/music/this-week/albums">albums I've listened to this week</a>, <a href="/music/this-month/artists">the artists I've listened to this month</a> or <a href="/music/this-month/albums">the albums I've listened to this month</a>.</p>
+      <p><a href="/music/concerts">I keep track of the concerts I've been to too</a>.</p>
+      <hr />
+    </>
+  )}
+  <Grid
+    data={paginatedArtists}
+    pagination={pagination}
+    shape="square"
+    count={16}
+    loading="eager"
+  />
+</Layout>

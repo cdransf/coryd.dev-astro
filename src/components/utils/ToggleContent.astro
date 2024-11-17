@@ -1,0 +1,8 @@
+---
+const { content } = Astro.props;
+---
+
+<div data-toggle-content class="text-toggle-hidden">
+  <div set:html={content} />
+</div>
+<button data-toggle-button>Show more</button>

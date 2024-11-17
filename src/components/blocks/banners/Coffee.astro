@@ -1,0 +1,14 @@
+---
+import icons from "@cdransf/astro-tabler-icons";
+
+const { IconCoffee } = icons;
+---
+
+<div class="banner coffee">
+  <p>
+    <span set:html={IconCoffee({ size: 24 })} />
+    <a class="coffee" href="https://buymeacoffee.com/cory">
+      If you found this post helpful, you can buy me a coffee.
+    </a>
+  </p>
+</div>
