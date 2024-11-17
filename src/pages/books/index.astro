@@ -1,0 +1,90 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Rss from "@components/blocks/banners/Rss.astro";
+import ProgressBar from "@components/media/ProgressBar.astro";
+import { fetchGlobals } from "@utils/data/globals.js";
+import { fetchBooks } from "@utils/data/books.js";
+import { md, htmlTruncate } from "@utils/helpers.js";
+
+const globals = await fetchGlobals();
+const books = await fetchBooks();
+
+const title = "Currently reading";
+const description = "Here's what I'm reading at the moment.";
+const updated = new Date().toISOString();
+const schema = "books";
+
+const currentYear = new Date().getFullYear();
+const bookData = books.all
+  .filter((book) => book.status === "started")
+  .reverse();
+const currentBookCount = books.currentYear.length;
+const bookYearLinks = (years) =>
+  years
+    .sort((a, b) => b.value - a.value)
+    .map(
+      (year, index) =>
+        `<a href="/books/years/${year.value}">${year.value}</a>${
+          index < years.length - 1 ? " / " : ""
+        }`
+    )
+    .join("");
+---
+
+<Layout
+  globals={globals}
+  pageTitle={title}
+  description={description}
+  updated={updated}
+  currentUrl={Astro.url.pathname}
+  schema={schema}
+>
+  <h2 class="page-title">{title}</h2>
+  <p>
+    {description} I've finished <strong class="highlight-text"
+      >{currentBookCount} books</strong
+    > this year.
+  </p>
+  <p set:html={bookYearLinks(books.years)}></p>
+  <Rss
+    url="/feeds/books"
+    text="Subscribe to my books feed or follow along on this page"
+  />
+  <hr />
+  {
+    bookData.map((book) => (
+      <article class="book-entry" key={book.url}>
+        <a href={book.url}>
+          <img
+            srcSet={`
+            ${globals.cdn_url}${book.image}?class=verticalsm&type=webp 200w,
+            ${globals.cdn_url}${book.image}?class=verticalmd&type=webp 400w
+          `}
+            sizes="(max-width: 450px) 200px, 400px"
+            src={`${globals.cdn_url}${book.image}?class=verticalsm&type=webp`}
+            alt={`${book.title} by ${book.authors}`}
+            loading="lazy"
+            decoding="async"
+            width="200"
+            height="307"
+          />
+        </a>
+        <div class="media-meta">
+          <a href={book.url}>
+            <span class="title">
+              <strong>{book.title}</strong>
+            </span>
+          </a>
+          {book.author && <span class="sub-meta">By {book.author}</span>}
+          {book.progress && <ProgressBar percentage={`${book.progress}%`} />}
+          {book.description && (
+            <div
+              class="description"
+              set:html={htmlTruncate(md(book.description))}
+            />
+          )}
+        </div>
+      </article>
+    ))
+  }
+</Layout>

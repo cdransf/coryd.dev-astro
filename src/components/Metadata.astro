@@ -1,11 +1,14 @@
 ---
+import { escapeHtml } from "@utils/helpers.js";
+
 const {
-  schema,
-  page,
+  schema = "page",
   globals,
+  pageTitle: titleOverride,
+  description: descriptionOverride,
+  ogImage: ogImageOverride,
+  fullUrl,
   post,
-  title,
-  description,
   artist,
   movie,
   movies,
@@ -17,7 +20,6 @@ const {
   year,
 } = Astro.props;
 
-const fullUrl = `${globals.url}${page.url}`;
 let pageTitle = globals.site_name;
 let pageDescription = globals.site_description;
 let ogImage = `${globals.cdn_url}${globals.avatar}`;
@@ -31,13 +33,13 @@ switch (schema) {
   case "music":
   case "music-index":
   case "music-period":
-    pageTitle = schema === "music" ? `Music / ${page.title}` : "Music";
+    pageTitle = schema === "music" ? `Music / ${titleOverride}` : "Music";
     if (schema === "music") {
-      ogImage = `${globals.cdn_url}${page?.image}`;
+      ogImage = `${globals.cdn_url}${post?.image}`;
     } else if (schema === "music-index") {
       ogImage = `${globals.cdn_url}${movies?.week?.artists[0]?.grid?.image}`;
     } else if (schema === "music-period") {
-      ogImage = `${globals.cdn_url}${page?.image}`;
+      ogImage = `${globals.cdn_url}${post?.image}`;
     }
     break;
   case "artist":
@@ -93,29 +95,20 @@ switch (schema) {
     ogImage = `${globals.cdn_url}${overviewMovie?.backdrop}`;
     break;
   case "page":
-    pageTitle = page?.title || pageTitle;
-    pageDescription = page?.description || pageDescription;
+    pageTitle = titleOverride || pageTitle;
+    pageDescription = descriptionOverride || pageDescription;
     break;
   default:
     break;
 }
 
-if (title) pageTitle = title;
-if (description) pageDescription = description;
+if (titleOverride) pageTitle = titleOverride;
+if (descriptionOverride) pageDescription = descriptionOverride;
+if (ogImageOverride) ogImage = ogImageOverride;
+
 if (pageTitle !== globals.site_name && schema !== "blog") pageTitle = `${pageTitle} / ${globals.site_name}`;
 
-const escapedPageDescription =
-  pageDescription?.replace(
-    /["'<>&]/g,
-    (c) =>
-      ({
-        '"': "&quot;",
-        "'": "&#39;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "&": "&amp;",
-      })[c]
-  ) || "";
+const escapedPageDescription = escapeHtml(pageDescription);
 ---
 
 <meta charset="utf-8" />
@@ -126,7 +119,7 @@ const escapedPageDescription =
 <meta property="og:title" content={pageTitle} />
 <meta name="description" content={escapedPageDescription} />
 <meta property="og:description" content={escapedPageDescription} />
-<meta property="og:type" content="article" />
+<meta property="og:type" content={schema === "blog" ? "article" : "website"} />
 <meta property="og:url" content={fullUrl} />
 <meta property="og:image" content={`${ogImage}?class=w800`} />
 <meta name="theme-color" content={globals.theme_color} />
@@ -151,5 +144,5 @@ const escapedPageDescription =
   type="application/atom+xml"
   rel="alternate"
   title={`Posts / ${globals.site_name}`}
-  href="https://coryd.dev/feeds/posts"
+  href={`${globals.url}/feeds/posts`}
 />

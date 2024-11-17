@@ -40,8 +40,9 @@ export async function fetchBooks() {
   const sortedByYear = Object.values(years).filter((year) => year.value > 2017);
   const currentYear = new Date().getFullYear();
   const booksForCurrentYear =
-    sortedByYear.find((yearGroup) => yearGroup.value === currentYear)?.data ||
-    [];
+    sortedByYear
+      .find((yearGroup) => yearGroup.value === currentYear)
+      ?.data.filter((book) => book["status"] === "finished") || [];
 
   const result = {
     all: books,
@@ -53,4 +54,4 @@ export async function fetchBooks() {
   if (import.meta.env.MODE === "development") cachedBooks = result;
 
   return result;
-};
+}

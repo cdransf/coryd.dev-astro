@@ -2,6 +2,7 @@ import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItPrism from "markdown-it-prism";
+import truncateHtml from "truncate-html";
 
 const markdown = markdownIt({ html: true, linkify: true });
 markdown.use(markdownItAnchor, {
@@ -43,3 +44,22 @@ export const parseCountryField = (countryField) => {
 };
 
 export const md = (string) => markdown.render(string);
+
+export const htmlTruncate = (content, limit = 50) =>
+  truncateHtml(content, limit, {
+    byWords: true,
+    ellipsis: "...",
+  });
+
+export const escapeHtml = (str) =>
+  str.replace(
+    /["'&<>]/g,
+    (char) =>
+      ({
+        '"': "&quot;",
+        "'": "&#39;",
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+      }[char] || char)
+  );
