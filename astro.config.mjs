@@ -14,6 +14,9 @@ export default defineConfig({
   vite: {
     build: {
       sourcemap: false,
+      rollupOptions: {
+        external: ["/js/script.js"],
+      },
     },
     optimizeDeps: {
       include: ["@tabler/icons-react"],

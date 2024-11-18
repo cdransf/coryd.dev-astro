@@ -1,19 +1,10 @@
 import { DateTime } from "luxon";
-import markdownIt from "markdown-it";
-import markdownItAnchor from "markdown-it-anchor";
-import markdownItFootnote from "markdown-it-footnote";
-import markdownItPrism from "markdown-it-prism";
+import { remark } from "remark";
+import footnotes from "remark-footnotes";
+import remarkRehype from "remark-rehype";
+import rehypePrism from "rehype-prism-plus";
+import rehypeStringify from "rehype-stringify";
 import truncateHtml from "truncate-html";
-
-const markdown = markdownIt({ html: true, linkify: true });
-markdown.use(markdownItAnchor, {
-  level: [1, 2],
-  permalink: markdownItAnchor.permalink.headerLink({
-    safariReaderFix: true,
-  }),
-});
-markdown.use(markdownItFootnote);
-markdown.use(markdownItPrism);
 
 // arrays
 export const shuffleArray = (array) => {
@@ -47,7 +38,16 @@ export const parseCountryField = (countryField) => {
 };
 
 // markdown
-export const md = (string) => markdown.render(string);
+export const md = async (string) => {
+  const processed = await remark()
+    .use(footnotes, { inlineNotes: true })
+    .use(remarkRehype)
+    .use(rehypePrism, { ignoreMissing: true })
+    .use(rehypeStringify)
+    .process(string);
+
+  return processed.toString();
+};
 
 // html
 export const htmlTruncate = (content, limit = 50) =>
@@ -66,11 +66,12 @@ export const escapeHtml = (str) =>
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
-      }[char] || char)
+      })[char] || char
   );
 
 // urls
 export const encodeAmp = (url) => url.replace(/&/g, "&amp;");
+export const removeTrailingSlash = (url) => url.replace(/\/$/, '');
 
 // dates
 export const dateToRFC822 = (date) =>

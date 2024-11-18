@@ -3,11 +3,9 @@ import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import RssBanner from "@components/blocks/banners/Rss.astro";
 import { fetchLinks } from "@utils/data/links.js";
-import { fetchGlobalData } from "@utils/data/global/index.js";
 
 export const prerender = true;
 
-const { globals } = await fetchGlobalData(Astro);
 const links = await fetchLinks();
 const title = "Links";
 const description =

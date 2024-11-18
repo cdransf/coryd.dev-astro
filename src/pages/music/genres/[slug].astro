@@ -1,0 +1,71 @@
+---
+import Layout from "@layouts/Layout.astro";
+import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
+import { IconArrowLeft } from "@tabler/icons-react";
+import { fetchGenreByUrl } from "@utils/data/dynamic/genreByUrl.js";
+import { mediaLinks } from "@utils/helpers/media.js";
+import { md } from "@utils/helpers/general.js";
+
+const genre = await fetchGenreByUrl(Astro.url.pathname);
+if (!genre) return Astro.redirect("/404", 404);
+
+const artistCount = genre.artists?.length || 0;
+const connectingWords = artistCount > 1 ? "artists are" : "artist is";
+const genreMediaLinks = mediaLinks(genre.artists, "artist", 5);
+const pageTitle = `${genre.name} / Music`;
+const description = `Discover the music genre ${genre.name}, featuring ${artistCount} artists and ${genre.total_plays} total track plays.`;
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  schema="genre"
+>
+  <a class="back-link" href="/music" title="Go back to the music index page">
+    <IconArrowLeft size={18} /> Back to music
+  </a>
+  <h2>{genre.name}</h2>
+  <article class="genre-focus">
+    {
+      genreMediaLinks && (
+        <>
+          <p>
+            My top <strong class="highlight-text">{genre.name}</strong>{" "}
+            {connectingWords} <span set:html={genreMediaLinks}></span> I've listened to{" "}
+            <strong class="highlight-text">{genre.total_plays}</strong>{" "}
+            tracks from this genre.
+          </p>
+          <hr />
+        </>
+      )
+    }
+    <AssociatedMedia
+      books={genre.books}
+      movies={genre.movies}
+      posts={genre.posts}
+    />
+    {
+      genre.description && (
+        <>
+          <h3>Overview</h3>
+          <div data-toggle-content class="text-toggle-hidden">
+            <div set:html={md(genre.description)} />
+            <p>
+              <a href={genre.wiki_link}>Continue reading at Wikipedia.</a>
+            </p>
+            <p>
+              <em>
+                Wikipedia content provided under the terms of the{" "}
+                <a href="https://creativecommons.org/licenses/by-sa/3.0/">
+                  Creative Commons BY-SA license
+                </a>
+              </em>
+            </p>
+          </div>
+          <button data-toggle-button>Show more</button>
+        </>
+      )
+    }
+  </article>
+</Layout>

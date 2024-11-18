@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { removeTrailingSlash } from "@utils/helpers/general.js";
 
 const SUPABASE_URL = import.meta.env.SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.SUPABASE_KEY;
@@ -11,7 +12,7 @@ export async function fetchBookByUrl(url) {
   const { data: book, error } = await supabase
     .from("optimized_books")
     .select("*")
-    .eq("url", url)
+    .eq("url", removeTrailingSlash(url))
     .limit(1);
 
   if (error || !book || book.length === 0) {

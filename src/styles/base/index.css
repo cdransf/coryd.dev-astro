@@ -318,9 +318,8 @@ article {
   }
 }
 
-sup.footnote-ref {
-  line-height: var(--line-height-xs);
-  padding: var(--spacing-xs);
+.footnotes #footnote-label {
+  display: none;
 }
 
 /* tables */

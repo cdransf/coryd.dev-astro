@@ -1,8 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import { IconStar } from "@tabler/icons-react";
 import { fetchAllPosts } from "@data/posts.js";
-import { fetchGlobalData } from "@utils/data/global/index.js";
 import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import { md } from "@utils/helpers/general.js";
@@ -10,13 +8,22 @@ import { DateTime } from "luxon";
 
 export const prerender = true;
 
-const posts = await fetchAllPosts();
-const { page } = Astro.props;
-const { globals } = await fetchGlobalData(Astro);
-const currentUrl = Astro.url.pathname;
+export async function getStaticPaths() {
+  const pageSize = 15; // Declare inside this function
+  const posts = await fetchAllPosts();
 
-const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;
+  const totalPages = Math.ceil(posts.length / pageSize);
+  const paths = Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: (i + 1).toString() },
+  }));
+
+  return paths;
+}
+
 const pageSize = 15;
+const currentUrl = Astro.url.pathname;
+const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;
+const posts = await fetchAllPosts();
 const totalPosts = posts.length;
 const totalPages = Math.ceil(totalPosts / pageSize);
 const start = (currentPage - 1) * pageSize;

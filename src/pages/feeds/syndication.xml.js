@@ -3,10 +3,7 @@ import fetchSyndication from '@utils/data/syndication.js';
 import { fetchGlobals } from '@utils/data/globals.js';
 import { dateToRFC822, encodeAmp, md } from '@utils/helpers/general.js';
 
-const generateSyndicationRSS = async () => {
-  const globals = await fetchGlobals();
-  const entries = await fetchSyndication();
-
+const generateSyndicationRSS = async (globals, entries) => {
   if (!entries.length) throw new Error('No feed entries found.');
 
   const title = globals.site_name || 'Syndicated Content Feed';
@@ -48,15 +45,17 @@ const generateSyndicationRSS = async () => {
 
 export async function GET() {
   try {
-    const rss = await generateSyndicationRSS();
+    const globals = await fetchGlobals();
+    const entries = await fetchSyndication();
+
+    const rss = await generateSyndicationRSS(globals, entries);
+
     return new Response(rss, {
       status: 200,
       headers: { 'Content-Type': 'application/rss+xml' },
     });
   } catch (error) {
-    console.error(error.message);
+    console.error('Error generating syndication feed:', error);
     return new Response('Error generating syndication feed.', { status: 500 });
   }
 }
-
-export const prerender = true;
