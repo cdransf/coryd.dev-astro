@@ -1,5 +1,5 @@
 import { fetchBlogroll } from "@utils/data/blogroll.js";
-import { fetchGlobals } from "@utils/data/global/index.js";
+import { fetchGlobals } from '@utils/data/globals.js';
 
 export async function GET() {
   try {

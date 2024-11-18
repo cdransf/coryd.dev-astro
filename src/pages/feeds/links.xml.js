@@ -1,8 +1,8 @@
 import { generateRssFeed } from "@utils/generateRssFeed";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchLinks } from "@utils/data/links";
-import fs from "fs/promises";
-import path from "path";
+
+export const prerender = true;
 
 export async function getStaticPaths() {
   const globals = await fetchGlobals();

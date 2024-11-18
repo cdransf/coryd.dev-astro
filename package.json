@@ -6,7 +6,6 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
     "astro": "astro",
     "update:deps": "npm upgrade && ncu && npx @astrojs/upgrade",
     "build:worker": "node scripts/worker-build.mjs $WORKER_NAME",
