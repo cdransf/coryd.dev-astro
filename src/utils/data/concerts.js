@@ -6,7 +6,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let cachedConcerts = null;
 
-export async function fetchConcertsData() {
+export async function fetchConcerts() {
   if (import.meta.env.MODE === "development" && cachedConcerts)
     return cachedConcerts;
 

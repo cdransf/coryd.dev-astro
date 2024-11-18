@@ -435,12 +435,12 @@ td:first-of-type,
 
 main {
   flex: 1 1 0%;
+  margin: 0 auto;
 }
 
 main,
 footer {
   width: 80%;
-  margin: var(--sizing-3xl) auto 0;
 
   @media screen and (min-width: 768px) {
     max-width: 768px;
@@ -448,6 +448,8 @@ footer {
 }
 
 footer {
+  margin: var(--sizing-3xl) auto 0;
+
   & nav {
     &.social,
     &.sub-pages {

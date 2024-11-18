@@ -1,5 +1,7 @@
 ---
+import { DateTime } from "luxon";
 import Layout from "@layouts/Layout.astro";
+import Modal from "@components/blocks/Modal.astro";
 import ToggleContent from "@components/utils/ToggleContent.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
 import {
@@ -107,7 +109,6 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
         </>
       )
     }
-
     {
       artist.concerts && (
         <>
@@ -115,28 +116,38 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
             <IconDeviceSpeaker size={18} /> I've seen this artist live!
           </p>
           <ul>
-            {artist.concerts.map((concert) => {
-              const venue =
-                concert.venue_latitude && concert.venue_longitude
-                  ? `<a href="https://www.openstreetmap.org/?mlat=${concert.venue_latitude}&mlon=${concert.venue_longitude}#map=18/${concert.venue_latitude}/${concert.venue_longitude}">${concert.venue_name_short}</a>`
-                  : concert.venue_name_short;
-
-              return (
-                <li>
-                  On{" "}
-                  <strong class="highlight-text">
-                    {concert.date.toLocaleString(DateTime.DATE_MED)}
-                  </strong>
-                  {venue && <> at {venue}</>}
-                  {concert.notes && <span> — {concert.notes}</span>}
-                </li>
-              );
-            })}
+            {artist.concerts.map((concert, index) => (
+              <li key={index}>
+                On{" "}
+                <strong class="highlight-text">{DateTime.fromISO(concert.date).toLocaleString(DateTime.DATE_MED)}</strong>
+                {concert.venue_name_short && (
+                  <>
+                    {" "}
+                    at{" "}
+                    {concert.venue_latitude && concert.venue_longitude ? (
+                      <a
+                        href={`https://www.openstreetmap.org/?mlat=${concert.venue_latitude}&mlon=${concert.venue_longitude}#map=18/${concert.venue_latitude}/${concert.venue_longitude}`}
+                      >{concert.venue_name_short}</a>
+                    ) : (
+                      <span>{concert.venue_name_short}</span>
+                    )}
+                  </>
+                )}
+                {concert.notes && (
+                  <>
+                    {" "}
+                    <Modal
+                      id={`modal-${index}`}
+                      content={`### Notes\n${concert.notes}`}
+                    />
+                  </>
+                )}
+              </li>
+            ))}
           </ul>
         </>
       )
     }
-
     {
       artist.albums && (
         <>

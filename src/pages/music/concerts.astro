@@ -1,0 +1,87 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Paginator from "@components/nav/Paginator.astro";
+import Modal from "@components/blocks/Modal.astro";
+import { fetchConcerts } from "@utils/data/concerts.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { DateTime } from "luxon";
+
+export const prerender = true;
+
+const { globals } = await fetchGlobalData(Astro);
+const concerts = await fetchConcerts();
+const title = "Concerts";
+const description =
+  "These are concerts I've attended (not all of them — just the ones I could remember or glean from emails, photo metadata et al). I've been to at least " +
+  concerts.length +
+  " shows.";
+const pageSize = 30;
+const currentPage = parseInt(Astro.url.searchParams.get("page") || "1", 10);
+const totalPages = Math.ceil(concerts.length / pageSize);
+const paginatedConcerts = concerts.slice(
+  (currentPage - 1) * pageSize,
+  currentPage * pageSize
+);
+
+const pagination = {
+  currentPage,
+  totalPages,
+  hasPrevious: currentPage > 1,
+  hasNext: currentPage < totalPages,
+  previousPage: currentPage > 1 ? `/concerts?page=${currentPage - 1}` : null,
+  nextPage: currentPage < totalPages ? `/concerts?page=${currentPage + 1}` : null,
+  pages: Array.from({ length: totalPages }, (_, index) => ({
+    number: index + 1,
+    href: `/concerts?page=${index + 1}`,
+  })),
+};
+---
+
+<Layout
+  pageTitle={title}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
+  {currentPage === 1 && (
+    <>
+      <h2 class="page-title">{title}</h2>
+      <p>These are concerts I've attended (not all of them — just the ones I could remember or glean from emails, photo metadata et al). I've been to at least <strong class="highlight-text">{concerts.length}</strong> shows.</p>
+      <hr />
+    </>
+  )}
+
+  <ul class="concert-list">
+    {paginatedConcerts.map((concert) => (
+      <li>
+        {concert.artist.url ? (
+          <a href={concert.artist.url}>{concert.artist.name}</a>
+        ) : (
+          <span>{concert.artist.name}</span>
+        )}{" "}
+        on{" "}
+        <strong class="highlight-text">{DateTime.fromISO(concert.date).toLocaleString(DateTime.DATE_FULL)}</strong>
+        {concert.venue?.name && (
+          <>
+            {" at "}
+            {concert.venue.latitude && concert.venue.longitude ? (
+              <a
+                href={`https://www.openstreetmap.org/?mlat=${concert.venue.latitude}&mlon=${concert.venue.longitude}#map=18/${concert.venue.latitude}/${concert.venue.longitude}`}
+              >{concert.venue.name_short || concert.venue.name}</a>
+            ) : (
+              <span>{concert.venue.name_short || concert.venue.name}</span>
+            )}
+          </>
+        )}
+        {concert.notes && (
+          <Modal
+            id={`modal-${concert.id}`}
+            icon="info-circle"
+            content={`### Notes\n${concert.notes}`}
+          />
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <Paginator pagination={pagination} />
+</Layout>
