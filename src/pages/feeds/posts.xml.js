@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const globals = await fetchGlobals();
   const posts = await fetchAllPosts();
 
-  const rss = generateRssFeed({
+  const rss = GET({
     permalink: "/feeds/posts.xml",
     title: "Posts feed",
     globals,
@@ -19,5 +19,10 @@ export async function getStaticPaths() {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, rss);
 
-  return [];
+  return new Response(rss, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/rss+xml",
+    },
+  });
 }

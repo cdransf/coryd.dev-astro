@@ -4,7 +4,7 @@ import { fetchLinks } from "@utils/data/links";
 
 export const prerender = true;
 
-export async function getStaticPaths() {
+export async function GET() {
   const globals = await fetchGlobals();
   const links = await fetchLinks();
 
@@ -19,5 +19,10 @@ export async function getStaticPaths() {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, rss);
 
-  return [];
+  return new Response(rss, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/rss+xml",
+    },
+  });
 }

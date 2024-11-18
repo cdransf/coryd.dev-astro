@@ -4,7 +4,7 @@ import { fetchBooks } from "@utils/data/books.js";
 
 export const prerender = true;
 
-export async function getStaticPaths() {
+export async function GET() {
   const globals = await fetchGlobals();
   const books = await fetchBooks();
 
@@ -19,5 +19,10 @@ export async function getStaticPaths() {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, rss);
 
-  return [];
+  return new Response(rss, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/rss+xml",
+    },
+  });
 }
