@@ -4,7 +4,7 @@ import { fetchActivity } from "@utils/data/activity.js";
 
 export const prerender = true;
 
-export async function getStaticPaths() {
+export async function GET() {
   const globals = await fetchGlobals();
   const activity = await fetchActivity();
 
@@ -19,5 +19,10 @@ export async function getStaticPaths() {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, feed);
 
-  return [];
+  return new Response(feed, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
