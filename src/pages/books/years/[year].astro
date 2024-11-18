@@ -13,6 +13,14 @@ import { DateTime } from "luxon";
 
 export const prerender = true;
 
+export async function getStaticPaths() {
+  const books = await fetchBooks();
+
+  return books.years.map((yearData) => ({
+    params: { year: String(yearData.value) },
+  }));
+}
+
 const { globals } = await fetchGlobalData(Astro);
 const books = await fetchBooks();
 const { year } = Astro.params;
@@ -45,7 +53,7 @@ const intro = isCurrentYear
   pageTitle={pageTitle}
   description={description}
   fullUrl={Astro.url.pathname}
-  ogImage={bookData[0].image}
+  ogImage={bookData[0]?.image || ""}
 >
   <a href="/books" class="back-link">
     <IconArrowLeft size={18} /> Back to books
@@ -53,10 +61,5 @@ const intro = isCurrentYear
   <h2 class="page-title">{year} / Books</h2>
   <div set:html={intro} />
   <hr />
-  <Grid
-    data={bookData}
-    shape="vertical"
-    count={200}
-    loading="eager"
-  />
+  <Grid data={bookData} shape="vertical" count={200} loading="eager" />
 </Layout>
