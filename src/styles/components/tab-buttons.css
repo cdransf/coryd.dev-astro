@@ -16,7 +16,7 @@ input[id="tracks-chart"] ~ .tracks-chart {
 }
 
 [for="tracks-recent"] {
-  margin-right: var(--spacing-xs);
+  margin-right: var(--spacing-lg);
 }
 
 #tracks-recent:checked ~ [for="tracks-recent"],
