@@ -3,9 +3,10 @@ import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchMovies } from "@utils/data/movies.js";
 
 export async function GET() {
-  const globals = await fetchGlobals();
-  const movies = await fetchMovies();
-
+  const [globals, movies] = await Promise.all([
+    fetchGlobals(),
+    fetchMovies(),
+  ]);
   const rss = generateRssFeed({
     permalink: "/feeds/movies.xml",
     title: "Movies feed",

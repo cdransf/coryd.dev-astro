@@ -8,12 +8,13 @@ import { IconActivity } from "@tabler/icons-react";
 
 import Rss from "@components/blocks/banners/Rss.astro";
 
-const music = await fetchMusicData();
-const tv = await fetchShows();
-const movies = await fetchMovies();
-const books = await fetchBooks();
-const links = await fetchLinks();
-
+const [music, tv, movies, books, links] = await Promise.all([
+  fetchMusicData(),
+  fetchShows(),
+  fetchMovies(),
+  fetchBooks(),
+  fetchLinks(),
+]);
 const track = music.week?.tracks[0];
 const show = tv.recentlyWatched[0];
 const movie = movies.recentlyWatched[0];
@@ -34,7 +35,8 @@ const link = links[0];
     <li>
       <span class="tv">Last episode watched:</span>
       <strong class="highlight-text">{show.formatted_episode}</strong> of <a
-        href={show.url}>{show.title}</a>
+        href={show.url}>{show.title}</a
+      >
     </li>
     <li>
       <span class="movies">Last movie watched:</span>

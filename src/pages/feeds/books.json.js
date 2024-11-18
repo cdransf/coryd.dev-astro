@@ -3,9 +3,10 @@ import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchBooks } from "@utils/data/books.js";
 
 export async function GET() {
-  const globals = await fetchGlobals();
-  const books = await fetchBooks();
-
+  const [globals, books] = await Promise.all([
+    fetchGlobals(),
+    fetchBooks(),
+  ]);
   const feed = generateJsonFeed({
     permalink: "/feeds/books.json",
     title: "Books / Cory Dransfeldt",

@@ -7,9 +7,11 @@ import { fetchGlobalData } from "@utils/data/global/index.js";
 import { md } from "@utils/helpers/general.js";
 import { getPopularPosts } from "@utils/getPopularPosts.js";
 
-const analytics = await fetchAnalyticsData();
-const links = await fetchLinks();
-const posts = await fetchAllPosts();
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
 const popularPosts = getPopularPosts(posts, analytics);
 
 import AddonLinks from "@components/blocks/links/AddonLinks.astro";
@@ -91,10 +93,7 @@ const htmlContent = md(post.content);
         )
       }
       <div set:html={htmlContent} />
-      {
-        post.blocks &&
-          post.blocks.map((block) => <BlockRenderer block={block} />)
-      }
+      {post.blocks && <BlockRenderer blocks={post.blocks} />}
       {post.mastodon_url && <Mastodon url={post.mastodon_url} />}
       <AssociatedMedia
         artists={post.artists}

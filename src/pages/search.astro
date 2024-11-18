@@ -1,0 +1,93 @@
+---
+import "@npm/minisearch/dist/es/index.js";
+import Layout from "@layouts/Layout.astro";
+import AddonLinks from "@components/blocks/links/AddonLinks.astro";
+import { getPopularPosts } from "@utils/getPopularPosts.js";
+import { fetchAllPosts } from "@data/posts.js";
+import { fetchAnalyticsData } from "@data/analytics.js";
+import { fetchLinks } from "@data/links.js";
+
+export const prerender = true;
+
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
+const popularPosts = getPopularPosts(posts, analytics);
+const title = "Search";
+const description = "Search for posts, links, artists, genres, movies, shows and books on my site.";
+---
+
+<Layout
+  pageTitle={title}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
+  <h2 class="page-title">Search</h2>
+  <p>
+    You can find <a href="/posts">posts</a>, <a href="/links">links</a>, <a
+      href="/music/#artists">artists</a
+    >, genres, <a href="/watching#movies">movies</a>, <a href="/watching#tv"
+      >shows</a
+    > and <a href="/books">books</a> via the field below (though it only surfaces
+    movies and shows I've watched and books I've written something about).
+  </p>
+  <noscript>
+    <p>
+      <strong class="highlight-text"
+        >If you're seeing this it means that you've (quite likely) disabled
+        JavaScript (that's a totally valid choice!).</strong
+      > You can search for anything on my site using the form below, but your query
+      will be routed through <a href="https://duckduckgo.com">DuckDuckGo</a>.
+    </p>
+    <p>
+      <strong class="highlight-text">Type something in and hit enter.</strong>
+    </p>
+  </noscript>
+  <form class="search__form" action="https://duckduckgo.com" method="get">
+    <input
+      class="search__form--input"
+      placeholder="Search"
+      type="search"
+      name="q"
+      autocomplete="off"
+      autofocus
+    />
+    <details>
+      <summary class="highlight-text">Filter by type</summary>
+      <fieldset class="search__form--type">
+        <label
+          ><input type="checkbox" name="type" value="post" checked /> Posts</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="link" checked /> Links</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="artist" checked /> Artists</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="genre" checked /> Genres</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="book" checked /> Books</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="movie" checked /> Movies</label
+        >
+        <label
+          ><input type="checkbox" name="type" value="show" checked /> Shows</label
+        >
+      </fieldset>
+    </details>
+    <input
+      class="search__form--fallback"
+      type="hidden"
+      name="sites"
+      value="coryd.dev"
+    />
+  </form>
+  <ul class="search__results"></ul>
+  <button class="search__load-more" style="display:none">Load More</button>
+  <AddonLinks popularPosts={popularPosts} links={links} />
+</Layout>

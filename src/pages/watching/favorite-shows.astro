@@ -1,0 +1,60 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Grid from "@components/media/Grid.astro";
+import { IconArrowLeft } from "@tabler/icons-react";
+import { fetchShows } from "@utils/data/tv.js";
+import { fetchGlobalData } from "@utils/data/global/index.js";
+import { shuffleArray } from "@utils/helpers/general.js";
+
+const { globals } = await fetchGlobalData(Astro);
+const shows = await fetchShows();
+const favoriteShows = shows.favorites;
+const pageSize = 24;
+const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;
+const totalTvShows = favoriteShows.length;
+const totalPages = Math.ceil(totalTvShows / pageSize);
+const start = (currentPage - 1) * pageSize;
+const end = start + pageSize;
+const paginatedTvShows = favoriteShows.slice(start, end);
+
+const pagination = {
+  currentPage,
+  totalPages,
+  hasPrevious: currentPage > 1,
+  hasNext: currentPage < totalPages,
+  previousPage: currentPage > 1 ? `/watching/favorite-shows/${currentPage - 1}` : null,
+  nextPage: currentPage < totalPages ? `/watching/favorite-shows/${currentPage + 1}` : null,
+  pages: Array.from({ length: totalPages }, (_, i) => ({
+    number: i + 1,
+    href: `/watching/favorite-shows/${i + 1}`,
+  })),
+};
+
+const pageTitle = currentPage === 1 ? "Favorite Shows" : `Favorite shows / page ${currentPage}`;
+const description = "These are my favorite TV shows. There are many like them, but these are mine.";
+---
+
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  fullUrl={Astro.url.pathname}
+  ogImage={shuffleArray(favoriteShows)[0].backdrop}
+>
+  <a href="/watching" class="back-link">
+    <IconArrowLeft size={18} /> Back to watching
+  </a>
+  {currentPage === 1 && (
+    <>
+      <h2 class="page-title">Favorite Shows</h2>
+      <p>These are my favorite TV shows. There are many like them, but these are mine.</p>
+      <hr />
+    </>
+  )}
+  <Grid
+    data={paginatedTvShows}
+    pagination={pagination}
+    shape="poster"
+    count={pageSize}
+    loading="eager"
+  />
+</Layout>

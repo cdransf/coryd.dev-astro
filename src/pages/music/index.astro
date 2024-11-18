@@ -19,8 +19,10 @@ import { mediaLinks }  from "@utils/helpers/media.js";
 export const prerender = true;
 
 const { globals } = await fetchGlobalData(Astro);
-const music = await fetchMusicData();
-const albumReleases = await fetchAlbumReleases();
+const [music, albumReleases ] = await Promise.all([
+  fetchMusicData(),
+  fetchAlbumReleases(),
+]);
 
 const title = "Music";
 const description =

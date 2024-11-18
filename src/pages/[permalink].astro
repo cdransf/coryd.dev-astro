@@ -4,7 +4,6 @@ import BlockRenderer from "@components/blocks/BlockRenderer.astro";
 import { fetchPages } from "@utils/data/pages.js";
 
 export const prerender = true;
-
 export async function getStaticPaths() {
   const pages = await fetchPages();
   return pages.map((page) => ({
@@ -23,5 +22,5 @@ const currentUrl = Astro.url.pathname;
   ogImage={page.open_graph_image}
   currentUrl={currentUrl}
 >
-  {page.blocks.map((block) => <BlockRenderer block={block} />)}
+  <BlockRenderer blocks={page.blocks} />
 </Layout>

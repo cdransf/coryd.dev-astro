@@ -71,7 +71,7 @@ export const escapeHtml = (str) =>
 
 // urls
 export const encodeAmp = (url) => url.replace(/&/g, "&amp;");
-export const removeTrailingSlash = (url) => url.replace(/\/$/, '');
+export const removeTrailingSlash = (url) => url.replace(/\/$/, "");
 
 // dates
 export const dateToRFC822 = (date) =>

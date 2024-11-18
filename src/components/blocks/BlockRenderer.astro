@@ -15,33 +15,65 @@ import YouTubePlayer from "@components/blocks//YouTubePlayer.astro";
 import { md } from "@utils/helpers/general.js";
 import { getPopularPosts } from "@utils/getPopularPosts.js";
 
-const analytics = await fetchAnalyticsData();
-const links = await fetchLinks();
-const posts = await fetchAllPosts();
+const [analytics, links, posts] = await Promise.all([
+  fetchAnalyticsData(),
+  fetchLinks(),
+  fetchAllPosts(),
+]);
 const popularPosts = getPopularPosts(posts, analytics);
-const { block } = Astro.props;
+const { blocks } = Astro.props;
+const processedBlocks = await Promise.all(
+  blocks.map(async (block) => {
+    if (block.type === "markdown") {
+      return {
+        ...block,
+        html: await md(block.text),
+      };
+    }
+    if (block.type === "divider") {
+      return {
+        ...block,
+        html: await md(block.markup),
+      };
+    }
+    return block;
+  })
+);
+
 ---
 
-{
-  block.type === "addon_links" && (
-    <AddonLinks popularPosts={popularPosts} links={links} />
-  )
-}
+<div>
+  {
+    processedBlocks.map((block) => (
+      <>
+        {block.type === "addon_links" && (
+          <AddonLinks popularPosts={popularPosts} links={links} />
+        )}
 
-{block.type === "associated_media" && <AssociatedMedia media={block.media} />}
+        {block.type === "associated_media" && (
+          <AssociatedMedia media={block.media} />
+        )}
 
-{block.type === "divider" && <div set:html={md(block.markup)} />}
+        {block.type === "divider" && <div set:html={block.html} />}
 
-{block.type === "github_banner" && <GitHub url={block.url} />}
+        {block.type === "github_banner" && <GitHub url={block.url} />}
 
-{block.type === "hero" && <Hero image={block.image} alt={block.alt} />}
+        {block.type === "hero" && <Hero image={block.image} alt={block.alt} />}
 
-{block.type === "markdown" && <div set:html={md(block.text)} />}
+        {block.type === "markdown" && <div set:html={block.text} />}
 
-{block.type === "npm_banner" && <Npm url={block.url} command={block.command} />}
+        {block.type === "npm_banner" && (
+          <Npm url={block.url} command={block.command} />
+        )}
 
-{block.type === "modal" && <Modal content={block.content} />}
+        {block.type === "modal" && <Modal content={block.content} />}
 
-{block.type === "rss_banner" && <Rss url={block.url} text={block.text} />}
+        {block.type === "rss_banner" && (
+          <Rss url={block.url} text={block.text} />
+        )}
 
-{block.type === "youtube_player" && <YouTubePlayer url={block.url} />}
+        {block.type === "youtube_player" && <YouTubePlayer url={block.url} />}
+      </>
+    ))
+  }
+</div>

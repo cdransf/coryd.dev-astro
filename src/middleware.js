@@ -5,8 +5,10 @@ export async function onRequest(context, next) {
   const { locals } = context;
 
   try {
-    const globals = await fetchGlobals();
-    const nav = await fetchNavigation();
+    const [globals, nav] = await Promise.all([
+      fetchGlobals(),
+      fetchNavigation(),
+    ]);
 
     locals.globals = globals;
     locals.nav = nav;

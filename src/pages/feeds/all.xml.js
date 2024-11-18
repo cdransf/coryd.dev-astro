@@ -3,9 +3,10 @@ import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchActivity } from "@utils/data/activity.js";
 
 export async function GET() {
-  const globals = await fetchGlobals();
-  const activity = await fetchActivity();
-
+  const [globals, activity] = await Promise.all([
+    fetchGlobals(),
+    fetchActivity(),
+  ]);
   const rss = generateRssFeed({
     permalink: "/feeds/all.xml",
     title: "All activity feed",

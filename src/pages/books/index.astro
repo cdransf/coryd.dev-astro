@@ -5,29 +5,30 @@ import ProgressBar from "@components/media/ProgressBar.astro";
 import { fetchBooks } from "@utils/data/books.js";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 import { md, htmlTruncate } from "@utils/helpers/general.js";
+import { bookYearLinks } from "@utils/helpers/media.js";
 
 export const prerender = true;
 
 const books = await fetchBooks();
+const currentBookCount = books.currentYear.length;
+const bookData = books.all
+  .filter((book) => book.status === "started")
+  .reverse();
+const processedBooks = await Promise.all(
+  bookData.map(async (book) => {
+    const descriptionHtml = await md(book.description);
+    const truncatedHtml = htmlTruncate(descriptionHtml, 50);
+    return {
+      ...book,
+      truncatedDescription: truncatedHtml,
+    };
+  })
+);
 const { globals } = await fetchGlobalData(Astro);
 const title = "Currently reading";
 const description = "Here's what I'm reading at the moment.";
 const updated = new Date().toISOString();
 const currentYear = new Date().getFullYear();
-const bookData = books.all
-  .filter((book) => book.status === "started")
-  .reverse();
-const currentBookCount = books.currentYear.length;
-const bookYearLinks = (years) =>
-  years
-    .sort((a, b) => b.value - a.value)
-    .map(
-      (year, index) =>
-        `<a href="/books/years/${year.value}">${year.value}</a>${
-          index < years.length - 1 ? " / " : ""
-        }`
-    )
-    .join("");
 ---
 
 <Layout
@@ -49,7 +50,7 @@ const bookYearLinks = (years) =>
   />
   <hr />
   {
-    bookData.map((book) => (
+    processedBooks.map((book) => (
       <article class="book-entry" key={book.url}>
         <a href={book.url}>
           <img
@@ -77,7 +78,7 @@ const bookYearLinks = (years) =>
           {book.description && (
             <div
               class="description"
-              set:html={htmlTruncate(md(book.description))}
+              set:html={book.truncatedDescription}
             />
           )}
         </div>

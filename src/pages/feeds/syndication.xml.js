@@ -45,9 +45,10 @@ const generateSyndicationRSS = async (globals, entries) => {
 
 export async function GET() {
   try {
-    const globals = await fetchGlobals();
-    const entries = await fetchSyndication();
-
+    const [globals, entries] = await Promise.all([
+      fetchGlobals(),
+      fetchSyndication(),
+    ]);
     const rss = await generateSyndicationRSS(globals, entries);
 
     return new Response(rss, {

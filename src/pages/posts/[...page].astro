@@ -5,46 +5,45 @@ import Layout from "@layouts/Layout.astro";
 import Paginator from "@components/nav/Paginator.astro";
 import { md } from "@utils/helpers/general.js";
 import { DateTime } from "luxon";
+import type { GetStaticPaths, Page } from "astro";
 
 export const prerender = true;
-
-export async function getStaticPaths() {
-  const pageSize = 15; // Declare inside this function
+export const getStaticPaths = async ({ paginate }) => {
   const posts = await fetchAllPosts();
+  const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const totalPages = Math.ceil(posts.length / pageSize);
-  const paths = Array.from({ length: totalPages }, (_, i) => ({
-    params: { page: (i + 1).toString() },
-  }));
+  return paginate(sortedPosts, {
+    pageSize: 15,
+  });
+};
 
-  return paths;
-}
-
-const pageSize = 15;
-const currentUrl = Astro.url.pathname;
-const currentPage = Astro.params.page ? parseInt(Astro.params.page, 10) : 1;
-const posts = await fetchAllPosts();
-const totalPosts = posts.length;
-const totalPages = Math.ceil(totalPosts / pageSize);
-const start = (currentPage - 1) * pageSize;
-const end = start + pageSize;
-const paginatedPosts = posts.slice(start, end);
-
+const { page } = Astro.props;
+const paginatedPosts = page.data;
 const pagination = {
-  currentPage,
-  totalPages,
-  hasPrevious: currentPage > 1,
-  hasNext: currentPage < totalPages,
-  previousPage: currentPage > 1 ? `/posts/${currentPage - 1}` : null,
-  nextPage: currentPage < totalPages ? `/posts/${currentPage + 1}` : null,
-  pages: Array.from({ length: totalPages }, (_, i) => ({
+  currentPage: page.currentPage,
+  totalPages: page.lastPage,
+  hasPrevious: page.currentPage > 1,
+  hasNext: page.currentPage < page.lastPage,
+  previousPage: page.url.prev || null,
+  nextPage: page.url.next || null,
+  pages: Array.from({ length: page.lastPage }, (_, i) => ({
     number: i + 1,
-    href: `/posts/${i + 1}`,
+    href: i === 0 ? `/posts` : `/posts/${i + 1}`,
   })),
 };
+const pageTitle =
+  pagination.currentPage === 1
+    ? "Posts"
+    : `Posts / page ${pagination.currentPage}`;
+const description =
+  "These are posts I've written. They're all added manually, after having been written and, I suppose, properly considered.";
 ---
 
-<Layout pageTitle="All posts" currentUrl={currentUrl}>
+<Layout
+  pageTitle={pageTitle}
+  description={description}
+  currentUrl={Astro.url.pathname}
+>
   {
     paginatedPosts.map((post) => (
       <article>
@@ -61,6 +60,5 @@ const pagination = {
       </article>
     ))
   }
-
   <Paginator pagination={pagination} />
 </Layout>
