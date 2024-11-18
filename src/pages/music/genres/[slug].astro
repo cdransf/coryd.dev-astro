@@ -20,7 +20,7 @@ const description = `Discover the music genre ${genre.name}, featuring ${artistC
   pageTitle={pageTitle}
   description={description}
   fullUrl={Astro.url.pathname}
-  schema="genre"
+  ogImage={genre.artists[0].image}
 >
   <a class="back-link" href="/music" title="Go back to the music index page">
     <IconArrowLeft size={18} /> Back to music
