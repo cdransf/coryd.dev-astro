@@ -1,10 +1,20 @@
 ---
-import NowPlaying from "@components/blocks/NowPlaying.astro";
+import NowPlaying from "@components/blocks/NowPlaying.jsx";
+import { fetchNowPlaying } from "@utils/data/nowPlaying.js";
 
 const { intro } = Astro.props;
+
+let nowPlayingStaticContent = "Nothing playing.";
+
+if (import.meta.env.MODE === "development") {
+  const nowPlayingData = await fetchNowPlaying();
+  nowPlayingStaticContent = nowPlayingData.content;
+}
 ---
 
 <article class="intro">
   <div set:html={intro} />
-  <p class="music"><NowPlaying /></p>
+  <p class="music">
+    <NowPlaying staticContent={nowPlayingStaticContent} client:load />
+  </p>
 </article>
