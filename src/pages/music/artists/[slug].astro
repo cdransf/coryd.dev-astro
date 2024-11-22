@@ -117,7 +117,7 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
           <div id="concerts" class="concerts media-title">
             <div set:html={IconDeviceSpeaker({ size: 18 })}/> I've seen this artist live!
           </div>
-          <ul>
+          <ul class="concerts">
             {artist.concerts.map((concert, index) => (
               <li key={index}>
                 On{" "}

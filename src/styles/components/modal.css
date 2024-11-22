@@ -54,7 +54,7 @@
   vertical-align: middle;
 
   svg {
-    stroke: var(--accent-color);
+    stroke: var(var(--section-color), var(--accent-color));
 
     &:is(:hover, :focus, :active) {
       stroke: var(--accent-color-hover);
