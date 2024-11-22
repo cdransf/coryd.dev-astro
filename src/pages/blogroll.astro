@@ -1,16 +1,9 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import icons from "@cdransf/astro-tabler-icons";
 import { fetchBlogroll } from "@utils/data/blogroll.js";
 
 export const prerender = true;
 
-const {
-  IconRss,
-  IconJson,
-  IconMailPlus,
-  IconBrandMastodon,
-} = icons;
 const blogroll = await fetchBlogroll();
 const title = "Blogroll";
 const description =
@@ -24,10 +17,8 @@ const description =
 >
   <h2 class="page-title">{title}</h2>
   <p>
-    You can <a
-      href="/blogroll.opml"
-      >download an OPML file</a
-    > containing all of these feeds and import them into your RSS reader.
+    You can <a href="/blogroll.opml">download an OPML file</a> containing all of
+    these feeds and import them into your RSS reader.
   </p>
   <table>
     <thead>
@@ -45,43 +36,44 @@ const description =
             <td>
               <a href={blog.url}>{blog.url.replace("https://", "")}</a>
             </td>
-            <td class="blog-roll-icons">
-              {blog.rss_feed && (
-                <a
-                  class="rss"
-                  href={blog.rss_feed}
-                  aria-label={`RSS feed for ${blog.name}`}
-                >
-                  <div set:html={IconRss({ size: 16 })}/>
-                </a>
-              )}
-              {blog.json_feed && (
-                <a
-                  class="json"
-                  href={blog.json_feed}
-                  aria-label={`JSON feed for ${blog.name}`}
-                >
-                  <div set:html={IconJson({ size: 16 })}/>
-                </a>
-              )}
-              {blog.newsletter && (
-                <a
-                  class="mail-plus"
-                  href={blog.newsletter}
-                  aria-label={`Subscribe to ${blog.name}'s newsletter`}
-                >
-                  <div set:html={IconMailPlus({ size: 16 })}/>
-                </a>
-              )}
-              {blog.mastodon && (
-                <a
-                  class="brand-mastodon"
-                  href={blog.mastodon}
-                  aria-label={`Follow ${blog.name} on Mastodon`}
-                >
-                  <div set:html={IconBrandMastodon({ size: 16 })}/>
-                </a>
-              )}
+            <td>
+              {[
+                blog.rss_feed && (
+                  <a
+                    class="rss"
+                    href={blog.rss_feed}
+                    aria-label={`RSS feed for ${blog.name}`}
+                  >RSS</a>
+                ),
+                blog.json_feed && (
+                  <a
+                    class="json"
+                    href={blog.json_feed}
+                    aria-label={`JSON feed for ${blog.name}`}
+                  >JSON</a>
+                ),
+                blog.newsletter && (
+                  <a
+                    class="mail-plus"
+                    href={blog.newsletter}
+                    aria-label={`Subscribe to ${blog.name}'s newsletter`}
+                  >Newsletter</a>
+                ),
+                blog.mastodon && (
+                  <a
+                    class="brand-mastodon"
+                    href={blog.mastodon}
+                    aria-label={`Follow ${blog.name} on Mastodon`}
+                  >Mastodon</a>
+                ),
+              ]
+                .filter(Boolean)
+                .map((link, index, array) => (
+                  <>
+                    {link}
+                    {index < array.length - 1 && " / "}
+                  </>
+                ))}
             </td>
           </tr>
         ))
