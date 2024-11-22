@@ -26,7 +26,7 @@ const pagination = {
   nextPage: page.url.next || null,
   pages: Array.from({ length: page.lastPage }, (_, i) => ({
     number: i + 1,
-    href: i === 0 ? `/links` : `/links/${i + 1}`,
+    href: i === 0 ? `/music/concerts` : `/music/concerts/${i + 1}`,
   })),
 };
 
