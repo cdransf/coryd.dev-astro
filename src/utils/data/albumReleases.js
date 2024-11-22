@@ -42,7 +42,7 @@ export async function fetchAlbumReleases() {
       .sort((a, b) => a.timestamp - b.timestamp);
 
     const upcoming = all.filter((album) =>
-      isAfter(new Date(album.release_timestamp * 1000), new Date(today))
+      isAfter(new Date(album.release_timestamp * 1000), new Date(today)) && album.total_plays === 0
     );
 
     cachedAlbumReleases = { all, upcoming };
