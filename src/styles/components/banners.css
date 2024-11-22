@@ -8,18 +8,19 @@
     display: inline;
   }
 
-  & span {
-    display: inline-flex;
-    vertical-align: middle;
-  }
-
   & span,
   & svg {
     height: var(--sizing-svg-sm);
     width: var(--sizing-svg-sm);
   }
 
+  & span,
   & p {
+    display: inline;
+  }
+
+  & p {
+    display: block;
     font-size: var(--font-size-sm);
     color: var(--text-color);
     margin: 0;
