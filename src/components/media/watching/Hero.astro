@@ -4,7 +4,7 @@ import Hero from "@components/blocks/Hero.astro";
 const { movie } = Astro.props;
 ---
 
-<a href={movie.url}>
+<a href={movie.url} data-astro-prefetch>
   <div class="watching media-overlay hero">
     <div class="meta-text">
       <div class="header">{movie.title}</div>

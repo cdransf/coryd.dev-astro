@@ -15,7 +15,7 @@ const { data, count } = Astro.props;
           <li value={item.chart.rank}>
             <div class="item">
               <div class="info">
-                <a class="title" href={item.chart.url}>
+                <a class="title" href={item.chart.url} data-astro-prefetch>
                   {item.chart.title}
                 </a>
                 <span class="subtext">{item.chart.artist}</span>

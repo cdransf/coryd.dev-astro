@@ -81,7 +81,7 @@ const sections = [
           <ul>
             {items.map((item) => (
               <li>
-                <a href={item.url}>{item.title || item.name}</a>
+                <a href={item.url} data-astro-prefetch>{item.title || item.name}</a>
                 {key === "artists" && item.total_plays > 0 && (
                   <strong class="highlight-text">
                     {item.total_plays}{" "}

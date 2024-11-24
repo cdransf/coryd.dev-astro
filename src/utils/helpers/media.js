@@ -29,11 +29,11 @@ export const mediaLinks = (data, type, count = 10) => {
   const buildLink = (item) => {
     switch (type) {
       case "genre":
-        return `<a href="${item["genre_url"]}">${item["genre_name"]}</a>`;
+        return `<a href="${item["genre_url"]}" data-astro-prefetch>${item["genre_name"]}</a>`;
       case "artist":
-        return `<a href="${item["url"]}">${item["name"]}</a>`;
+        return `<a href="${item["url"]}" data-astro-prefetch>${item["name"]}</a>`;
       case "book":
-        return `<a href="${item["url"]}">${item["title"]}</a>`;
+        return `<a href="${item["url"]}" data-astro-prefetch>${item["title"]}</a>`;
       default:
         return "";
     }

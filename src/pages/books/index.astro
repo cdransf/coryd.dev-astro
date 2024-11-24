@@ -42,7 +42,7 @@ const currentYear = new Date().getFullYear();
   {
     bookData.map((book) => (
       <article class="book-entry" key={book.url}>
-        <a href={book.url}>
+        <a href={book.url} data-astro-prefetch>
           <img
             srcset={`
             ${globals.cdn_url}${book.image}?class=verticalsm&type=webp 200w,

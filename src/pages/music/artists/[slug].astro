@@ -87,6 +87,7 @@ const playLabel = artist.total_plays === 1 ? "play" : "plays";
           <a
             href={artist.genre.url}
             title={`Learn more about ${artist.genre.name}`}
+            data-astro-prefetch
           >
             {artist.genre.name}
           </a>

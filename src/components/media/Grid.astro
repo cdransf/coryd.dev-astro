@@ -46,7 +46,7 @@ function getImageAttributes(item, shape) {
       );
 
       return (
-        <a href={item.grid.url} title={alt}>
+        <a href={item.grid.url} title={alt} data-astro-prefetch>
           <div class="item media-overlay">
             <div class="meta-text">
               <div class="header">{item.grid.title}</div>

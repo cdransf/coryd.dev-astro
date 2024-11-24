@@ -7,6 +7,7 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare(),
   integrations: [sitemap()],
+  prefetch: true,
   vite: {
     build: {
       minify: "terser",

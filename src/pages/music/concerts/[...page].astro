@@ -57,7 +57,7 @@ const description =
     {paginatedConcerts.map((concert) => (
       <li>
         {concert.artist.url ? (
-          <a href={concert.artist.url}>{concert.artist.name}</a>
+          <a href={concert.artist.url} data-astro-prefetch>{concert.artist.name}</a>
         ) : (
           <span>{concert.artist.name}</span>
         )}{" "}
