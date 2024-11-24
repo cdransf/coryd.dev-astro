@@ -44,7 +44,7 @@ const description =
 <Layout
   pageTitle={pageTitle}
   description={description}
-  fullUrl={Astro.url.pathname}
+  pageUrl={Astro.url.pathname}
   ogImage={shuffleArray(page.data)[0]?.album_art}
 >
   <a href="/music" class="back-link">

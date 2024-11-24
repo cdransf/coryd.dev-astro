@@ -37,7 +37,7 @@ const description = "These are my favorite TV shows. There are many like them, b
 <Layout
   pageTitle={pageTitle}
   description={description}
-  fullUrl={Astro.url.pathname}
+  pageUrl={Astro.url.pathname}
   ogImage={shuffleArray(page.data)[0].backdrop}
 >
   <a href="/watching" class="back-link">

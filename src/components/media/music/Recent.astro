@@ -33,7 +33,7 @@ const { globals } = await fetchGlobalData(Astro);
           </div>
         </div>
         <time datetime={item.chart.played_at}>
-          {new Date(item.chart.played_at).toLocaleString("en-US", {
+          {new Date(item.chart.played_at * 1000).toLocaleString("en-US", {
             timeZone: "America/Los_Angeles",
             month: "long",
             day: "numeric",

@@ -25,7 +25,7 @@ const alt = `${movie.title} / ${movie.year}${movie.rating ? ` (${movie.rating})`
 <Layout
   pageTitle={pageTitle}
   description={description}
-  fullUrl={Astro.url.pathname}
+  pageUrl={Astro.url.pathname}
   ogImage={movie.backdrop}
 >
   <a class="back-link" href="/watching" title="Go back to the watching index page">

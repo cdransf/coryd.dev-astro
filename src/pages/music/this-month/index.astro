@@ -26,7 +26,7 @@ const topGenres = mediaLinks(music.month.genres, "genre", 5);
 <Layout
   pageTitle={title}
   description={description}
-  fullUrl={Astro.url.pathname}
+  pageUrl={Astro.url.pathname}
   ogImage={music.month.artists[0].image}
 >
   <h2 class="page-title">{title}</h2>

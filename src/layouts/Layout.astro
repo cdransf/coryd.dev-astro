@@ -13,7 +13,7 @@ const {
   pageTitle = globals.site_name,
   description = globals.site_description,
   ogImage = globals.avatar,
-  fullUrl = currentUrl,
+  pageUrl = currentUrl,
 } = Astro.props;
 
 const pageDescription = md(description);
@@ -46,7 +46,7 @@ const pageDescription = md(description);
       type="font/woff2"
       crossorigin="anonymous"
     />
-    <link rel="canonical" href={`${globals.url}${fullUrl}`} />
+    <link rel="canonical" href={`${globals.url}${pageUrl}`} />
     <meta
       property="og:title"
       content={pageTitle !== globals.site_name
@@ -62,7 +62,7 @@ const pageDescription = md(description);
       content={htmlToText(htmlTruncate(pageDescription))}
     />
     <meta property="og:type" content={schema || "page"} />
-    <meta property="og:url" content={fullUrl} />
+    <meta property="og:url" content={`${globals.url}${pageUrl}`} />
     <meta
       property="og:image"
       content={`${globals.cdn_url}${ogImage}?class=w800`}
