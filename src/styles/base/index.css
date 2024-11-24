@@ -335,8 +335,6 @@ article {
 }
 
 .footnotes {
-  border-top: var(--border-gray);
-
   & ol li p {
     display: inline;
   }

@@ -4,7 +4,6 @@ import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.min.css";
 import truncateHtml from "truncate-html";
 
 // arrays

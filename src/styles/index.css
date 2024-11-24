@@ -20,6 +20,9 @@
 @import url("./pages/watching.css") layer(page);
 @import url("./pages/webrings.css") layer(page);
 
+/* plugins */
+@import url("./plugins/highlight.css") layer(plugins);
+
 /* component styles */
 @import url("./components/addon-links.css") layer(components);
 @import url("./components/banners.css") layer(components);
