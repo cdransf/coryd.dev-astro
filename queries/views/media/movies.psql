@@ -83,7 +83,11 @@ WHERE
   r.movies_id = m.id) AS related_movies,
 CASE WHEN m.star_rating IS NOT NULL
   AND m.last_watched IS NOT NULL THEN
-  json_build_object('title', m.title, 'url', CONCAT('https://coryd.dev', m.slug), 'date', m.last_watched, 'description', CASE WHEN m.review IS NOT NULL THEN
+  json_build_object('title', CONCAT(m.title, CASE WHEN m.star_rating IS NOT NULL THEN
+        CONCAT(' (', m.star_rating, ')')
+      ELSE
+        ''
+      END), 'url', CONCAT('https://coryd.dev', m.slug), 'date', m.last_watched, 'description', CASE WHEN m.review IS NOT NULL THEN
       m.review
     ELSE
       m.description

@@ -3,7 +3,7 @@ SELECT
     ar.name_string AS name,
     ar.slug AS url,
     ar.tentative,
-    to_char(ar.total_plays, 'FM999,999,999,999') AS total_plays, -- Format total_plays with commas
+    to_char(ar.total_plays, 'FM999,999,999,999') AS total_plays,
     ar.country,
     ar.description,
     ar.favorite,
@@ -14,12 +14,12 @@ SELECT
     ar.emoji,
     ar.tattoo,
     CONCAT('/', df.filename_disk) AS image,
-    json_build_object('alt', CONCAT(to_char(ar.total_plays, 'FM999,999,999,999'), ' plays of ', ar.name_string), -- Format total_plays in alt text
-        'subtext', CONCAT(to_char(ar.total_plays, 'FM999,999,999,999'), ' plays') -- Format total_plays in subtext
+    json_build_object('alt', CONCAT(to_char(ar.total_plays, 'FM999,999,999,999'), ' plays of ', ar.name_string),
+        'subtext', CONCAT(to_char(ar.total_plays, 'FM999,999,999,999'), ' plays')
 ) AS grid,
 (
         SELECT
-            json_agg(json_build_object('name', a.name, 'release_year', a.release_year, 'total_plays', to_char(a.total_plays, 'FM999,999,999,999'), -- Format total_plays here as well
+            json_agg(json_build_object('name', a.name, 'release_year', a.release_year, 'total_plays', to_char(a.total_plays, 'FM999,999,999,999'),
                     'art', df_album.filename_disk)
             ORDER BY a.release_year)
         FROM
