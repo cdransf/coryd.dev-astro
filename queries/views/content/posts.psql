@@ -70,7 +70,7 @@ WHERE
   pt.posts_id = p.id) AS tags,
 (
   SELECT
-    json_agg(json_build_object('name', g.name, 'url', g.slug))
+    json_agg(json_build_object('name', g.name, 'url', g.slug) ORDER BY g.name ASC)
   FROM
     posts_genres gp
   LEFT JOIN genres g ON gp.genres_id = g.id
@@ -78,7 +78,7 @@ WHERE
   gp.posts_id = p.id) AS genres,
 (
   SELECT
-    json_agg(json_build_object('name', a.name_string, 'url', a.slug, 'country', a.country, 'total_plays', a.total_plays))
+    json_agg(json_build_object('name', a.name_string, 'url', a.slug, 'country', a.country, 'total_plays', a.total_plays) ORDER BY a.name_string ASC)
   FROM
     posts_artists pa
   LEFT JOIN artists a ON pa.artists_id = a.id
@@ -87,7 +87,7 @@ WHERE
 (
   SELECT
     json_agg(json_build_object('title', b.title, 'author', b.author, 'url', b.slug)
-    ORDER BY b.title)
+    ORDER BY b.title ASC)
   FROM
     posts_books pbk
   LEFT JOIN books b ON pbk.books_id = b.id
@@ -104,7 +104,7 @@ WHERE
   pm.posts_id = p.id) AS movies,
 (
   SELECT
-    json_agg(json_build_object('title', s.title, 'year', s.year, 'url', s.slug))
+    json_agg(json_build_object('title', s.title, 'year', s.year, 'url', s.slug) ORDER BY s.year DESC)
   FROM
     posts_shows ps
   LEFT JOIN shows s ON ps.shows_id = s.id

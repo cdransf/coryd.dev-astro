@@ -18,7 +18,8 @@ SELECT
         a.genres = g.id) AS artists,
 (
         SELECT
-            json_agg(json_build_object('title', b.title, 'author', b.author, 'url', b.slug))
+            json_agg(json_build_object('title', b.title, 'author', b.author, 'url', b.slug)
+            ORDER BY b.title ASC)
         FROM
             books b
             JOIN genres_books gb ON gb.books_id = b.id

@@ -38,7 +38,7 @@ SELECT
 (
     SELECT
       json_agg(json_build_object('title', b.title, 'author', b.author, 'url', b.slug)
-      ORDER BY b.title)
+      ORDER BY b.title ASC)
     FROM
       shows_books sb
     LEFT JOIN books b ON sb.books_id = b.id
@@ -73,7 +73,7 @@ SELECT
 (
     SELECT
       json_agg(json_build_object('name', a.name_string, 'url', a.slug, 'country', a.country, 'total_plays', a.total_plays)
-      ORDER BY a.name_string)
+      ORDER BY a.name_string ASC)
     FROM
       shows_artists sa
     LEFT JOIN artists a ON sa.artists_id = a.id

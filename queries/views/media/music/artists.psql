@@ -39,7 +39,7 @@ SELECT
 (
         SELECT
             json_agg(json_build_object('title', b.title, 'author', b.author, 'url', b.slug)
-            ORDER BY b.date_finished DESC)
+            ORDER BY b.title ASC)
         FROM
             books_artists ba
         LEFT JOIN books b ON ba.books_id = b.id
