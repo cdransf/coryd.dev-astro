@@ -7,4 +7,4 @@ workers_dev = true
 
 [env.production]
 name = "scheduled-rebuild-worker-production"
-triggers = {crons = ["0 * * * *"]}
+triggers = {crons = ["*/15 * * * *"]}

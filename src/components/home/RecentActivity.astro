@@ -29,49 +29,47 @@ const link = links[0];
     <div set:html={IconActivity({ size: 24 })} />
     Recent activity
   </h2>
-  <ul>
-    <li>
-      <span class="music">Top artist this week:</span>
-      <a href={artist.artist_url} data-astro-prefetch>{artist.artist_name}</a>
-    </li>
-    <li>
-      <span class="music">Top track this week:</span>
-      <a href={track.artist_url} data-astro-prefetch
-        >{track.track_name} by {track.artist_name}</a
-      >
-    </li>
-    <li>
-      <span class="tv">Last episode watched:</span>
-      <strong class="highlight-text">{show.formatted_episode}</strong> of <a
-        href={show.url}
-        data-astro-prefetch>{show.title}</a
-      >
-    </li>
-    <li>
-      <span class="movies">Last movie watched:</span>
-      <a href={movie.url} data-astro-prefetch>{movie.title}</a>{
-        movie.rating ? ` (${movie.rating})` : ""
-      }
-    </li>
-    <li>
-      <span class="books">Last book finished:</span>
-      <a href={book.url} data-astro-prefetch>{book.title}</a> by {book.author}{
-        book.rating ? ` (${book.rating})` : ""
-      }
-    </li>
-    <li>
-      <span class="link">Last link shared:</span>
-      <a href={link.link}>{link.title}</a>
-      {
-        link.author && (
-          <span>
-            {" "}
-            via <a href={link.author.url}>{link.author.name}</a>
-          </span>
-        )
-      }
-    </li>
-  </ul>
+  <p>
+    <span class="music">Top artist this week:</span>
+    <a href={artist.artist_url} data-astro-prefetch>{artist.artist_name}</a>
+  </p>
+  <p>
+    <span class="music">Top track this week:</span>
+    <a href={track.artist_url} data-astro-prefetch
+      >{track.track_name} by {track.artist_name}</a
+    >
+  </p>
+  <p>
+    <span class="tv">Last episode watched:</span>
+    <strong class="highlight-text">{show.formatted_episode}</strong> of <a
+      href={show.url}
+      data-astro-prefetch>{show.title}</a
+    >
+  </p>
+  <p>
+    <span class="movies">Last movie watched:</span>
+    <a href={movie.url} data-astro-prefetch>{movie.title}</a>{
+      movie.rating ? ` (${movie.rating})` : ""
+    }
+  </p>
+  <p>
+    <span class="books">Last book finished:</span>
+    <a href={book.url} data-astro-prefetch>{book.title}</a> by {book.author}{
+      book.rating ? ` (${book.rating})` : ""
+    }
+  </p>
+  <p>
+    <span class="link">Last link shared:</span>
+    <a href={link.link}>{link.title}</a>
+    {
+      link.author && (
+        <span>
+          {" "}
+          via <a href={link.author.url}>{link.author.name}</a>
+        </span>
+      )
+    }
+  </p>
   <Rss
     url="/feeds"
     text="Subscribe to my movies, books, links or activity feed(s)"
