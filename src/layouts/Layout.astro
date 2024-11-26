@@ -61,12 +61,13 @@ const pageDescription = md(description);
       property="og:description"
       content={htmlToText(htmlTruncate(pageDescription))}
     />
-    <meta property="og:type" content={schema || "page"} />
+    <meta property="og:type" content={schema || "website"} />
     <meta property="og:url" content={`${globals.url}${pageUrl}`} />
     <meta
       property="og:image"
       content={`${globals.cdn_url}${ogImage}?class=w800`}
     />
+    <meta property="og:site_name" content="coryd.dev">
     <meta name="theme-color" content={globals.theme_color} />
     <meta name="fediverse:creator" content={globals.mastodon} />
     <meta name="generator" content="Astro" />

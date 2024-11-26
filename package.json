@@ -20,7 +20,7 @@
     "@astrojs/cloudflare": "^11.2.0",
     "@astrojs/rss": "4.0.9",
     "@astrojs/sitemap": "3.2.1",
-    "@cdransf/astro-tabler-icons": "1.0.5",
+    "@cdransf/astro-tabler-icons": "1.1.0",
     "@supabase/supabase-js": "^2.46.1",
     "astro": "4.16.15",
     "astro-embed": "0.9.0",

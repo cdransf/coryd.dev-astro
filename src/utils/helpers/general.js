@@ -78,6 +78,7 @@ export const sanitizeContent = (html) =>
       "h1",
       "h2",
       "h3",
+      "jsx",
     ],
     allowedAttributes: {
       a: ["href"],
