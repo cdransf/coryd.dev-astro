@@ -1,3 +1,4 @@
+import { isBefore } from "date-fns";
 import { createClient } from "@supabase/supabase-js";
 import { CACHE_DURATION } from "@utils/constants/index.js";
 
@@ -32,7 +33,11 @@ export async function fetchLinks() {
 
       if (data.length < PAGE_SIZE) fetchMore = false;
 
-      links = links.concat(data);
+      const filteredData = data.filter((link) =>
+        isBefore(new Date(link.date), now)
+      );
+
+      links = links.concat(filteredData);
       page++;
     }
 

@@ -1,3 +1,4 @@
+import { isBefore } from "date-fns";
 import { createClient } from "@supabase/supabase-js";
 import { CACHE_DURATION } from "@utils/constants/index.js";
 
@@ -29,7 +30,11 @@ export async function fetchAllPosts() {
 
     if (data.length < PAGE_SIZE) fetchMore = false;
 
-    posts = posts.concat(data);
+    const filteredData = data.filter((post) =>
+      isBefore(new Date(post.date), now)
+    );
+
+    posts = posts.concat(filteredData);
     page++;
   }
 
@@ -37,32 +42,4 @@ export async function fetchAllPosts() {
   lastFetchTime = now;
 
   return posts;
-}
-
-let cachedPostByUrl = {};
-let lastFetchTimeByUrl = {};
-
-export async function fetchPostByUrl(url) {
-  const now = Date.now();
-
-  if (
-    cachedPostByUrl[url] &&
-    lastFetchTimeByUrl[url] &&
-    now - lastFetchTimeByUrl[url] < CACHE_DURATION
-  ) {
-    return cachedPostByUrl[url];
-  }
-
-  const { data: post, error } = await supabase
-    .from("optimized_posts")
-    .select("*")
-    .eq("url", url)
-    .limit(1);
-
-  if (error || !post.length) return null;
-
-  cachedPostByUrl[url] = post[0];
-  lastFetchTimeByUrl[url] = now;
-
-  return post[0];
 }
