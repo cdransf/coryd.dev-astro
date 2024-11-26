@@ -96,7 +96,14 @@ const pageDescription = md(description);
     <script defer src="/scripts/index.js" is:inline></script>
     {
       isProduction && (
-        <script defer data-domain="coryd.dev" src="/js/script.js" />
+        <>
+          <script is:inline defer data-domain="coryd.dev" src="/js/script.js" />
+          <script is:inline defer>
+            window.plausible = window.plausible || function(...args) {
+              (window.plausible.q = window.plausible.q || []).push(args);
+            };
+          </script>
+        </>
       )
     }
     <noscript>

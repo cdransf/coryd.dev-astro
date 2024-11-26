@@ -1,3 +1,4 @@
+import { isBefore } from "date-fns";
 import { createClient } from "@supabase/supabase-js";
 import { CACHE_DURATION } from "@utils/constants/index.js";
 
@@ -26,7 +27,11 @@ export async function fetchSyndication() {
 
     const [{ syndication } = {}] = data;
     const result =
-      syndication?.filter((item) => item.syndication !== null) || [];
+      syndication?.filter(
+        (item) =>
+          item.syndication !== null &&
+          isBefore(new Date(item.syndication.date), now)
+      ) || [];
 
     cachedSyndication = result;
     lastFetchTime = now;

@@ -58,3 +58,8 @@ const description = "What kind of idiots do you have working here?";
   <hr />
   <AddonLinks popularPosts={popularPosts} links={links} />
 </Layout>
+<script is:inline defer>
+  document.addEventListener("DOMContentLoaded", function () {
+    plausible("404", { props: { path: document.location.pathname } });
+  });
+</script>

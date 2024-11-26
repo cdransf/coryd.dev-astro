@@ -31,9 +31,7 @@ const topGenres = mediaLinks(music.month.genres, "genre", 5);
 >
   <h2 class="page-title">{title}</h2>
   <p>
-    I've listened to <strong class="highlight-text"
-      >{artistCount} artists</strong
-    >,
+    I've listened to <strong class="highlight-text">{artistCount} artists</strong>,
     <strong class="highlight-text">{albumCount} albums</strong> and
     <strong class="highlight-text">{totalTracks} tracks</strong> this month. Most
     of that has been <span set:html={topGenres} />.

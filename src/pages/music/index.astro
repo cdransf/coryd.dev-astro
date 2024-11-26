@@ -37,17 +37,9 @@ const description =
   <h2 class="page-title">{title}</h2>
   <p>
     I've listened to{" "}
-    <strong class="highlight-text">
-      {music.week.artists.length} artists
-    </strong>
-    ,{" "}
-    <strong class="highlight-text">
-      {music.week.albums.length} albums
-    </strong>
-    , and{" "}
-    <strong class="highlight-text">
-      {music.week.totalTracks} tracks
-    </strong>{" "}
+    <strong class="highlight-text">{music.week.artists.length} artists</strong>,{" "}
+    <strong class="highlight-text">{music.week.albums.length} albums</strong>, and{" "}
+    <strong class="highlight-text">{music.week.totalTracks} tracks</strong>{" "}
     this week. Most of that has been{" "}
     <span set:html={mediaLinks(music.week.genres, "genre", 5)}></span>.
   </p>
