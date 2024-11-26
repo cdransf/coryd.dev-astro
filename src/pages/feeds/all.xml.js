@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchActivity } from "@utils/data/activity.js";
+import { sanitizeContent, md } from "@utils/helpers/general.js";
 
 export const prerender = true;
 
@@ -17,7 +18,7 @@ export async function GET() {
       title: item.feed.title,
       pubDate: item.feed.date,
       link: item.feed.url,
-      description: item.feed.description,
+      content: sanitizeContent(md(item.feed.description)),
     })),
   });
 }

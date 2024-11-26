@@ -1,5 +1,6 @@
 import { convert } from "html-to-text";
 import { format } from "date-fns-tz";
+import sanitizeHtml from "sanitize-html";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
@@ -60,19 +61,29 @@ export const htmlToText = (html) =>
     ],
   });
 
-export const escapeHtml = (input) =>
-  typeof input === "string"
-    ? input.replace(/[&<>"']/g, (char) => {
-        const map = {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        };
-        return map[char];
-      })
-    : "";
+export const sanitizeContent = (html) =>
+  sanitizeHtml(html, {
+    allowedTags: [
+      "p",
+      "ul",
+      "ol",
+      "li",
+      "strong",
+      "em",
+      "a",
+      "img",
+      "blockquote",
+      "pre",
+      "code",
+      "h1",
+      "h2",
+      "h3",
+    ],
+    allowedAttributes: {
+      a: ["href"],
+      img: ["src", "alt"],
+    },
+  });
 
 // markdown
 const markdown = markdownIt({

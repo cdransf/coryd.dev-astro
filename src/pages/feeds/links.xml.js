@@ -18,7 +18,7 @@ export async function GET() {
       title: link.feed.title,
       pubDate: link.feed.date,
       link: link.feed.url,
-      description: link.feed.description,
+      content: link.feed.description,
     })),
   });
 }

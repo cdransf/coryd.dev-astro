@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchMovies } from "@utils/data/movies.js";
-import { escapeHtml, md } from "@utils/helpers/general.js";
+import { sanitizeContent, md } from "@utils/helpers/general.js";
 
 export const prerender = true;
 
@@ -18,7 +18,7 @@ export async function GET() {
       title: movie.feed.title,
       pubDate: movie.feed.date,
       link: movie.feed.url,
-      description: escapeHtml(md(movie.feed.description)),
+      content: sanitizeContent(md(movie.feed.description)),
     })),
   });
 }

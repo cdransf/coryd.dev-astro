@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchAllPosts } from "@utils/data/posts.js";
-import { escapeHtml, md } from "@utils/helpers/general.js";
+import { htmlToText, sanitizeContent, md } from "@utils/helpers/general.js";
 
 export const prerender = true;
 
@@ -18,7 +18,8 @@ export async function GET() {
       title: post.feed.title,
       pubDate: post.feed.date,
       link: post.feed.url,
-      description: escapeHtml(md(post.feed.description)),
+      description: htmlToText(md(post.feed.description)),
+      content: sanitizeContent(md(post.feed.content)),
     })),
   });
 }

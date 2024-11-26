@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchBooks } from "@utils/data/books.js";
-import { escapeHtml, md } from "@utils/helpers/general.js";
+import { sanitizeContent, md } from "@utils/helpers/general.js";
 
 export const prerender = true;
 
@@ -18,7 +18,7 @@ export async function GET() {
       title: book.feed.title,
       pubDate: book.feed.date,
       link: book.feed.url,
-      description: escapeHtml(md(book.feed.description)),
+      content: sanitizeContent(md(book.feed.description)),
     })),
   });
 }
