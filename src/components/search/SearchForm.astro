@@ -1,0 +1,29 @@
+<form class="search__form" action="https://duckduckgo.com" method="get">
+  <input
+    class="search__form--input"
+    placeholder="Search"
+    type="search"
+    name="q"
+    autocomplete="off"
+    autofocus
+  />
+  <details>
+    <summary class="highlight-text">Filter by type</summary>
+    <fieldset class="search__form--type">
+      {["post", "link", "artist", "genre", "book", "movie", "show"].map(type => (
+        <label>
+          <input type="checkbox" name="type" value={type} checked />
+          {type.charAt(0).toUpperCase() + type.slice(1)}
+        </label>
+      ))}
+    </fieldset>
+  </details>
+  <input
+    class="search__form--fallback"
+    type="hidden"
+    name="sites"
+    value="coryd.dev"
+  />
+</form>
+<ul class="search__results client-side"></ul>
+<button class="search__load-more client-side" style="display:none">Load More</button>
