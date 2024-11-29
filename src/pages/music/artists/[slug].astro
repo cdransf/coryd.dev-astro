@@ -1,4 +1,5 @@
 ---
+import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
 import { parseISO, format } from "date-fns";
 import Layout from "@layouts/Layout.astro";
 import Modal from "@components/blocks/Modal.astro";
@@ -8,10 +9,20 @@ import icons from "@cdransf/astro-tabler-icons";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 import { parseCountries } from "@utils/helpers/media.js";
 import { md } from "@utils/helpers/general.js";
+import slugify from "slugify";
 
 const { artist, globals } = await fetchGlobalData(Astro, Astro.url.pathname);
 
 if (!artist) return Astro.redirect("/404", 404);
+
+const headers = new CacheHeaders()
+  .swr()
+  .ttl(ONE_HOUR)
+  .tag(['artist', `artist-${slugify(artist.name, { lower: true })}`]);
+
+headers.forEach((value, key) => {
+  Astro.response.headers.set(key, value);
+});
 
 const {
   IconArrowLeft,

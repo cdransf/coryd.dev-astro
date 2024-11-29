@@ -1,0 +1,38 @@
+[build]
+command = "npm run build"
+publish = "dist"
+
+[functions]
+directory = "functions"
+
+[functions.mastodon]
+schedule = "*/15 * * * *"
+
+[[redirects]]
+from = "/api/artist-import"
+to = "/.netlify/functions/artist-import"
+status = 200
+
+[[redirects]]
+from = "/api/scrobble"
+to = "/.netlify/functions/scrobble"
+status = 200
+query = "*"
+
+[[redirects]]
+from = "/api/search"
+to = "/.netlify/functions/search"
+status = 200
+query = "*"
+
+[[redirects]]
+from = "/scripts/util.js"
+to = "https://plausible.io/js/plausible.outbound-links.tagged-events.js"
+status = 200
+force = true
+
+[[redirects]]
+from = "/api/event"
+to = "https://plausible.io/api/event"
+status = 200
+force = true

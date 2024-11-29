@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { fetchGlobals } from "@utils/data/globals.js";
 import { fetchSyndication } from "@utils/data/syndication.js";
+import { htmlToText, sanitizeContent, md } from "@utils/helpers/general.js";
 
 export const prerender = true;
 
@@ -16,7 +17,7 @@ export async function GET() {
       title: item.syndication.title,
       pubDate: item.syndication.date,
       link: item.syndication.url,
-      description: item.syndication.description,
+      description: htmlToText(md(item.syndication.description)),
     })),
   });
 }

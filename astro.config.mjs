@@ -1,12 +1,15 @@
 import { defineConfig } from "astro/config";
-import cloudflare from "@astrojs/cloudflare";
+import netlify from "@astrojs/netlify";
 import sitemap from "@astrojs/sitemap";
-import sitemapData from "./src/utils/data/static/sitemapData.json";
+import sitemapData from "./src/utils/data/static/sitemapData.json" assert { type: "json" };
 
 export default defineConfig({
   site: "https://coryd.dev",
   output: "server",
-  adapter: cloudflare(),
+  adapter: netlify({
+    cacheOnDemandPages: true,
+    imageCDN: false,
+  }),
   integrations: [
     sitemap({
       customPages: sitemapData.map((entry) => entry.loc),

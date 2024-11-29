@@ -1,5 +1,7 @@
 # coryd.dev
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/21438096-e0d0-4f14-846d-addd9d8292db/deploy-status)](https://app.netlify.com/sites/coryd/deploys)
+
 Hi! I'm Cory. 👋🏻
 
 This is the code for my personal website and portfolio. Built using [Astro](https://astro.build) and [other tools](https://coryd.dev/colophon).
@@ -24,11 +26,11 @@ This is the code for my personal website and portfolio. Built using [Astro](http
 
 ### Other commands
 
-`npm run build`: builds Astro output.    
-`npm run prevew`: previews built Astro output (uses wrangler command compatible with Cloudflare adapter under the hood).    
-`npm run update:deps`: checks for dependency updates and updates Astro.    
-`npm run build:worker -- WORKER_NAME`: builds the `wrangler.toml` file for the named worker.
-`npm run deploy:worker --worker=WORKER_NAME`: deploys the named worker.
+`npm run build`: builds Astro output.
+`npm run prevew`: previews built Astro output (uses wrangler command compatible with Cloudflare adapter under the hood).
+`npm run update:deps`: checks for dependency updates and updates Astro.
+`netlify dev`: local development with Netlify functions.
+
 
 ## Required environment variables
 
@@ -37,7 +39,12 @@ ACCOUNT_ID_PLEX
 API_KEY_PLAUSIBLE
 SUPABASE_URL
 SUPABASE_KEY
-CF_ACCOUNT_ID
-CF_ZONE_ID
-RSS_TO_MASTODON_KV_NAMESPACE_ID
+DIRECTUS_URL
+DIRECTUS_TOKEN
+ARTIST_IMPORT_TOKEN
+ARTIST_FLOW_ID
+ALBUM_FLOW_ID
+MASTODON_ACCESS_TOKEN
+FORWARDEMAIL_API_KEY
+CDN
 ```

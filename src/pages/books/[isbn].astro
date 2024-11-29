@@ -1,4 +1,5 @@
 ---
+import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
 import Layout from "@layouts/Layout.astro";
 import Warning from "@components/blocks/banners/Warning.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
@@ -11,6 +12,15 @@ const { IconArrowLeft, IconHeart, IconNeedle } = icons;
 const { book, globals } = await fetchGlobalData(Astro, Astro.url.pathname);
 
 if (!book) return Astro.redirect("/404", 404);
+
+const headers = new CacheHeaders()
+  .swr()
+  .ttl(ONE_HOUR)
+  .tag(['book', `book-${book.isbn}`]);
+
+headers.forEach((value, key) => {
+  Astro.response.headers.set(key, value);
+});
 
 const alt = `${book.title}${book.author ? ` by ${book.author}` : ""}`;
 const pageTitle = `${book.title} by ${book.author} / Books`;

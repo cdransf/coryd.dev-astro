@@ -8,6 +8,9 @@ import { fetchShowByUrl } from "@utils/data/dynamic/showByUrl.js";
 import { isbnRegex } from "@utils/helpers/media.js";
 import { isExcludedPath } from "@utils/helpers/general.js";
 import { CACHE_DURATION } from "@utils/constants/index.js";
+import dotenvFlow from "dotenv-flow";
+
+dotenvFlow.config();
 
 let cachedGlobals = null;
 let cachedNav = null;
@@ -20,7 +23,7 @@ export async function onRequest(context, next) {
   const { request, locals } = context;
 
   try {
-    const runtimeEnv = locals.runtime?.env;
+    const runtimeEnv = process.env;
 
     if (!runtimeEnv)
       return new Response("Internal Server Error", { status: 500 });

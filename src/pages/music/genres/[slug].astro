@@ -1,13 +1,25 @@
 ---
+import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
 import Layout from "@layouts/Layout.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
 import icons from "@cdransf/astro-tabler-icons";
 import { fetchGlobalData } from "@utils/data/global/index.js";
 import { mediaLinks } from "@utils/helpers/media.js";
 import { md } from "@utils/helpers/general.js";
+import slugify from "slugify";
 
 const { genre } = await fetchGlobalData(Astro, Astro.url.pathname);
+
 if (!genre) return Astro.redirect("/404", 404);
+
+const headers = new CacheHeaders()
+  .swr()
+  .ttl(ONE_HOUR)
+  .tag(['genre', `genre-${slugify(genre.name, { lower: true })}`]);
+
+headers.forEach((value, key) => {
+  Astro.response.headers.set(key, value);
+});
 
 const { IconArrowLeft } = icons;
 const artistCount = genre.artists?.length || 0;

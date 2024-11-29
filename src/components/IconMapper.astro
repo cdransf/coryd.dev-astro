@@ -17,6 +17,7 @@ const {
   IconCoffee,
   IconDeviceWatch,
   IconHeartHandshake,
+  IconCalendarPlus,
 } = icons;
 const { icon, className } = Astro.props;
 const iconComponents = {
@@ -35,6 +36,7 @@ const iconComponents = {
   coffee: IconCoffee,
   "device-watch": IconDeviceWatch,
   "heart-handshake": IconHeartHandshake,
+  "calendar-plus": IconCalendarPlus,
 };
 const SelectedIcon = iconComponents[icon?.toLowerCase()] || null;
 ---

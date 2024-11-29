@@ -119,6 +119,7 @@ ol {
 .brand-github,
 .brand-mastodon,
 .brand-npm,
+.calendar-plus,
 .coffee,
 .collected,
 .concerts,
@@ -152,6 +153,9 @@ ol {
   }
   &.brand-npm {
     --section-color: var(--brand-npm);
+  }
+  &.calendar-plus {
+    --section-color: var(--brand-savvycal);
   }
   &.coffee {
     --section-color: var(--brand-buy-me-a-coffee);
