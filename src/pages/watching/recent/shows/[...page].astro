@@ -4,6 +4,7 @@ import Grid from "@components/media/Grid.astro";
 import { fetchShows } from "@utils/data/tv.js";
 import { shuffleArray } from "@utils/helpers/general.js";
 import icons from "@cdransf/astro-tabler-icons";
+import { WATCHING_PAGE_SIZE } from "@utils/constants/index.js"
 
 export const prerender = true;
 
@@ -12,7 +13,7 @@ export const getStaticPaths = async ({ paginate }) => {
   const recentlyWatchedShows = shows.recentlyWatched || [];
 
   return paginate(recentlyWatchedShows, {
-    pageSize: 15,
+    pageSize: WATCHING_PAGE_SIZE,
   });
 };
 
@@ -61,7 +62,7 @@ const description = "All of the shows I've watched recently.";
     data={paginatedShows}
     pagination={pagination}
     shape="poster"
-    count={15}
+    count={WATCHING_PAGE_SIZE}
     loading="eager"
   />
 </Layout>
