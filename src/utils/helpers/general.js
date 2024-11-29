@@ -36,7 +36,7 @@ export const parseCountryField = (countryField) => {
     .reduce(
       (countries, delimiter) =>
         countries.flatMap((country) => country.split(delimiter)),
-      [countryField]
+      [countryField],
     )
     .map(getCountryName)
     .join(", ");
@@ -110,7 +110,16 @@ export const md = (string) => markdown.render(string);
 
 // urls
 export const encodeAmp = (url) => url.replace(/&/g, "&amp;");
-export const removeTrailingSlash = (url) => url.replace(/\/$/, "");
+
+export const removeTrailingSlash = (url) => {
+  if (!url) return "";
+  return url.replace(/\/+$/, "");
+};
+
+export const normalizePath = (path) => {
+  if (!path) return "/";
+  return removeTrailingSlash(path).toLowerCase();
+};
 
 export const isExcludedPath = (path, exclusions) =>
   exclusions.some((exclusion) => path.includes(exclusion));

@@ -1,10 +1,10 @@
 ---
 import IconMapper from "@components/IconMapper.astro";
-import { removeTrailingSlash } from "@utils/helpers/general.js";
+import { normalizePath } from "@utils/helpers/general.js";
 
 const { url, title, icon } = Astro.props;
 const isHttp = url?.startsWith("http");
-const isActive = Astro.url.pathname === removeTrailingSlash(url);
+const isActive = normalizePath(Astro.url.pathname) === normalizePath(url);
 ---
 
 {
