@@ -1,3 +1,11 @@
+:root {
+  --progress-bar-width: 50%;
+
+  @media screen and (min-width: 768px) {
+    --progress-bar-width: 75%;
+  }
+}
+
 :is(.book-entry, .book-focus) img {
   height: auto;
   aspect-ratio: var(--aspect-ratio-vertical);
@@ -38,12 +46,11 @@
     }
 
     & .progress-bar-wrapper {
-      max-width: 75%;
+      max-width: var(--progress-bar-width);
       margin-bottom: 0;
 
       @media screen and (min-width: 768px) {
         margin-top: 0;
-        max-width: 50%;
       }
     }
   }
@@ -76,11 +83,7 @@
       }
 
       & .progress-bar-wrapper {
-        max-width: 50%;
-
-        @media screen and (min-width: 768px) {
-          max-width: 75%;
-        }
+        max-width: var(--progress-bar-width);
       }
     }
   }
