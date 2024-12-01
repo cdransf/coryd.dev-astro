@@ -21,7 +21,7 @@ function sanitizeMediaString(str) {
 export async function handler(event, context) {
   const {
     DIRECTUS_URL,
-    DIRECTUS_API_TOKEN,
+    DIRECTUS_TOKEN,
     ARTIST_IMPORT_TOKEN,
     ARTIST_FLOW_ID,
     ALBUM_FLOW_ID,
@@ -31,12 +31,11 @@ export async function handler(event, context) {
   const requestUrl = new URL(event.rawUrl);
   const providedToken = requestUrl.searchParams.get("token");
 
-  if (!providedToken || providedToken !== ARTIST_IMPORT_TOKEN) {
+  if (!providedToken || providedToken !== ARTIST_IMPORT_TOKEN)
     return {
       statusCode: 401,
       body: "Unauthorized",
     };
-  }
 
   async function saveToDirectus(endpoint, payload) {
     try {
@@ -44,16 +43,18 @@ export async function handler(event, context) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${DIRECTUS_API_TOKEN}`,
+          Authorization: `Bearer ${DIRECTUS_TOKEN}`,
         },
         body: JSON.stringify(payload),
       });
       const data = await response.json();
+
       if (!response.ok) {
         throw new Error(
           data.errors?.[0]?.message || "Failed to save to Directus",
         );
       }
+
       return data.data;
     } catch (error) {
       console.error(`Error saving to ${endpoint}:`, error.message);
@@ -67,9 +68,10 @@ export async function handler(event, context) {
         `${DIRECTUS_URL}/items/genres?filter[name][_eq]=${encodeURIComponent(
           genreName.toLowerCase(),
         )}`,
-        { headers: { Authorization: `Bearer ${DIRECTUS_API_TOKEN}` } },
+        { headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}` } },
       );
       const data = await response.json();
+
       return data.data?.[0]?.id || null;
     } catch (error) {
       console.error("Error fetching genre ID:", error.message);
@@ -79,19 +81,18 @@ export async function handler(event, context) {
 
   const artistId = requestUrl.searchParams.get("artist_id");
 
-  if (!artistId) {
+  if (!artistId)
     return {
       statusCode: 400,
       body: "artist_id parameter is required",
     };
-  }
 
   let artistData;
 
   try {
     const artistResponse = await fetch(
       `${DIRECTUS_URL}/flows/trigger/${ARTIST_FLOW_ID}?artist_id=${artistId}&import_token=${ARTIST_IMPORT_TOKEN}`,
-      { headers: { Authorization: `Bearer ${DIRECTUS_API_TOKEN}` } },
+      { headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}` } },
     );
     const artistResult = await artistResponse.json();
     artistData =
@@ -109,8 +110,9 @@ export async function handler(event, context) {
   const artistName = artistData.title || "";
   const artistKey = sanitizeMediaString(artistName);
   const countryName = artistData.Country?.[0]?.tag || "";
+  const countryNameSlug = countryName.replace(/\s+/g, "-").toLowerCase();
   const countryIsoCode = countries.getAlpha2Code(countryName, "en") || "";
-  const slug = `/music/artists/${artistKey}-${countryName.toLowerCase()}`;
+  const slug = `/music/artists/${artistKey}-${countryNameSlug}`;
   const description = artistData.summary || "";
   const mbid = artistData.Guid?.[0]?.id?.replace("mbid://", "") || "";
   const genreNames = artistData.Genre?.map((g) => g.tag.toLowerCase()) || [];
@@ -150,7 +152,7 @@ export async function handler(event, context) {
   try {
     const albumResponse = await fetch(
       `${DIRECTUS_URL}/flows/trigger/${ALBUM_FLOW_ID}?artist_id=${artistId}&import_token=${ARTIST_IMPORT_TOKEN}`,
-      { headers: { Authorization: `Bearer ${DIRECTUS_API_TOKEN}` } },
+      { headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}` } },
     );
     const albumResult = await albumResponse.json();
 

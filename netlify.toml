@@ -12,6 +12,7 @@ schedule = "*/15 * * * *"
 from = "/api/artist-import"
 to = "/.netlify/functions/artist-import"
 status = 200
+query = "*"
 
 [[redirects]]
 from = "/api/scrobble"
