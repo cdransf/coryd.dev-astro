@@ -1,6 +1,6 @@
 # coryd.dev
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/21438096-e0d0-4f14-846d-addd9d8292db/deploy-status)](https://app.netlify.com/sites/coryd/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/21438096-e0d0-4f14-846d-addd9d8292db/deploy-status)](https://app.netlify.com/sites/coryd/deploys) [![Scheduled deploy](https://github.com/cdransf/coryd.dev/actions/workflows/scheduled-deploy.yaml/badge.svg)](https://github.com/cdransf/coryd.dev/actions/workflows/scheduled-deploy.yaml)
 
 Hi! I'm Cory. 👋🏻
 
