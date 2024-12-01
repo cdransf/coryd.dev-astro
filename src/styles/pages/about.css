@@ -1,15 +1,12 @@
-:root {
+.avatar-wrapper {
   --avatar-size: 16rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 
   @media screen and (min-width: 768px) {
     --avatar-size: 24rem;
   }
-}
-
-.avatar-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
 
   & img {
     width: var(--avatar-size);

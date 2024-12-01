@@ -357,6 +357,9 @@
     "loc": "https://coryd.dev/posts/2013/who-the-fraggle-designed-this"
   },
   {
+    "loc": "https://coryd.dev/posts/2024/dns-records-and-a-cloudflare-security-violation"
+  },
+  {
     "loc": "https://coryd.dev/posts/2024/check-if-images-are-available-before-optimizing-in-eleventy"
   },
   {
@@ -7084,6 +7087,9 @@
   },
   {
     "loc": "https://coryd.dev/music/artists/home-is-where-united-states"
+  },
+  {
+    "loc": "https://coryd.dev/music/artists/the-wytches-united-kingdom"
   },
   {
     "loc": "https://coryd.dev/music/artists/portal-australia"
