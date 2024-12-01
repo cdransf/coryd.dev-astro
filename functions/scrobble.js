@@ -115,6 +115,7 @@ export async function handler(event, context) {
   }
 
   const contentType = event.headers["content-type"] || "";
+
   if (!contentType.includes("multipart/form-data"))
     return {
       statusCode: 400,
@@ -126,12 +127,12 @@ export async function handler(event, context) {
 
   try {
     const boundary = contentType.split("boundary=")[1];
+
     if (!boundary) throw new Error("Missing boundary in Content-Type");
 
     const rawBody = Buffer.from(event.body, "base64").toString("utf-8");
     const formData = parseMultipartFormData(rawBody, boundary);
     const payload = JSON.parse(formData.payload);
-    console.log("Parsed payload:", payload);
 
     if (payload?.event === "media.scrobble") {
       const artistName = payload["Metadata"]["grandparentTitle"];
@@ -279,7 +280,12 @@ export async function handler(event, context) {
       body: JSON.stringify({ status: "success" }),
     };
   } catch (e) {
-    console.error("Error occurred during request processing:", e.message, e.stack);
+    console.error(
+      "Error occurred during request processing:",
+      e.message,
+      e.stack,
+    );
+
     return {
       statusCode: 500,
       body: JSON.stringify({ status: "error", message: "Oops! Error." }),
