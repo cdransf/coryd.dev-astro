@@ -191,7 +191,7 @@ ol {
     --section-color: var(--link);
   }
   &.mail {
-    --section-color: var(--brand-fastmail);
+    --section-color: var(--brand-apple);
   }
   &.mail-plus {
     --section-color: var(--newsletter);
