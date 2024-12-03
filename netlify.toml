@@ -1,6 +1,7 @@
 [build]
 command = "npm run build"
 publish = "dist"
+edge_functions = "edge-functions"
 
 [functions]
 directory = "functions"
@@ -8,21 +9,17 @@ directory = "functions"
 [functions.mastodon]
 schedule = "*/15 * * * *"
 
+[[edge_functions]]
+function = "scrobble"
+path = "/api/scrobble"
+
+[[edge_functions]]
+function = "search"
+path = "/api/search"
+
 [[redirects]]
 from = "/api/artist-import"
 to = "/.netlify/functions/artist-import"
-status = 200
-query = "*"
-
-[[redirects]]
-from = "/api/scrobble"
-to = "/.netlify/functions/scrobble"
-status = 200
-query = "*"
-
-[[redirects]]
-from = "/api/search"
-to = "/.netlify/functions/search"
 status = 200
 query = "*"
 

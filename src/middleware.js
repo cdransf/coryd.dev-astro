@@ -8,9 +8,6 @@ import { fetchShowByUrl } from "@utils/data/dynamic/showByUrl.js";
 import { isbnRegex } from "@utils/helpers/media.js";
 import { isExcludedPath } from "@utils/helpers/general.js";
 import { CACHE_DURATION } from "@utils/constants/index.js";
-import dotenvFlow from "dotenv-flow";
-
-dotenvFlow.config();
 
 let cachedGlobals = null;
 let cachedNav = null;
@@ -90,7 +87,7 @@ export async function onRequest(context, next) {
         if (!data)
           return new Response(
             `${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)} Not Found`,
-            { status: 404 }
+            { status: 404 },
           );
 
         cachedByType[urlPath] = data;

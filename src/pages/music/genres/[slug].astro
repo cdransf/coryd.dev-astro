@@ -1,5 +1,5 @@
 ---
-import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
+import { CacheHeaders, ONE_DAY } from 'cdn-cache-control';
 import Layout from "@layouts/Layout.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
 import icons from "@cdransf/astro-tabler-icons";
@@ -14,7 +14,7 @@ if (!genre) return Astro.redirect("/404", 404);
 
 const headers = new CacheHeaders()
   .swr()
-  .ttl(ONE_HOUR)
+  .ttl(ONE_DAY)
   .tag(['genre', `genre-${slugify(genre.name, { lower: true })}`]);
 
 headers.forEach((value, key) => {

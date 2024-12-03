@@ -1,5 +1,5 @@
 ---
-import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
+import { CacheHeaders, ONE_DAY } from 'cdn-cache-control';
 import Layout from "@layouts/Layout.astro";
 import Warning from "@components/blocks/banners/Warning.astro";
 import AssociatedMedia from "@components/blocks/AssociatedMedia.astro";
@@ -15,7 +15,7 @@ if (!book) return Astro.redirect("/404", 404);
 
 const headers = new CacheHeaders()
   .swr()
-  .ttl(ONE_HOUR)
+  .ttl(ONE_DAY)
   .tag(['book', `book-${book.isbn}`]);
 
 headers.forEach((value, key) => {

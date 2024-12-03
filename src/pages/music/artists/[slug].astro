@@ -1,5 +1,5 @@
 ---
-import { CacheHeaders, ONE_HOUR } from 'cdn-cache-control';
+import { CacheHeaders, ONE_DAY } from 'cdn-cache-control';
 import { parseISO, format } from "date-fns";
 import Layout from "@layouts/Layout.astro";
 import Modal from "@components/blocks/Modal.astro";
@@ -17,7 +17,7 @@ if (!artist) return Astro.redirect("/404", 404);
 
 const headers = new CacheHeaders()
   .swr()
-  .ttl(ONE_HOUR)
+  .ttl(ONE_DAY)
   .tag(['artist', `artist-${slugify(artist.name, { lower: true })}`]);
 
 headers.forEach((value, key) => {
